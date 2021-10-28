@@ -8,3 +8,8 @@ User 2: Journalists and the general public will also want a simple user interfac
 -journalist, general public who want to understand impact
 -people who gave data who might want to update data, import data 
 -volunteer data analysts working on the problem, having downloadable images for whitepaper
+
+## Policymakers use case
+Dashboard: show figures for a default case and buttons with choices for DR products, shifting assumptions, visualization
+User: choose different options
+Dashboard: display new things
