@@ -11,5 +11,7 @@ User 2: Journalists and the general public will also want a simple user interfac
 
 ## Policymakers use case
 Dashboard: show figures for a default case and buttons with choices for DR products, shifting assumptions, visualization
+
 User: choose different options
+
 Dashboard: display new things
