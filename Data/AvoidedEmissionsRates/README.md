@@ -1,6 +1,6 @@
-## Avoided Emissions Rates
-# Compiled and documented by Lily Hahn
-# Data Source: John Ollis, Northwest Power and Conservation Council
+# Avoided Emissions Rates
+## Compiled and documented by Lily Hahn
+## Data Source: John Ollis, Northwest Power and Conservation Council
 
 This directory contains hourly avoided emissions rates for 2021-2041 under baseline conditions and 5 additional policy scenarios. 
 
@@ -8,7 +8,7 @@ Although these files have a lot of extraneous information, I decided to keep the
 
 Hourly avoided emissions rates are found in the HourlyAvoidedEmissionsRate tab in the "Emissions Rate Estimate" column. Relevant columns for time indexing are labeled "Quarter"; "Report_Year"; "Report_Month"; "Report_Day"; and "Report_Hour" and are located in the same sheet.
 
-# Policy Scenarios, Descriptions from John Ollis, and Data Links
+## Policy Scenarios, Descriptions from John Ollis, and Data Links
 
 Baseline Scenario: https://nwcouncil.app.box.com/s/tb02gilvpeeck166c1mzow457uzninv9
 
@@ -22,11 +22,11 @@ Limited Markets (no planning reserve margins in region outside of NW): https://n
 
 No Gas Build Limitations (in most of these simulations gas builds were limited per understanding of current regulations, not in this one): https://nwcouncil.box.com/s/7i0k4woptwaghtmivfoa5va34bs8o1ra
 
-# Units and Unit Conversions
+## Units and Unit Conversions
 
 Hourly avoided emissions rates are given in lbs CO2 equivalent per kWh energy usage (lbs CO2e/kWh). They will need to be multiplied by 1000 kWh/1MWh to get to units of lbs CO2e/MWh before multiplying by demand response energy reduction in MWh. To get to metric tons CO2e, multiply lb CO2e by 4.536 x 10^-4 metric tons per lb.
 
-# How to Use This Data
+## How to Use This Data
 Try using pd.read_excel tp read in xlsx format to Pandas dataframe. Otherwise we can convert files to csv files. Since there are multiple worksheets, try something like:
 xlsx = pd.ExcelFile('AvoidedEmissionsRateBaseline.xlsx')
 df = pd.read_excel(xlsx,'HourlyAvoidedEmissionsRate')
