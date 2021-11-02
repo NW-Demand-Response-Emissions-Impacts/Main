@@ -13,8 +13,19 @@ User 3: Journalists want to tell their audiences how DR programs impact greenhou
 User 4: The researchers involved in gathering the data and designing the dashboard want to update the information as new data is collected. They want clear code and documentation that make it easy to update the data and make changes to the dashboard.
 
 ## Use Cases
-Dashboard: show figures for a default case and buttons with choices for DR products, shifting assumptions, visualization
 
-User: choose different options
+User Action 1: Generate analysis of CO2 emissions for a specific DR plan
+* Components
+**Dashboard with default choice of DR plan allows for user to specify which plan they would like to analyze from a list
+**User chooses from a list of visualization/plotting options how they would like to visualize data
+**Data Loader loads data from database
+**Plotting module takes user inputs (plotting and DR plan selections) and the loaded data from the Data Loader and generates the figures and analysis
+**Dashboard displays visualizations/plots 
 
-Dashboard: display new things
+
+User Action 2: Import new, updated data to database
+*Components
+**Dashboard contains option to allow for user to provide new data to update the database
+**User uploads their data file according to specified format
+**Data Importer takes user input data and merges it into the existing database. This updated database is now saved as the default database.
+**Dashboard auto-updates it's default visualizations/analysis to inlcude the new data that has just been input 
