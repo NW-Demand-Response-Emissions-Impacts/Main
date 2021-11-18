@@ -32,7 +32,7 @@ def create_emissions_rates_df():
         
         #for first file, read in hours 
         if idx == 0: 
-            df = pd.read_excel(xlsx,sheet,usecols=columns[0:3])  
+            df = pd.read_excel(xlsx,sheet,usecols=columns[0:4])  
         else:
             pass 
 
