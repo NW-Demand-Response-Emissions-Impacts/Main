@@ -12,7 +12,7 @@ This script will run through the old, standard DR bins, and also the new, sensit
 import pandas as pd
 import numpy as np
 
-from emissions_calculator.emissions_parameters import DIR_EMISSIONS_RATES, \
+from emissions_parameters import DIR_EMISSIONS_RATES, \
     DIR_DR_POTENTIAL_HRS, EMISSIONS_SCENARIO_LIST, EMISSIONS_RATES_FILES, \
     DR_NAME, DR_HRS_FILES, DR_POTENTIAL_FILES, SUBSET_PRODUCTS, DR_SEASONS
     
