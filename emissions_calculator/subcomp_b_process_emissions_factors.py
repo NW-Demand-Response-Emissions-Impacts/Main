@@ -6,12 +6,10 @@ from subcomp_a_organize_data import create_emissions_rates_df, create_DR_hours_d
 
 from emissions_parameters import DIR_EMISSIONS_RATES, \
     DIR_DR_POTENTIAL_HRS, EMISSIONS_SCENARIO_LIST, EMISSIONS_RATES_FILES, \
-    DR_NAME, DR_HRS_FILES, DR_POTENTIAL_FILES, SUBSET_PRODUCTS, DR_SEASONS
+    DR_NAME, DR_HRS_FILES, DR_POTENTIAL_FILES, SUBSET_PRODUCTS, DR_SEASONS, \
+    DAYS_IN_MONTH
 
 emissions_rates_df_out, DR_hours_df_dict_out, DR_potential_df_dict_out, DR_product_info_df_dict_out = runall()
-
-days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
 
 def old_bins_winter():
 
@@ -45,10 +43,10 @@ def old_bins_winter():
             former_day = day-1
             former_month = month
         else:
-            former_day = days_in_month[month-2]
+            former_day = DAYS_IN_MONTH[month-2]
             former_month = month-1
 
-        if day+1 <= days_in_month[month-1]:
+        if day+1 <= DAYS_IN_MONTH[month-1]:
             latter_day = day+1
             latter_month = month
         else:
@@ -130,10 +128,10 @@ def old_bins_summer():
             former_day = day-1
             former_month = month
         else:
-            former_day = days_in_month[month-2]
+            former_day = DAYS_IN_MONTH[month-2]
             former_month = month-1
 
-        if day+1 <= days_in_month[month-1]:
+        if day+1 <= DAYS_IN_MONTH[month-1]:
             latter_day = day+1
             latter_month = month
         else:
@@ -222,10 +220,10 @@ def oldbins_all_year():
             former_day = day-1
             former_month = month
         else:
-            former_day = days_in_month[month-2]
+            former_day = DAYS_IN_MONTH[month-2]
             former_month = month-1
 
-        if day+1 <= days_in_month[month-1]:
+        if day+1 <= DAYS_IN_MONTH[month-1]:
             latter_day = day+1
             latter_month = month
         else:

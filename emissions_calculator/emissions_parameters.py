@@ -35,6 +35,7 @@ DR_SEASONS = [['Winter','Summer'],['Winter','Summer','Fall']]
 SUBSET_PRODUCTS = [[0],['DVR','ResTOU']] #for newbins, only want to look at these two
 
 # Constants
+DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 # multiply emissions rates in lbs CO2e/kWh by this factor to get metric tons CO2e/MWh 
 emissions_rate_unit_change = .4536
