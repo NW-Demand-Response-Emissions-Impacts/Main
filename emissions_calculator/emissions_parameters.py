@@ -37,4 +37,4 @@ SUBSET_PRODUCTS = [[0],['DVR','ResTOU']] #for newbins, only want to look at thes
 # Constants
 
 # multiply emissions rates in lbs CO2e/kWh by this factor to get metric tons CO2e/MWh 
-emissions_rate_unit_change = .4536
+EMISSIONS_CHANGEUNITS = .4536
