@@ -9,13 +9,13 @@ import pandas as pd
 
 from emissions_parameters import DIR_DATA_PROC
 
-def output_avg_emissions_rates(<emissions_rates_args>):
-    """
-    Given subcomp_b output with average hourly emissions rates,
-    outputs these into csv files for each DR plan and season. 
-    These will be plotted in the default and more info pages.
-    """
-    #to be filled out after Chang edits subcomp_b
+#def output_avg_emissions_rates(<emissions_rates_args>):
+#    """
+#    Given subcomp_b output with average hourly emissions rates,
+#    outputs these into csv files for each DR plan and season. 
+#    These will be plotted in the default and more info pages.
+#    """
+#    #to be filled out after Chang edits subcomp_b
 
 def output_dr_hours(dr_hours_dict):
     """
@@ -94,6 +94,7 @@ def output_dr_potential(dr_pot_dict,product_info_dict):
         product_info_dict: dictionary of product info including bins
                            with each dataframe corresponding to a DR plan
     """
+    productsum_out = []
     for key in dr_pot_dict.keys():
         df_potential = dr_pot_dict[key]
         
@@ -101,7 +102,7 @@ def output_dr_potential(dr_pot_dict,product_info_dict):
         drplan_season = key.split('_')
         drname = drplan_season[0]
         df_product_info = product_info_dict[drname]
-        
+
         #loop through bins, output products in each bin
         for idx in range(1,5):
             pdlist = df_product_info[df_product_info['Bin']=='Bin '+str(idx)]['Product'].tolist()
@@ -111,29 +112,34 @@ def output_dr_potential(dr_pot_dict,product_info_dict):
                 #get potential for these products and output to csv
                 df_potential_out = df_potential[df_potential.columns[df_potential.columns.isin(pdlist)]]
                 df_potential_out.to_csv(DIR_DATA_PROC+'dr_potential_'+key+'_bin'+str(idx)+'.csv',index=False)
+                #sum all products within this bin for 2041
+                productsum = df_potential_out.iloc[:, 1:].sum(axis=1)
+                productsum_out.append([key+'_bin'+str(idx),productsum.iloc[-1]]) 
+    product_sum_out_df = pd.DataFrame(productsum_out,columns=['DR Plan, Season, and Bin','2041 Potential'])
+    product_sum_out_df.to_csv(DIR_DATA_PROC+'dr_potential_comparison_barchart.csv',index=False)
 
-def output_emissions_impacts(<emissions_impacts_args>):
-    """
-    Given subcomp_c output with DR emissions impacts,
-    outputs this data into csv files for the dashboard. 
-    """
-    #to be filled out after James finishes subcomp_c
+#def output_emissions_impacts(<emissions_impacts_args>):
+#    """
+#    Given subcomp_c output with DR emissions impacts,
+#    outputs this data into csv files for the dashboard. 
+#    """
+#    #to be filled out after James finishes subcomp_c
 
 ################# Main ####################
-def runall(<emissions_rates_args>,dr_hours_dict,dr_pot_dict,
-            product_info_dict,<emissions_impacts_args>):
-    """
-    Runs through all of the above functions to output all csv files.
+#def runall(<emissions_rates_args>,dr_hours_dict,dr_pot_dict,
+#            product_info_dict,<emissions_impacts_args>):
+#    """
+#    Runs through all of the above functions to output all csv files.
 
-    Args: 
-        dr_hours_dict: dictionary of 1-or-0 DR hours dataframes 
-                       for each DR plan and season
-        dr_pot_dict: dr_pot_dict: dictionary of DR potential 
-                     with each dataframe corresponding to a DR plan and season
-        product_info_dict: dictionary of product info including bins
-                           with each dataframe corresponding to a DR plan    
-    """
-    output_avg_emissions_rates(<emissions_rates_args>)
-    output_dr_hours(dr_hours_dict)
-    output_dr_potential(dr_pot_dict,product_info_dict)
-    output_emissions_impacts(<emissions_impacts_args>)
+#    Args: 
+#        dr_hours_dict: dictionary of 1-or-0 DR hours dataframes 
+#                       for each DR plan and season
+#        dr_pot_dict: dr_pot_dict: dictionary of DR potential 
+#                     with each dataframe corresponding to a DR plan and season
+#       product_info_dict: dictionary of product info including bins
+#                           with each dataframe corresponding to a DR plan    
+#    """
+#    output_avg_emissions_rates(<emissions_rates_args>)
+#    output_dr_hours(dr_hours_dict)
+#    output_dr_potential(dr_pot_dict,product_info_dict)
+#    output_emissions_impacts(<emissions_impacts_args>)
