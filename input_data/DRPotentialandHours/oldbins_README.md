@@ -9,4 +9,4 @@ In the "Reporter Outputs" sheet, see "Summer Potential" and "Winter Potential" s
 
 # Hours of DR implementation
 
-I need to run the top-down model to find the peak demand hours for DR implementation. I have this for Bin 1, but need to troubleshoot this for the other products. 
+For every hour of the year, a 1 is listed if DR is implemented, or a 0 if not.  

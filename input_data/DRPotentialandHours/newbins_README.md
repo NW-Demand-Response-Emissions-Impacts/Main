@@ -11,15 +11,7 @@ Bin 1 includes Demand Voltage Reduction (DVR) and Residential Time-of-Use (ResTO
 In the "Reporter Outputs" sheet, see "Summer Potential" and "Winter Potential" sections with DR potential for each product in MW for years 2022-2041. We only need DVR and ResTOU.
 
 # Hours of DR implementation
-We may want to make a spreadsheet of the same format of the hourly emissions factors with this information, with a 1 for hours of DR implementation, a -1 for hours that load is shifted to, and a 0 for other hours, so that these can be easily multiplied.
-
-DVR and ResTOU are implemented from 6 pm to 10 pm (4 hours a day) Monday-Saturday (6 days a week) for 12 weeks in each quarter of the year except for spring, totaling 288 hours each quarter. 
-
-Quarters:
-Fall: Oct-Dec: apply the winter potential
-Winter: Jan-Mar: apply the winter potential
-Spring: Apr-June: no DR 
-Summer: July-Sep: apply the summer potential    
+For each hour of the year, a 1 is listed for hours of DR implementation, or a 0 if DR is not implemented at that time.
 
 # Shift versus shed
 DVR is a shed product, so the load is reduced during hours of implementation. ResTOU is a shift product, so the load is reduced during hours of implementation but must be shifted to other hours of the day. However, TOU pilots suggest that this product often looks more like a shed product, with customers reducing their energy usage rather than shifting it. 
