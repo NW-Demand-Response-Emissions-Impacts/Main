@@ -1,11 +1,11 @@
 import pandas as pd
 
-from subcomp_a_organize_data import create_emissions_rates_df, create_DR_hours_df_dict
+from subcomp_a_organize_data import create_emissions_rates_df, create_dr_hours_df_dict
 
 from emissions_parameters import EMISSIONS_SCENARIO_LIST, EMISSIONS_RATES_FILES, DAYS_IN_MONTH
 
 emissions_rates_df_out = create_emissions_rates_df()
-DR_hours_df_dict_out = create_DR_hours_df_dict()
+DR_hours_df_dict_out = create_dr_hours_df_dict()
 
 
 # This part output results for old bins

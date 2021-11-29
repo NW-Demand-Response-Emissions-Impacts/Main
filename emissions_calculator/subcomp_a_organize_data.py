@@ -160,7 +160,7 @@ def runall():
     emissions_rates_df_out = create_emissions_rates_df()
     dr_hours_df_dict_out = create_dr_hours_df_dict()
     dr_potential_df_dict_out = create_dr_potential_df_dict()
-    dr_product_info_df_dict_out = create_product_info_df()
+    dr_product_info_df_dict_out = create_product_info_df_dict()
 
     return emissions_rates_df_out, dr_hours_df_dict_out, \
             dr_potential_df_dict_out, dr_product_info_df_dict_out
