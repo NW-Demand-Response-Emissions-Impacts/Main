@@ -80,22 +80,22 @@ def annual_ave():
             dict_key = dr_name + '_' + season
             bin_season_name.append(dict_key)
 
-            # For old bins, combine winter & summer
-            # For new bins, combine winter, summer & fall
-            frames = [DR_HOURS_DF_DICT_OUT[x] for x in bin_season_name]
-            dr_hours_df = pd.concat(frames)
+        # For old bins, combine winter & summer
+        # For new bins, combine winter, summer & fall
+        frames = [DR_HOURS_DF_DICT_OUT[x] for x in bin_season_name]
+        dr_hours_df = pd.concat(frames)
 
-            for idx_1, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
-                column_name = scenario_name + ' Emissions Rate Estimate'
+        for idx_1, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
+            column_name = scenario_name + ' Emissions Rate Estimate'
 
-                if idx_1 == 0:
-                    data = EMISSIONS_RATES_DF_OUT
+            if idx_1 == 0:
+                data = EMISSIONS_RATES_DF_OUT
 
-                    df_annual_ave[dr_name][scenario_name] = \
-                        get_hour_ave(data, dr_hours_df, column_name)
+                df_annual_ave[dr_name][scenario_name] = \
+                    get_hour_ave(data, dr_hours_df, column_name)
 
-                else:
-                    pass
+            else:
+                pass
 
     return df_annual_ave
 
