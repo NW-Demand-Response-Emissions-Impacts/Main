@@ -13,7 +13,7 @@ import pandas as pd
 
 from subcomp_a_organize_data import create_emissions_rates_df, create_dr_hours_df_dict
 
-from emissions_parameters import EMISSIONS_SCENARIO_LIST, DR_NAME, DR_SEASONS
+from emissions_parameters import EMISSIONS_SCENARIO_LIST, DR_NAME, DR_SEASONS, SEASONS_2022
 
 EMISSIONS_RATES_DF_OUT = create_emissions_rates_df()
 DR_HOURS_DF_DICT_OUT = create_dr_hours_df_dict()
@@ -133,11 +133,11 @@ def get_2022_hour_ave(data, time, column_name):
     """
     df_cp = data
 
+    # Month range for different seasons are defined as follows:
     if time == 'Winter':
         month = [1, 2, 3]
-    # Spring season average currently unavailable!
-    # elif time == 'Spring':
-        # month = [4, 5, 6]
+    elif time == 'Spring':
+        month = [4, 5, 6]
     elif time == 'Summer':
         month = [7, 8, 9]
     elif time == 'Fall':
@@ -190,8 +190,7 @@ def newbins_2022_seasonal_ave():
     """
     df_2022_seasonal_ave = {}
 
-    for season in DR_SEASONS[1]:
-        # DR_SEASONS[1] iterate over winter, summer and fall seasons for new bin
+    for season in SEASONS_2022:
         df_2022_seasonal_ave[season] = {}
 
         for idx, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
