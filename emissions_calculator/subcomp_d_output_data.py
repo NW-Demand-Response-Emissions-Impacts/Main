@@ -9,21 +9,13 @@ import pandas as pd
 
 from emissions_parameters import DIR_DATA_PROC
 
-def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave):
-    """
-    Given subcomp_b output with average hourly emissions rates,
-    outputs these into csv files for each DR plan and season. 
-    These will be plotted in the default and more info pages.
-
-    Args:
-        df_seasonal_ave: dictionary of seasonally averaged hourly emissions rates
-                        for days with DR averaged over full period (2022-2041)
-        df_annual_ave: dictionary of annually averaged hourly emissions rates 
-                        for days with DR averaged over full period (2022-2041)
-        df_oneyear_seasonal_ave: dictionary of seasonally, annually averaged hourly
-                        emissions rates for all days of a given year
-    """
-#    see what Chang has for this and then fill out
+#def output_avg_emissions_rates(<emissions_rates_args>):
+#    """
+#    Given subcomp_b output with average hourly emissions rates,
+#    outputs these into csv files for each DR plan and season. 
+#    These will be plotted in the default and more info pages.
+#    """
+#    #to be filled out after Chang edits subcomp_b
 
 def output_dr_hours(dr_hours_dict):
     """
