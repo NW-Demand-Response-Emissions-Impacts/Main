@@ -34,7 +34,7 @@ DR_HRS_FILES = ['DRHours_' + x + '.xlsx' for x in DR_NAME]
 DR_POTENTIAL_FILES = ['DR RPM Inputs_071420.xlsx','DR RPM Inputs_021621_newaMWbins.xlsx']
 DR_SEASONS = [['Winter','Summer'],['Winter','Summer','Fall']]
 SUBSET_PRODUCTS = [[0],['DVR','ResTOU']] #for newbins, only want to look at these two
-SEASONS_2022 = ['Winter', 'Spring', 'Summer', 'Fall']
+SEASONS_ALLDAYS = ['Winter', 'Spring', 'Summer', 'Fall', 'Annual']
 
 # Constants
 DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
