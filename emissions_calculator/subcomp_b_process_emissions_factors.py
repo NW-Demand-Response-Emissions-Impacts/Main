@@ -50,7 +50,7 @@ def seasonal_ave():
 
                 column_name = scenario_name + ' Emissions Rate Estimate'
                 df_seasonal_ave[dict_key][scenario_name] = \
-                        get_hour_ave(EMISSIONS_RATES_DF_OUT, DR_HOURS_DF_DICT_OUT[dict_key], column_name)
+                    get_hour_ave(EMISSIONS_RATES_DF_OUT, DR_HOURS_DF_DICT_OUT[dict_key], column_name)
 
     return df_seasonal_ave
 
@@ -92,7 +92,7 @@ def annual_ave():
         for idx_1, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
             column_name = scenario_name + ' Emissions Rate Estimate'
             df_annual_ave[dr_name][scenario_name] = \
-                 get_hour_ave(EMISSIONS_RATES_DF_OUT, dr_hours_df, column_name)
+                get_hour_ave(EMISSIONS_RATES_DF_OUT, dr_hours_df, column_name)
 
     return df_annual_ave
 
@@ -155,7 +155,7 @@ def alldays_oneyear_seasonal_ave(year):
         for idx, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
             column_name = scenario_name + ' Emissions Rate Estimate'
             df_oneyear_seasonal_ave[season][scenario_name] = \
-                    get_oneyear_hour_ave(EMISSIONS_RATES_DF_OUT, season, column_name, year)
+                get_oneyear_hour_ave(EMISSIONS_RATES_DF_OUT, season, column_name, year)
 
     return df_oneyear_seasonal_ave
 

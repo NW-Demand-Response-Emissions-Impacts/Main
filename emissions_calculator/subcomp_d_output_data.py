@@ -9,6 +9,10 @@ import pandas as pd
 
 from emissions_parameters import DIR_DATA_PROC
 
+from emissions_parameters import DIR_DATA_PROC, DR_NAME, DR_SEASONS, EMISSIONS_SCENARIO_LIST, SEASONS_ALLDAYS
+from subcomp_b_process_emissions_factors import run_all
+
+
 def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year):
     """
     Given subcomp_b output with average hourly emissions rates,
@@ -170,3 +174,49 @@ def output_dr_potential(dr_pot_dict,product_info_dict):
 #    output_dr_hours(dr_hours_dict)
 #    output_dr_potential(dr_pot_dict,product_info_dict)
 #    output_emissions_impacts(<emissions_impacts_args>)
+
+
+def output_emissions_factors():
+    df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave = run_all(2022)
+
+    # output seasonal average by dr name, season and scenario name
+    for idx, dr_name in enumerate(DR_NAME):
+
+        dr_name = DR_NAME[idx]
+        seasons = DR_SEASONS[idx]
+
+        for season in seasons:
+            dict_key = dr_name + '_' + season
+            season_ave_key = dict_key + '_ave'
+            df_seasonal_ave[season_ave_key] = {}
+
+            for scenario_name in EMISSIONS_SCENARIO_LIST:
+                df_seasonal_ave[season_ave_key][scenario_name].to_csv(DIR_DATA_PROC +
+                                                                      'emissions_factors_seasonal_ave_' +
+                                                                      season_ave_key + '_' +
+                                                                      scenario_name +
+                                                                      '.csv',
+                                                                      index=False)
+
+    # output annual average by dr name and scenario name
+    for idx, dr_name in enumerate(DR_NAME):
+        dr_name = DR_NAME[idx]
+
+        for scenario_name in EMISSIONS_SCENARIO_LIST:
+            df_annual_ave[dr_name][scenario_name].to_csv(DIR_DATA_PROC +
+                                                         'emissions_factors_annual_ave_' +
+                                                         dr_name + '_' +
+                                                         scenario_name +
+                                                         '.csv',
+                                                         index=False)
+
+    # output year 2022 average by season and scenario name
+    for season in SEASONS_ALLDAYS:
+        for scenario_name in EMISSIONS_SCENARIO_LIST:
+            df_oneyear_seasonal_ave[season][scenario_name].to_csv(DIR_DATA_PROC +
+                                                                  'emissions_factors_2022_ave_' +
+                                                                  season + '_' +
+                                                                  scenario_name +
+                                                                  '.csv',
+                                                                  index=False)
+            
