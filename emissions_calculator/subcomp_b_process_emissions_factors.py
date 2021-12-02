@@ -1,428 +1,218 @@
+"""
+subcomp_b_process_emissions_factors.py
+
+Read output emissions rates and DR hours from subcomponent a.
+
+For all DR plans (e.g. old bins, new bins),
+return seasonal and annual emissions rates averages
+only for days with DR, averaged 2022-2041.
+
+Also return seasonal and annual emissions rates averages
+for all days in a given year (e.g. 2022),
+which will be shown on the general public page. 
+"""
+
 import pandas as pd
 
-from subcomp_a_organize_data import create_emissions_rates_df, create_DR_hours_df_dict
+from subcomp_a_organize_data import create_emissions_rates_df, create_dr_hours_df_dict
 
-from emissions_parameters import EMISSIONS_SCENARIO_LIST, EMISSIONS_RATES_FILES, DAYS_IN_MONTH
+from emissions_parameters import EMISSIONS_SCENARIO_LIST, DR_NAME, DR_SEASONS, SEASONS_ALLDAYS
 
-emissions_rates_df_out = create_emissions_rates_df()
-DR_hours_df_dict_out = create_DR_hours_df_dict()
-
-
-# This part output results for old bins
-def old_bins_winter():
-
-    df_ave = {}
-
-    former_month_day, dr_month_day, latter_month_day = \
-        get_former_same_latter_day(DR_hours_df_dict_out['oldbins_Winter'])
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_ave[idx] = get_new_hour_id_ave(data, former_month_day, dr_month_day, latter_month_day, column_name)
-
-        else:
-            pass
-
-    return df_ave
+EMISSIONS_RATES_DF_OUT = create_emissions_rates_df()
+DR_HOURS_DF_DICT_OUT = create_dr_hours_df_dict()
 
 
-def old_bins_summer():
+def seasonal_ave():
+    """
+    Compute seasonal averages of hourly emissions for DR days 
+    for each DR plan and season and each emissions scenario.
 
-    df_ave = {}
+    Returns:
+    df_seasonal_ave: dictionary of seasonal emissions rates averages
 
-    former_month_day, dr_month_day, latter_month_day = \
-        get_former_same_latter_day(DR_hours_df_dict_out['oldbins_Summer'])
+    Access output by:
+    df_seasonal_ave=seasonal_ave()
 
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
+    Output example:
+    df_seasonal_ave['oldbins_Winter']['Baseline']
+    """
+    df_seasonal_ave = {}
+    for idx, dr_name in enumerate(DR_NAME):
 
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
+        dr_name = DR_NAME[idx]
+        seasons = DR_SEASONS[idx]
 
-        if idx == 0:
-            data = emissions_rates_df_out
+        for season in seasons:
+            dict_key = dr_name + '_' + season
+            df_seasonal_ave[dict_key] = {}
 
-            "Compute daily average"
-            df_ave[idx] = get_new_hour_id_ave(data, former_month_day, dr_month_day, latter_month_day, column_name)
+            for idx_1, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
 
-        else:
-            pass
+                column_name = scenario_name + ' Emissions Rate Estimate'
+                df_seasonal_ave[dict_key][scenario_name] = \
+                    get_hour_ave(EMISSIONS_RATES_DF_OUT, DR_HOURS_DF_DICT_OUT[dict_key], column_name)
 
-    return df_ave
-
-
-def oldbins_all_year():
-
-    df_ave = {}
-
-    frames = [DR_hours_df_dict_out['oldbins_Winter'], DR_hours_df_dict_out['oldbins_Summer']]
-    dr_hours_df = pd.concat(frames)
-
-    former_month_day, dr_month_day, latter_month_day = get_former_same_latter_day(dr_hours_df)
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_ave[idx] = get_new_hour_id_ave(data, former_month_day, dr_month_day, latter_month_day, column_name)
-
-        else:
-            pass
-
-    return df_ave
+    return df_seasonal_ave
 
 
-# Get days with DR hours
-def get_former_same_latter_day(time_df):
+def annual_ave():
+    """
+    Compute annual averages of hourly emissions for DR days
+    for each DR plan and each emissions scenario.
+
+    Returns:
+    df_annual_ave: a dictionary of annual emissions rates averages
+
+    Access output by:
+    df_annual_ave=annual_ave()
+
+    Output example:
+    df_annual_ave['oldbins']['Baseline']
+    """
+    df_annual_ave = {}
+
+    for idx, dr_name in enumerate(DR_NAME):
+
+        dr_name = DR_NAME[idx]
+        seasons = DR_SEASONS[idx]
+        df_annual_ave[dr_name] = {}
+
+        # bin_season_name distinguish old/new bins, winter/summer/fall
+        bin_season_name = []
+
+        for season in seasons:
+            dict_key = dr_name + '_' + season
+            bin_season_name.append(dict_key)
+
+        # For old bins, combine winter & summer
+        # For new bins, combine winter, summer & fall
+        frames = [DR_HOURS_DF_DICT_OUT[x] for x in bin_season_name]
+        dr_hours_df = pd.concat(frames)
+
+        for idx_1, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
+            column_name = scenario_name + ' Emissions Rate Estimate'
+            df_annual_ave[dr_name][scenario_name] = \
+                get_hour_ave(EMISSIONS_RATES_DF_OUT, dr_hours_df, column_name)
+
+    return df_annual_ave
+
+
+def get_hour_ave(emissions_data, dr_hours, column_name):     
 
     """
-     For DR_hours_df_dict_out['']
-     Group by month, day,sum DVR/ResTOU column
-     Select (sum>=1), got DR days!
+    Select DR hour days and return hourly average emissions rates. 
+
+    Called in seasonal_ave(), annual_ave()
+
+    Args:
+        emissions_data: dataframe with hourly emissions rates
+        dr_hours: dataframe with hours of DR implementation
+        column_name: name (str) of emissions rates column in emissions_data
+    Returns:
+        hourly average emissions rates for DR days
     """
+    df_cp = emissions_data
 
-    df_1 = time_df.groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
+    # Group by month and day
+    # Sum product column
+    # Select (sum>=1), got DR days!
+    df_1 = dr_hours.groupby(['Month', 'Day'])['DVR'].sum().reset_index()
     df_1 = df_1[df_1['DVR'] >= 1]
 
-    "Get same, former and latter days with DR hours and put into list"
-    days = []
-    months = []
-    former_days = []
-    former_months = []
-    latter_days = []
-    latter_months = []
+    # Combine month and day together
+    df_1['month_day'] = df_1['Month']*100 + df_1['Day']
+    df_cp['month_day'] = df_cp['Report_Month']*100 + df_cp['Report_Day']
 
-    for row in df_1.iterrows():
-        month = row[1]['Month']
-        day = row[1]['Day']
-        days.append(day)
-        months.append(month)
-
-        if day-1 > 0:
-            former_day = day-1
-            former_month = month
-        else:
-            former_day = DAYS_IN_MONTH[month-2]
-            former_month = month-1
-
-        if day+1 <= DAYS_IN_MONTH[month-1]:
-            latter_day = day+1
-            latter_month = month
-        else:
-            latter_day = 1
-            latter_month = month+1
-
-        former_days.append(former_day)
-        former_months.append(former_month)
-        latter_days.append(latter_day)
-        latter_months.append(latter_month)
-
-    former_month_day = []
-    latter_month_day = []
-    dr_month_day = []
-    for (month, day) in zip(former_months, former_days):
-        former_month_day.append(month*100+day)
-    for (month, day) in zip(latter_months, latter_days):
-        latter_month_day.append(month*100+day)
-    for (month, day) in zip(months, days):
-        dr_month_day.append(month*100+day)
-
-    return former_month_day, dr_month_day, latter_month_day
-
-
-# Get hourly average by new hour ID
-def get_new_hour_id_ave(data, former_month_day, dr_month_day, latter_month_day, column_name):
-    df_cp = data
-
-    "Combine month and day together"
-    df_cp['month_day'] = df_cp['Report_Month'] * 100 + df_cp['Report_Day']
-
-    "Select DR days in emission rates dataset"
-    df_same = df_cp[df_cp['month_day'].isin(dr_month_day)]
-    df_former = df_cp[(df_cp['Report_Hour'] >= 12) & (df_cp['month_day'].isin(former_month_day))]
-    df_latter = df_cp[(df_cp['Report_Hour'] <= 12) & (df_cp['month_day'].isin(latter_month_day))]
-
-    df_same['new_hourID'] = df_same['Report_Hour']
-    df_former['new_hourID'] = df_former['Report_Hour'] - 24
-    df_latter['new_hourID'] = df_latter['Report_Hour'] + 24
-
-    frames = [df_same, df_former, df_latter]
-
-    df_all = pd.concat(frames)
-
-    "Compute daily average"
-    return df_all.groupby(['new_hourID'])[column_name].mean().reset_index()
-
-
-# This part output results for new bins
-
-
-def get_hour_ave(data, time_df, column_name):
-    df_cp = data
-
-    "Get days with DR hours"
-    df_1 = time_df.groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-    df_1 = df_1[df_1['DVR'] >= 1]
-
-    "Combine month and day together"
-    df_1['month_day'] = df_1['Month']*100+df_1['Day']
-    df_cp['month_day'] = df_cp['Report_Month'] * 100 + df_cp['Report_Day']
-
-    "Select DR days in emission rates dataset"
+    # Select DR days in emission rates dataset
     df_2 = df_cp[df_cp['month_day'].isin(df_1['month_day'])]
 
-    "Compute daily average"
+    # Compute daily average
     return df_2.groupby(['Report_Hour'])[column_name].mean().reset_index()
 
 
-def get_2022_hour_ave(data, time_df, column_name):
-    df_cp = data
+def alldays_oneyear_seasonal_ave(year):
+    """
+    Compute seasonal and annual emissions rates averages 
+    for all days for one year.
 
-    "Get days with DR hours"
-    df_1 = time_df.groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-    df_1 = df_1[df_1['DVR'] >= 1]
+    Args: 
+        year: the year (int) to average emissions rates over
+    Returns:
+        df_oneyear_seasonal_ave: dictionary of average emissions rates
+                                 for each season and emissions scenario
 
-    "Combine month and day together"
-    df_1['month_day'] = df_1['Month']*100+df_1['Day']
-    df_cp['month_day'] = df_cp['Report_Month'] * 100 + df_cp['Report_Day']
+    Access output by:
+    df_oneyear_seasonal_ave=alldays_oneyear_seasonal_ave()
 
-    "Select DR days in emission rates dataset"
-    df_2 = df_cp[df_cp['month_day'].isin(df_1['month_day'])]
-    df_2 = df_2[df_2['Report_Year'] == 2022]
+    Output example:
+    df_oneyear_seasonal_ave['Winter']['Baseline']
+    """
+    df_oneyear_seasonal_ave = {}
 
-    "Compute daily average"
+    for season in SEASONS_ALLDAYS:
+        df_oneyear_seasonal_ave[season] = {}
+
+        for idx, scenario_name in enumerate(EMISSIONS_SCENARIO_LIST):
+            column_name = scenario_name + ' Emissions Rate Estimate'
+            df_oneyear_seasonal_ave[season][scenario_name] = \
+                get_oneyear_hour_ave(EMISSIONS_RATES_DF_OUT, season, column_name, year)
+
+    return df_oneyear_seasonal_ave
+
+
+def get_oneyear_hour_ave(emissions_data, season, column_name, year):
+    """
+    Select all days according to season (including all seasons) 
+    and return hourly average emissions rates.
+
+    Called in alldays_oneyear_seasonal_ave()
+
+    Args:
+        emissions_data: dataframe with hourly emissions rates
+        season: season (str) to calculate average over
+        column_name: name (str) of emissions rates column in emissions_data
+        year: year (int) to calculate average over
+    Returns:
+        hourly average emissions rates for the given season
+    """
+    df_cp = emissions_data
+
+    # Month range for different seasons are defined as follows:
+    if season == 'Winter':
+        month = [1, 2, 3]
+    elif season == 'Spring':
+        month = [4, 5, 6]
+    elif season == 'Summer':
+        month = [7, 8, 9]
+    elif season == 'Fall':
+        month = [10, 11, 12]
+    elif season == 'Annual':
+        month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    else:
+        raise ValueError('Time period unavailable!')
+
+    df_2 = df_cp[df_cp['Report_Month'].isin(month)]
+    df_2 = df_2[df_2['Report_Year'] == year]
+
     return df_2.groupby(['Report_Hour'])[column_name].mean().reset_index()
 
 
-def new_bins_winter():
-
-    df_ave = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_ave[idx] = get_hour_ave(data, DR_hours_df_dict_out['newbins_Winter'], column_name)
-
-        else:
-            pass
-
-    return df_ave
-
-
-def new_bins_summer():
-
-    df_ave = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_ave[idx] = get_hour_ave(data, DR_hours_df_dict_out['newbins_Summer'], column_name)
-
-        else:
-            pass
-
-    return df_ave
-
-
-def new_bins_fall():
-
-    df_ave = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_ave[idx] = get_hour_ave(data, DR_hours_df_dict_out['newbins_Fall'], column_name)
-
-        else:
-            pass
-
-    return df_ave
-
-
-def newbins_all_year():
-    df_3 = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-            df_cp = data
-
-            "Get days with DR hours"
-            df_temp_winter = \
-                DR_hours_df_dict_out['newbins_Winter'].groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-            df_temp_winter = df_temp_winter[df_temp_winter['DVR'] >= 1]
-            df_temp_summer = \
-                DR_hours_df_dict_out['newbins_Summer'].groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-            df_temp_summer = df_temp_summer[df_temp_summer['DVR'] >= 1]
-            df_temp_fall = \
-                DR_hours_df_dict_out['newbins_Fall'].groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-            df_temp_fall = df_temp_fall[df_temp_fall['DVR'] >= 1]
-            # df_temp_winter['season'] = 'winter'
-            # df_temp_summer['season'] = 'summer'
-            # df_temp_fall['season'] = 'fall'
-            frames = [df_temp_winter, df_temp_summer, df_temp_fall]
-            df_1 = pd.concat(frames)
-
-            "Combine month and day together"
-            df_1['month_day'] = df_1['Month']*100+df_1['Day']
-            df_cp['month_day'] = df_cp['Report_Month'] * 100 + df_cp['Report_Day']
-
-            "Select DR days in emission rates dataset"
-            df_2 = df_cp[df_cp['month_day'].isin(df_1['month_day'])]
-
-            "Compute daily average"
-            df_3[idx] = df_2.groupby(['Report_Hour'])[column_name].mean().reset_index()
-
-        else:
-            pass
-
-    return df_3
-
-
-def newbins_2022_allyear():
-    df_3 = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-            df_cp = data
-
-            "Get days with DR hours"
-            df_temp_winter = \
-                DR_hours_df_dict_out['newbins_Winter'].groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-            df_temp_winter = df_temp_winter[df_temp_winter['DVR'] >= 1]
-            df_temp_summer = \
-                DR_hours_df_dict_out['newbins_Summer'].groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-            df_temp_summer = df_temp_summer[df_temp_summer['DVR'] >= 1]
-            df_temp_fall = \
-                DR_hours_df_dict_out['newbins_Fall'].groupby(['Month', 'Day'])['DVR', 'ResTOU'].sum().reset_index()
-            df_temp_fall = df_temp_fall[df_temp_fall['DVR'] >= 1]
-            # df_temp_winter['season'] = 'winter'
-            # df_temp_summer['season'] = 'summer'
-            # df_temp_fall['season'] = 'fall'
-            frames = [df_temp_winter, df_temp_summer, df_temp_fall]
-            df_1 = pd.concat(frames)
-
-            "Combine month and day together"
-            df_1['month_day'] = df_1['Month']*100+df_1['Day']
-            df_cp['month_day'] = df_cp['Report_Month'] * 100 + df_cp['Report_Day']
-
-            "Select DR days in emission rates dataset"
-            df_2 = df_cp[df_cp['month_day'].isin(df_1['month_day'])]
-            df_2 = df_2[df_2['Report_Year'] == 2022]
-
-            "Compute daily average"
-            df_3[idx] = df_2.groupby(['Report_Hour'])[column_name].mean().reset_index()
-
-        else:
-            pass
-
-    return df_3
-
-
-def newbins_2022_winter():
-    df_2022_ave = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_2022_ave[idx] = get_2022_hour_ave(data, DR_hours_df_dict_out['newbins_Winter'], column_name)
-
-        else:
-            pass
-
-    return df_2022_ave
-
-
-def newbins_2022_summer():
-    df_2022_ave = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_2022_ave[idx] = get_2022_hour_ave(data, DR_hours_df_dict_out['newbins_Summer'], column_name)
-
-        else:
-            pass
-
-    return df_2022_ave
-
-
-def newbins_2022_fall():
-    df_2022_ave = {}
-
-    for idx, file_name in enumerate(EMISSIONS_RATES_FILES):
-        column_name = EMISSIONS_SCENARIO_LIST[idx] + ' Emissions Rate Estimate'
-
-        if idx == 0:
-            data = emissions_rates_df_out
-
-            "Compute daily average"
-            df_2022_ave[idx] = get_2022_hour_ave(data, DR_hours_df_dict_out['newbins_Fall'], column_name)
-
-        else:
-            pass
-
-    return df_2022_ave
-
-
-def newbins_2022():
-    df_2022_winter = newbins_2022_winter()
-    df_2022_summer = newbins_2022_summer()
-    df_2022_fall = newbins_2022_fall()
-    df_2022_allyear = newbins_2022_allyear()
-    return df_2022_winter, df_2022_summer, df_2022_fall, df_2022_allyear
-
-
-def runall_seasonal():
-
-    oldbins_winter = old_bins_winter()
-    oldbins_summer = old_bins_summer()
-    newbins_winter = new_bins_winter()
-    newbins_summer = new_bins_summer()
-    newbins_fall = new_bins_fall()
-
-    return oldbins_winter, oldbins_summer, newbins_winter, newbins_summer, newbins_fall
-
-
-def runall_allyear():
-
-    oldbins_allyear = oldbins_all_year()
-    newbins_allyear = newbins_all_year()
-
-    return oldbins_allyear, newbins_allyear
+def run_all(year):
+    """
+    Runs through all of the above functions.
+    Args:
+        year: year (int) to output emissions rates averages for all days
+              for general info page of dashboard 
+    Returns:
+        df_seasonal_ave: dictionary of seasonally averaged hourly emissions rates
+                        for days with DR averaged over full period (2022-2041)
+        df_annual_ave: dictionary of annually averaged hourly emissions rates 
+                        for days with DR averaged over full period (2022-2041)
+        df_oneyear_seasonal_ave: dictionary of seasonally, annually averaged hourly
+                        emissions rates for all days of a given year
+    """
+    df_seasonal_ave = seasonal_ave()
+    df_annual_ave = annual_ave()
+    df_oneyear_seasonal_ave = alldays_oneyear_seasonal_ave(year)
+
+    return df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave

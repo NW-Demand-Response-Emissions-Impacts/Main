@@ -16,7 +16,7 @@ seasonality, and shift/shed for each product.
 
 import pandas as pd
 
-from emissions_calculator.emissions_parameters import DIR_EMISSIONS_RATES, \
+from emissions_parameters import DIR_EMISSIONS_RATES, \
     DIR_DR_POTENTIAL_HRS, EMISSIONS_SCENARIO_LIST, EMISSIONS_RATES_FILES, \
     DR_NAME, DR_HRS_FILES, DR_POTENTIAL_FILES, SUBSET_PRODUCTS, DR_SEASONS
 
@@ -129,7 +129,7 @@ def create_dr_potential_df_dict():
 
     return dr_pot_df_dict
 
-def create_product_info_df():
+def create_product_info_df_dict():
     """
     Reads the DR potential file sheet with product data
     and creates a dictionary of dataframes for each DR plan,
@@ -147,6 +147,8 @@ def create_product_info_df():
         column_names = ['Product','Bin','Seasonality','Shift or Shed?']
         dr_product_info_df_dict[drname] = pd.read_excel(xlsx,'EnergyCalcs', \
                                                        skiprows=2,nrows=23,usecols=column_names)
+        if drname == 'newbins':
+            dr_product_info_df_dict[drname] = dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Bin'] == 'Bin 1']
 
     return dr_product_info_df_dict
 
@@ -158,7 +160,7 @@ def runall():
     emissions_rates_df_out = create_emissions_rates_df()
     dr_hours_df_dict_out = create_dr_hours_df_dict()
     dr_potential_df_dict_out = create_dr_potential_df_dict()
-    dr_product_info_df_dict_out = create_product_info_df()
+    dr_product_info_df_dict_out = create_product_info_df_dict()
 
     return emissions_rates_df_out, dr_hours_df_dict_out, \
             dr_potential_df_dict_out, dr_product_info_df_dict_out
