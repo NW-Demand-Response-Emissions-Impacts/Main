@@ -18,8 +18,9 @@ import pandas as pd
 
 from emissions_parameters import DIR_EMISSIONS_RATES, DIR_DR_POTENTIAL_HRS
 
+
 def create_emissions_rates_df(emissions_rates_files,
-                            emissions_scenario_list):
+                              emissions_scenario_list):
     """
     Reads in emissions rate files for different policy scenarios
     to create a dataframe with 2022-2041 hourly emissions factors.
@@ -33,29 +34,30 @@ def create_emissions_rates_df(emissions_rates_files,
         emissions_rates_df: the emissions rates dataframe
     """
     sheet = 'HourlyAvoidedEmissionsRate'
-    columns = ['Report_Year','Report_Month','Report_Day','Report_Hour', \
+    columns = ['Report_Year', 'Report_Month', 'Report_Day', 'Report_Hour',
                'Emissions Rate Estimate']
 
-    for idx,file_name in enumerate(emissions_rates_files):
+    for idx, file_name in enumerate(emissions_rates_files):
 
         xlsx = pd.ExcelFile(DIR_EMISSIONS_RATES+file_name)
         column_name = emissions_scenario_list[idx] + ' ' + columns[4]
 
-        #for first file, read in hours
+        # for first file, read in hours
         if idx == 0:
-            df_o = pd.read_excel(xlsx,sheet,usecols=columns[0:4])
+            df_o = pd.read_excel(xlsx, sheet, usecols=columns[0:4])
         else:
             pass
 
-        #for all files, add emissions rates to existing dataframe
-        df_o[column_name] = pd.read_excel(xlsx,sheet,usecols=[columns[4]])
+        # for all files, add emissions rates to existing dataframe
+        df_o[column_name] = pd.read_excel(xlsx, sheet, usecols=[columns[4]])
 
-    #subset year 2022-2041 #testing check this matches years for other vars
-    emissions_rates_df = df_o[df_o['Report_Year']>=2022]
+    # subset year 2022-2041 #testing check this matches years for other vars
+    emissions_rates_df = df_o[df_o['Report_Year'] >= 2022]
 
     return emissions_rates_df
 
-def create_dr_hours_df_dict(dr_hrs_files,dr_name,dr_seasons):
+
+def create_dr_hours_df_dict(dr_hrs_files, dr_name, dr_seasons):
     """
     Reads in Excel files with 1 year of DR hours,
     where each file contains separate sheets for each season,
@@ -74,7 +76,7 @@ def create_dr_hours_df_dict(dr_hrs_files,dr_name,dr_seasons):
     """
     dr_hours_df_dict = {}
 
-    #when testing, should have same number of dr hrs and pot files
+    # when testing, should have same number of dr hrs and pot files
     for idx, file_name in enumerate(dr_hrs_files):
 
         drname = dr_name[idx]
@@ -83,14 +85,15 @@ def create_dr_hours_df_dict(dr_hrs_files,dr_name,dr_seasons):
 
         for season in seasons:
             dict_key = drname + '_' + season
-            dr_hours_df_dict[dict_key] = pd.read_excel(xlsx,season)
+            dr_hours_df_dict[dict_key] = pd.read_excel(xlsx, season)
 
     return dr_hours_df_dict
 
-    #can access each dataframe using
-    #dr_hrs_dict = create_dr_hours_df()
-    #for key in dr_hrs_dict.keys():
-        #df = dr_hrs_dict[key]
+    # can access each dataframe using
+    # dr_hrs_dict = create_dr_hours_df()
+    # for key in dr_hrs_dict.keys():
+    # df = dr_hrs_dict[key]
+
 
 def create_dr_potential_df_dict(dr_potential_files,
                                 dr_name, dr_seasons, subset_products):
@@ -120,31 +123,32 @@ def create_dr_potential_df_dict(dr_potential_files,
 
         # come back to make less hard-coded
         dict_key = drname + '_Summer'
-        dr_pot_df_dict[dict_key] = pd.read_excel(xlsx,'Reporter Outputs', \
-            index_col=0,header=None,skiprows=1,nrows=21,usecols=range(21)).T
+        dr_pot_df_dict[dict_key] = pd.read_excel(xlsx, 'Reporter Outputs',
+                                                 index_col=0, header=None, skiprows=1, nrows=21, usecols=range(21)).T
         dr_pot_df_dict[dict_key] = dr_pot_df_dict[dict_key].rename(columns={'Product': 'Year'})
 
         dict_key = drname + '_Winter'
-        dr_pot_df_dict[dict_key] = pd.read_excel(xlsx,'Reporter Outputs', \
-            index_col=0,header=None,skiprows=26,nrows=19,usecols=range(21)).T
+        dr_pot_df_dict[dict_key] = pd.read_excel(xlsx, 'Reporter Outputs',
+                                                 index_col=0, header=None, skiprows=26, nrows=19, usecols=range(21)).T
         dr_pot_df_dict[dict_key] = dr_pot_df_dict[dict_key].rename(columns={'Product': 'Year'})
 
-        #if only a subset of products is desired, e.g. for new bins
+        # if only a subset of products is desired, e.g. for new bins
         subset = subset_products[idx].copy()
-        if isinstance(subset[0],str):
-            subset.insert(0,'Year')
+        if isinstance(subset[0], str):
+            subset.insert(0, 'Year')
             dr_pot_df_dict[drname + '_Summer'] = dr_pot_df_dict[drname + '_Summer'][subset]
             dr_pot_df_dict[drname + '_Winter'] = dr_pot_df_dict[drname + '_Winter'][subset]
         else:
             pass
 
         seasons = dr_seasons[idx]
-        if 'Fall' in seasons: #for new bins, apply winter to fall
+        if 'Fall' in seasons:  # for new bins, apply winter to fall
             dr_pot_df_dict[drname + '_Fall'] = dr_pot_df_dict[drname + '_Winter']
         else:
             pass
 
     return dr_pot_df_dict
+
 
 def create_product_info_df_dict(dr_potential_files, dr_name):
     """
@@ -164,18 +168,19 @@ def create_product_info_df_dict(dr_potential_files, dr_name):
 
         drname = dr_name[idx]
         xlsx = pd.ExcelFile(DIR_DR_POTENTIAL_HRS+file_name)
-        column_names = ['Product','Bin','Seasonality','Shift or Shed?']
-        dr_product_info_df_dict[drname] = pd.read_excel(xlsx,'EnergyCalcs', \
-                                                       skiprows=2,nrows=23,usecols=column_names)
+        column_names = ['Product', 'Bin', 'Seasonality', 'Shift or Shed?']
+        dr_product_info_df_dict[drname] = pd.read_excel(xlsx, 'EnergyCalcs',
+                                                        skiprows=2, nrows=23, usecols=column_names)
         if drname == 'newbins':
             dr_product_info_df_dict[drname] = \
                 dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Bin'] == 'Bin 1']
 
     return dr_product_info_df_dict
 
+
 ################# Main ####################
 def subcomp_a_runall(emissions_rates_files, emissions_scenario_list,
-            dr_hrs_files, dr_name, dr_seasons, dr_potential_files, subset_products):
+                     dr_hrs_files, dr_name, dr_seasons, dr_potential_files, subset_products):
     """
     Runs through all of the above functions to output dataframes or
     dictionaries of dataframes for emissions rates, DR hours, DR potential,
@@ -199,13 +204,13 @@ def subcomp_a_runall(emissions_rates_files, emissions_scenario_list,
         dr_pot_df_dict_out: dictionary of DR potential dataframes
         dr_product_info_df_dict_out: dictionary of DR product info dataframes
     """
-    emissions_rates_df_out = create_emissions_rates_df(emissions_rates_files,\
-                                                    emissions_scenario_list)
-    dr_hours_df_dict_out = create_dr_hours_df_dict(dr_hrs_files,dr_name,dr_seasons)
-    dr_potential_df_dict_out = create_dr_potential_df_dict(dr_potential_files,\
-                                                        dr_name, dr_seasons, subset_products)
-    dr_product_info_df_dict_out = create_product_info_df_dict(dr_potential_files,\
-                                                         dr_name)
+    emissions_rates_df_out = create_emissions_rates_df(emissions_rates_files,
+                                                       emissions_scenario_list)
+    dr_hours_df_dict_out = create_dr_hours_df_dict(dr_hrs_files, dr_name, dr_seasons)
+    dr_potential_df_dict_out = create_dr_potential_df_dict(dr_potential_files,
+                                                           dr_name, dr_seasons, subset_products)
+    dr_product_info_df_dict_out = create_product_info_df_dict(dr_potential_files,
+                                                              dr_name)
 
     return emissions_rates_df_out, dr_hours_df_dict_out, \
-            dr_potential_df_dict_out, dr_product_info_df_dict_out
+           dr_potential_df_dict_out, dr_product_info_df_dict_out

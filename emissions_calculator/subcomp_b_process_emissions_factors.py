@@ -16,8 +16,9 @@ import pandas as pd
 
 from emissions_parameters import SEASONS_ALLDAYS
 
+
 def seasonal_ave(dr_name, dr_seasons, emissions_scenario_list,
-                emissions_rates_df_out, dr_hours_df_dict_out):
+                 emissions_rates_df_out, dr_hours_df_dict_out):
     """
     Compute seasonal averages of hourly emissions for DR days
     for each DR plan and season and each emissions scenario.
@@ -52,14 +53,14 @@ def seasonal_ave(dr_name, dr_seasons, emissions_scenario_list,
             for scenario_name in emissions_scenario_list:
 
                 column_name = scenario_name + ' Emissions Rate Estimate'
-                df_seasonal_ave[dict_key][scenario_name] = get_hour_ave(emissions_rates_df_out,\
-                                                                dr_hours_df_dict_out[dict_key], column_name)
+                df_seasonal_ave[dict_key][scenario_name] = get_hour_ave(emissions_rates_df_out,
+                                                                        dr_hours_df_dict_out[dict_key], column_name)
 
     return df_seasonal_ave
 
 
 def annual_ave(dr_name, dr_seasons, emissions_scenario_list,
-                emissions_rates_df_out, dr_hours_df_dict_out):
+               emissions_rates_df_out, dr_hours_df_dict_out):
     """
     Compute annual averages of hourly emissions for DR days
     for each DR plan and each emissions scenario.
@@ -105,7 +106,7 @@ def annual_ave(dr_name, dr_seasons, emissions_scenario_list,
         for scenario_name in emissions_scenario_list:
             column_name = scenario_name + ' Emissions Rate Estimate'
             df_annual_ave[drname][scenario_name] = \
-                    get_hour_ave(emissions_rates_df_out, dr_hours_df, column_name)
+                get_hour_ave(emissions_rates_df_out, dr_hours_df, column_name)
 
     return df_annual_ave
 
@@ -144,7 +145,7 @@ def get_hour_ave(emissions_data, dr_hours, column_name):
 
 
 def alldays_oneyear_seasonal_ave(emissions_scenario_list,
-                                emissions_rates_df_out,year):
+                                 emissions_rates_df_out, year):
     """
     Compute seasonal and annual emissions rates averages
     for all days for one year.
@@ -215,7 +216,7 @@ def get_oneyear_hour_ave(emissions_data, season, column_name, year):
 
 
 def subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
-                        emissions_rates_df_out, dr_hours_df_dict_out, year):
+                     emissions_rates_df_out, dr_hours_df_dict_out, year):
     """
     Runs through all of the above functions.
     Args:
@@ -237,10 +238,10 @@ def subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
                         emissions rates for all days of a given year
     """
     df_seasonal_ave = seasonal_ave(dr_name, dr_seasons, emissions_scenario_list,
-                        emissions_rates_df_out, dr_hours_df_dict_out)
+                                   emissions_rates_df_out, dr_hours_df_dict_out)
     df_annual_ave = annual_ave(dr_name, dr_seasons, emissions_scenario_list,
-                        emissions_rates_df_out, dr_hours_df_dict_out)
+                               emissions_rates_df_out, dr_hours_df_dict_out)
     df_oneyear_seasonal_ave = alldays_oneyear_seasonal_ave(emissions_scenario_list,
-                                emissions_rates_df_out,year)
+                                                           emissions_rates_df_out, year)
 
     return df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave

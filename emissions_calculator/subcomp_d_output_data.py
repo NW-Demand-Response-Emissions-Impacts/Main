@@ -9,6 +9,7 @@ import pandas as pd
 
 from emissions_parameters import DIR_DATA_PROC
 
+
 def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year):
     """
     Given subcomp_b output with average hourly emissions rates,
@@ -29,15 +30,16 @@ def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_season
     for plan_season_key in df_seasonal_ave.keys():
         for scenario_key in df_seasonal_ave[plan_season_key].keys():
             fname = dir_out+'DRdays_allyears_'+plan_season_key+'_'+scenario_key+'.csv'
-            df_seasonal_ave[plan_season_key][scenario_key].to_csv(fname,index=False)
+            df_seasonal_ave[plan_season_key][scenario_key].to_csv(fname, index=False)
     for plan_key in df_annual_ave.keys():
         for scenario_key in df_annual_ave[plan_key].keys():
             fname = dir_out+'DRdays_allyears_'+plan_key+'_Annual_'+scenario_key+'.csv'
-            df_annual_ave[plan_key][scenario_key].to_csv(fname,index=False)
+            df_annual_ave[plan_key][scenario_key].to_csv(fname, index=False)
     for season_key in df_oneyear_seasonal_ave.keys():
         for scenario_key in df_oneyear_seasonal_ave[season_key].keys():
             fname = dir_out+'alldays_'+str(year)+'_'+season_key+'_'+scenario_key+'.csv'
-            df_oneyear_seasonal_ave[season_key][scenario_key].to_csv(fname,index=False)
+            df_oneyear_seasonal_ave[season_key][scenario_key].to_csv(fname, index=False)
+
 
 def output_dr_hours(dr_hours_dict):
     """
@@ -61,7 +63,7 @@ def output_dr_hours(dr_hours_dict):
         one non-DLC product ('DVR') and one DLC product ('ResHPWHDLCGrd').
 
         Args:
-            df_hours: a dataframe of DR hours within the dr_hours_dict
+            time_df: a dataframe of DR hours within the dr_hours_dict
 
         Returns:
             period_4hr_nondlc: a list of 4-hour periods for non-DLC products
@@ -74,7 +76,7 @@ def output_dr_hours(dr_hours_dict):
         period_4hr_nondlc = []
         period_6hr_dlc = []
 
-        for i in range(1,len(dvr_on)):
+        for i in range(1, len(dvr_on)):
 
             # find start time for 4-hr periods
             if (dvr_on[i] == 1) and (dvr_on[i-1] == 0):
@@ -94,20 +96,21 @@ def output_dr_hours(dr_hours_dict):
 
     output_hours_df = pd.DataFrame(columns=['DR Plan', 'Season',
                                             'DR Hours: Non-DLC Products', 'DR Hours: DLC Products'])
-    for idx,key in enumerate(dr_hours_dict.keys()):
-        #get DR plan and season
+    for idx, key in enumerate(dr_hours_dict.keys()):
+        # get DR plan and season
         drplan_season = key.split('_')
 
-        #get list of DR hours
+        # get list of DR hours
         df_hours = dr_hours_dict[key]
         nondlc_hours, dlc_hours = list_periods(df_hours)
 
-        #add everything to output_hours_df
-        output_hours_df.loc[idx] = [drplan_season[0],drplan_season[1],nondlc_hours,dlc_hours]
+        # add everything to output_hours_df
+        output_hours_df.loc[idx] = [drplan_season[0], drplan_season[1], nondlc_hours, dlc_hours]
 
-    output_hours_df.to_csv(dir_out+'output_dr_hours.csv',index=False)
+    output_hours_df.to_csv(dir_out+'output_dr_hours.csv', index=False)
 
-def output_dr_potential(dr_pot_dict,product_info_dict):
+
+def output_dr_potential(dr_pot_dict, product_info_dict):
     """
     Outputs csv files contain DR potential for each product,
     where each csv file corresponds to a DR plan and season.
@@ -124,27 +127,27 @@ def output_dr_potential(dr_pot_dict,product_info_dict):
     for key in dr_pot_dict.keys():
         df_potential = dr_pot_dict[key]
 
-        #get product info to know which products are in which bins
+        # get product info to know which products are in which bins
         drplan_season = key.split('_')
         drname = drplan_season[0]
         df_product_info = product_info_dict[drname]
 
-        #loop through bins, output products in each bin
-        for idx in range(1,5):
-            pdlist = df_product_info[df_product_info['Bin']=='Bin '+str(idx)]['Product'].tolist()
-            if pdlist: #only if not empty, excludes empty bins
-                pdlist.insert(0,'Year')
+        # loop through bins, output products in each bin
+        for idx in range(1, 5):
+            pdlist = df_product_info[df_product_info['Bin'] == 'Bin '+str(idx)]['Product'].tolist()
+            if pdlist:  # only if not empty, excludes empty bins
+                pdlist.insert(0, 'Year')
                 print(pdlist)
-                #get potential for these products and output to csv
+                # get potential for these products and output to csv
                 df_potential_out = \
                     df_potential[df_potential.columns[df_potential.columns.isin(pdlist)]]
-                df_potential_out.to_csv(dir_out+key+'_bin'+str(idx)+'.csv',index=False)
-                #sum all products within this bin for 2041
+                df_potential_out.to_csv(dir_out+key+'_bin'+str(idx)+'.csv', index=False)
+                # sum all products within this bin for 2041
                 productsum = df_potential_out.iloc[:, 1:].sum(axis=1)
-                productsum_out.append([key+'_bin'+str(idx),productsum.iloc[-1]])
+                productsum_out.append([key+'_bin'+str(idx), productsum.iloc[-1]])
     product_sum_out_df = pd.DataFrame(productsum_out,
-                         columns=['DR Plan, Season, and Bin','2041 Potential'])
-    product_sum_out_df.to_csv(dir_out+'comparison_barchart.csv',index=False)
+                                      columns=['DR Plan, Season, and Bin', '2041 Potential'])
+    product_sum_out_df.to_csv(dir_out+'comparison_barchart.csv', index=False)
 
 #def output_emissions_impacts(<emissions_impacts_args>):
 #    """
