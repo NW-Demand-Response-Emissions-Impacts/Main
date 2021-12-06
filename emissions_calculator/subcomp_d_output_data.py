@@ -149,14 +149,22 @@ def output_dr_potential(dr_pot_dict, product_info_dict):
                                       columns=['DR Plan, Season, and Bin', '2041 Potential'])
     product_sum_out_df.to_csv(dir_out+'comparison_barchart.csv', index=False)
 
-#def output_emissions_impacts(<emissions_impacts_args>):
-#    """
-#    Given subcomp_c output with DR emissions impacts,
-#    outputs this data into csv files for the dashboard.
-#    """
-#    DIR_OUT = DIR_DATA_PROC + 'dr_emissions_impacts/'
-#    #to be filled out after James finishes subcomp_c
+def output_emissions_impacts(emissions_impacts_dict):
+    """
+    Given subcomp_c output with DR emissions impacts,
+    outputs this data into csv files for the dashboard.
+    
+    Input: emissions_impacts_dict - output dictionary from subcomponent_c
+            containing all the emissions impacts 
+    """
+    DIR_OUT = DIR_DATA_PROC + 'dr_emissions_impacts/'
+    #Loop through all the emissions impact bins + seasons and save separate file.
+    for ind, key in enumerate(emissions_impacts_dict.keys()):
+        emissions_impacts_dict[key].to_csv(DIR_OUT+key+".csv")
+    
 
+
+    
 ################# Main ####################
 #def runall(<emissions_rates_args>,dr_hours_dict,dr_pot_dict,
 #            product_info_dict,<emissions_impacts_args>):
