@@ -4,8 +4,7 @@ Subcomponent_c code for calcuating emissions reductions (/increases)
 """
 
 
-from emissions_parameters import EMISSIONS_SCENARIO_LIST, DR_NAME, DR_SEASONS, SEASONS_ALLDAYS, EMISSIONS_CHANGEUNITS
-from subcomp_a_organize_data import runall
+from emissions_parameters import EMISSIONS_CHANGEUNITS
 import pandas as pd
 import numpy as np
 
@@ -86,8 +85,9 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
     """
 
     output_dictionary = {};
-    bins = DR_NAME
-    seasons = DR_SEASONS
+    bins = ['oldbins','newbins']
+    seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
+
 
     #Get the start and end years and a list of years. 
     #These are constant across newbins/oldbins, etc.

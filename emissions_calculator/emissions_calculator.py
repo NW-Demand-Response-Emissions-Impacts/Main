@@ -7,8 +7,10 @@ for the dashboard.
 
 from subcomp_a_organize_data import subcomp_a_runall
 from subcomp_b_process_emissions_factors import subcomp_b_runall
+from subcomp_c_calculate_emissions import calc_yearly_avoided_emissions
 from subcomp_d_output_data \
-        import output_avg_emissions_rates, output_dr_hours, output_dr_potential
+        import output_avg_emissions_rates, output_dr_hours, output_dr_potential, \
+                output_emissions_impacts
 
 # File information to be updated by data analyst users
 emissions_scenario_list = ['Baseline']
@@ -41,10 +43,15 @@ df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave = \
                                 emissions_rates_df_out, dr_hours_df_dict_out, EMISSIONS_YEAR)
 
 # Calculate emissions impacts
+print('Running subcomponent c')
+emissions_impacts_dict = calc_yearly_avoided_emissions(emissions_rates_df_out, dr_hours_df_dict_out, \
+    dr_potential_df_dict_out, dr_product_info_df_dict_out)
+
 
 # Output csv files for dashboard
 print('Running subcomponent d')
 output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, EMISSIONS_YEAR)
 output_dr_hours(dr_hours_df_dict_out)
 output_dr_potential(dr_potential_df_dict_out, dr_product_info_df_dict_out)
+output_emissions_impacts(emissions_impacts_dict)
     

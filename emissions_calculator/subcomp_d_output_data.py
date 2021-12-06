@@ -157,7 +157,7 @@ def output_emissions_impacts(emissions_impacts_dict):
     Input: emissions_impacts_dict - output dictionary from subcomponent_c
             containing all the emissions impacts 
     """
-    DIR_OUT = DIR_DATA_PROC + 'dr_emissions_impacts/'
+    DIR_OUT = DIR_DATA_PROC + 'emissions_impacts/'
     #Loop through all the emissions impact bins + seasons and save separate file.
     for ind, key in enumerate(emissions_impacts_dict.keys()):
         emissions_impacts_dict[key].to_csv(DIR_OUT+key+".csv")
