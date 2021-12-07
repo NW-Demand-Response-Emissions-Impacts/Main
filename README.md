@@ -1,3 +1,3 @@
 # Northwest DR Impacts: Emissions Calculator
 
-![NW DR Logo](/assets/dr_logo.png "NW DR Logo")
+![NW DR Logo](/doc/dr_logo.png "NW DR Logo")
