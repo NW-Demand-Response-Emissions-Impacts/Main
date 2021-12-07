@@ -13,12 +13,17 @@ import numpy as np
 def shift_hours(dr_hours, shift_hours):
     """
     
-    input: dr_hours: Just the dataframe of the hours for this dr item
-            shift_hours: Number of hours to shift on either side of original by
-    output: how many hours to shift to shifting window
-    
-    only shift -2 hrs +2hrs 
-    Add -1s to hrs where we want to shift to.
+    Args: 
+        dr_hours: Dataframe of the hours for this dr item
+        
+        shift_hours: Number of hours to by which to shift on either 
+            side of original hours. (E.g. if shift_hours = 2 and 
+            dr is implemented 18-21, then hours 16-17 and 22-23 will 
+            have -1 vals
+            
+    Returns: 
+        dr_hours_out: dataframe containg hours implemented (+1 value) and hours 
+            shifted to (-1).
     """
     
     #Baseline hours for newbins is 18-21
@@ -60,9 +65,12 @@ def shift_hours(dr_hours, shift_hours):
 
 def sort_bins(dr_info, dr_names):
     """
-    make dictionary with bin number as key and names as values
-    input:
-    output:
+    Args: 
+        dr_info: 
+        dr_names:
+    
+    Returns: 
+        out_dict: dictionary with bin number as keys and dr product names as values.
     """
     out_dict = {}
 
@@ -75,13 +83,13 @@ def sort_bins(dr_info, dr_names):
 
     return(out_dict)    
 
-#Find the hours where we're doing the resTOU and multiply potential by emissions rate
-#by potential
 
 def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info):
     """
+    
     This function uses the loaded data and calculated yearly avoided emissions for the new binning
-    Currently only DVR and ResTOU shed 
+    
+    
     """
 
     output_dictionary = {};
@@ -103,9 +111,7 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
         for season in seasons[i]:
             #Get a "olbins_summer" type name
             combo_name = binning + "_" + season
-            #print(combo_name)
             hrs = dr_hours[combo_name]
-            print("starting hours", min(hrs['ResTOU']))
             pot = dr_potential[combo_name]
             #Grab the names of the DR policies that
             #are actually implemented for this season.
@@ -143,23 +149,19 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                     # Do Shifting if it's a shift product.
                     shift = dr_product_info[binning]['Shift or Shed?'].loc[dr_product_info[binning].Product==dr]
                     shift = shift.iloc[0]
-                    #print(hrs[dr])
 
-                    
+
                     if shift == 'Shift':
                         dr_season_hours = shift_hours(hrs[dr], 2)
                         if resTOU_newbins:
                             dr_season_hours_shed = hrs[dr]
                             dr_season_hours_shift = shift_hours(hrs[dr], 2)
-                            #print(min(dr_season_hours_shift))
-                            #print(min(dr_season_hours_shed))
-                            
+
                         else:
                             dr_season_hours = shift_hours(hrs[dr], 2)
                     else:
                         dr_season_hours = hrs[dr]
-                    
-                    
+
                     for year in range(year_start, year_end+1):
                         dr_pot = pot[dr].loc[pot.Year==year]
                         short_df = em_rates.loc[em_rates.Report_Year==year]
@@ -168,12 +170,12 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                             #Then we've got a leap year, so this math isn't going to work out bc summer_hrs only has 365 days
                             #Looks like there's no DR on leap years, so we can ignore that extra time (last 24 entries)
                             short_df = short_df.iloc[:-24];
-                     
-                        
+
+
                         #Multiply baseline emissions by potential for all hours
                         #This should atomatically work correctly if we have -1 values
                         #due to shifting
-                        
+
                         if resTOU_newbins:
                             out_arr_shift = short_df["Baseline Emissions Rate Estimate"].values*dr_season_hours*dr_pot.values
                             out_arr_shed = short_df["Baseline Emissions Rate Estimate"].values*dr_season_hours_shed*dr_pot.values
@@ -187,11 +189,8 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                             out_arr = out_arr * EMISSIONS_CHANGEUNITS
                             yearly_sum = out_arr.sum()
                             yearly_avoided[dr].iloc[year-year_start] = yearly_sum
-                            
+
                 save_name = binning+"_"+bin_num.split()[0]+"_"+bin_num.split()[1]+"_"+season;
-                print(save_name)
-                #Former saving out for Daniel
-                #yearly_avoided.to_csv("/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/processed_data/subcomp_d_data/"+save_name+".csv")
 
                 output_dictionary[save_name] = yearly_avoided
 
