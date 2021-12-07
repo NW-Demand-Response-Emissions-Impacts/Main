@@ -2,10 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-import numpy as np
-import pandas as pd
-import plotly.express as px
-from pages import home, more_info
+from web_pages import home, more_info
 from app import app
 from app import server
 from dash.dependencies import Input, Output

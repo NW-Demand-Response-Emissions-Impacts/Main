@@ -1,7 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from page_maker import read_files, make_plots
+from emissions_calculator import dashboard_read_files, dashboard_make_plots
 from app import app
 
 
@@ -18,17 +18,17 @@ rates_dd_options_moreinfo = ['All Year','Fall','Winter','Summer','Comparison']
 impacts_dd_options = ['Summer', 'Winter', 'Fall']
 
 # Read in the data
-impacts = read_files.get_impacts(url, bin_types, bin_numbers_impacts, seasons_impacts)
-rates_moreinfo = read_files.get_rates_drdays(url, bin_types, seasons_rates, scenarios)
-potential = read_files.get_potential(url, bin_types, seasons_potential, bin_numbers_potential)
+impacts = dashboard_read_files.get_impacts(url, bin_types, bin_numbers_impacts, seasons_impacts)
+rates_moreinfo = dashboard_read_files.get_rates_drdays(url, bin_types, seasons_rates, scenarios)
+potential = dashboard_read_files.get_potential(url, bin_types, seasons_potential, bin_numbers_potential)
 
 # Make the plots
-potential_dropdown, potential_plot = make_plots.plot_potential_dropdown(seasons_potential)
-potential_bar = make_plots.plot_potential_bar(potential)
-hours_table = make_plots.plot_hours_table(potential)
-rates_dropdown_moreinfo, rates_plot_moreinfo = make_plots.plot_rates_dropdown_moreinfo(rates_dd_options_moreinfo)
-impacts_bar_moreinfo = make_plots.plot_impacts_bar_moreinfo(impacts)
-impacts_dropdown, impacts_plot = make_plots.plot_impacts_dropdown(seasons_potential)
+potential_dropdown, potential_plot = dashboard_make_plots.plot_potential_dropdown(seasons_potential)
+potential_bar = dashboard_make_plots.plot_potential_bar(potential)
+hours_table = dashboard_make_plots.plot_hours_table(potential)
+rates_dropdown_moreinfo, rates_plot_moreinfo = dashboard_make_plots.plot_rates_dropdown_moreinfo(rates_dd_options_moreinfo)
+impacts_bar_moreinfo = dashboard_make_plots.plot_impacts_bar_moreinfo(impacts)
+impacts_dropdown, impacts_plot = dashboard_make_plots.plot_impacts_dropdown(seasons_potential)
 
 # Set up the HTML layout
 layout = html.Div(children=[
@@ -69,16 +69,16 @@ layout = html.Div(children=[
 dash.dependencies.Output('potential_plot', 'children'),
 [dash.dependencies.Input('potential_dropdown', 'value')])
 def update_potential(potential_dd_choice):
-    return make_plots.potential_callback(potential, potential_dd_choice)
+    return dashboard_make_plots.potential_callback(potential, potential_dd_choice)
 
 @app.callback(
 dash.dependencies.Output('rates_plot_moreinfo', 'children'),
 [dash.dependencies.Input('rates_dropdown_moreinfo', 'value')])
 def update_rates_moreinfo(rates_dd_choice_moreinfo):
-    return make_plots.rates_callback_moreinfo(rates_moreinfo, rates_dd_choice_moreinfo)
+    return dashboard_make_plots.rates_callback_moreinfo(rates_moreinfo, rates_dd_choice_moreinfo)
 
 @app.callback(
 dash.dependencies.Output('impacts_plot', 'children'),
 [dash.dependencies.Input('impacts_dropdown', 'value')])
 def update_impacts(impacts_dd_choice):
-    return make_plots.impacts_callback(impacts, impacts_dd_choice)
+    return dashboard_make_plots.impacts_callback(impacts, impacts_dd_choice)
