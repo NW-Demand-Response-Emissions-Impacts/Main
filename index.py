@@ -2,7 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-from web_pages import home, more_info
+from emissions_calculator.phase2_dashboard_generator import home, more_info
 from app import app
 from app import server
 from dash.dependencies import Input, Output

@@ -1,7 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from emissions_calculator import dashboard_read_files, dashboard_make_plots
+import read_files, make_plots
 from app import app
 
 
