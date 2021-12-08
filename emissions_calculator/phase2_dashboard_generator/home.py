@@ -1,7 +1,8 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import read_files, make_plots
+from .read_files import get_impacts, get_rates_alldays
+from .make_plots import plot_impacts_bar, plot_rates_dropdown, rates_callback
 from app import app
 
 # Define the parameters
@@ -14,12 +15,12 @@ bin_numbers = ['Bin_1','Bin_2','Bin_3','Bin_4']
 rates_dd_options = ['All Year','Fall','Winter','Spring','Summer','Comparison']
 
 # Read in the data
-impacts = dashboard_read_files.get_impacts(url, bin_types, bin_numbers, seasons_impacts)
-rates = dashboard_read_files.get_rates_alldays(url, seasons_rates, scenarios)
+impacts = get_impacts(url, bin_types, bin_numbers, seasons_impacts)
+rates = get_rates_alldays(url, seasons_rates, scenarios)
 
 # Make the plots
-impacts_bar = dashboard_make_plots.plot_impacts_bar(impacts)
-rates_dropdown, rates_plot = dashboard_make_plots.plot_rates_dropdown(rates_dd_options)
+impacts_bar = plot_impacts_bar(impacts)
+rates_dropdown, rates_plot = plot_rates_dropdown(rates_dd_options)
 
 # Set up the HTML layout
 layout = html.Div(children=[
@@ -51,4 +52,4 @@ layout = html.Div(children=[
 dash.dependencies.Output('rates_plot', 'children'),
 [dash.dependencies.Input('rates_dropdown', 'value')])
 def update_rates(rates_dd_choice):
-    return dashboard_make_plots.rates_callback(rates, rates_dd_choice)
+    return rates_callback(rates, rates_dd_choice)
