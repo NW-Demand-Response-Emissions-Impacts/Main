@@ -8,14 +8,21 @@ for use in the emissions_calculator and subcomponents.
 # Import the os module
 import os
 
-# Get the Main folder directory, whether user is in Main/ or in Main/emissions_calculator/
-CWD = os.getcwd() #gives .../Main/emissions_calculator if run from emissions calculator folder
-CALCULATOR_FOLDER = '/emissions_calculator'
+# Get the top emissions_calculator folder directory, whether user is
+# in emissions_calculator/, emissions_calculator/emissions_calculator/, or
+# emissions_calculator/emissions_calculator/phase_1_emissions_calculator
+CWD = os.getcwd() 
+CALCULATOR_FOLDER = '/emissions_calculator/phase1_emissions_calculator'
 MAIN_FOLDER = CWD.split(CALCULATOR_FOLDER, 1)[0]
+
+if '/emissions_calculator/emissions_calculator' in MAIN_FOLDER:
+	CALCULATOR_FOLDER_ALT = '/emissions_calculator'
+	MAIN_FOLDER = CWD.split(CALCULATOR_FOLDER_ALT,1)[0] + CALCULATOR_FOLDER_ALT
 
 # Folders within directory
 DIR_CALCULATOR = MAIN_FOLDER + CALCULATOR_FOLDER
 DIR_DATA_IN = MAIN_FOLDER + '/input_data/'
+DIR_TESTDATA_IN = MAIN_FOLDER + '/test_data/'
 DIR_EMISSIONS_RATES = DIR_DATA_IN + 'AvoidedEmissionsRates/'
 DIR_DR_POTENTIAL_HRS = DIR_DATA_IN + 'DRPotentialandHours/'
 DIR_DATA_PROC = MAIN_FOLDER + '/processed_data/'
