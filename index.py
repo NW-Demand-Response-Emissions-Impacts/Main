@@ -1,3 +1,9 @@
+"""
+index.py
+
+Sets up the two-page dashboard layout. See Dashboard Generator package to edit the pages.
+"""
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
