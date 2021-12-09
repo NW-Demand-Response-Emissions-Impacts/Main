@@ -1,3 +1,10 @@
+"""
+make_plots.py
+
+Generates plotly graph objects for displaying on dashbaord.
+Functions are separated into tables, bar charts, dropdowns, and callbacks.
+"""
+
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
