@@ -1,4 +1,4 @@
-# Northwest Emissions Impacts of Demand Response
+# Emissions Impacts of Demand Response in the Northwest U.S.
 
 ![NW DR Logo](/assets/dr_logo.png "NW DR Logo")
 
