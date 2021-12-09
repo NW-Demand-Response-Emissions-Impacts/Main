@@ -1,4 +1,11 @@
+"""
+home.py
+
+Reads in csv files output by the Emissions Calculator.
+"""
+
 import pandas as pd
+
 
 def get_impacts(url, bin_types, bin_numbers, seasons):
 
