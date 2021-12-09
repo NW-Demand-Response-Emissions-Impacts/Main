@@ -1,3 +1,10 @@
+"""
+app.py
+
+Sets up the dashboard application. Do not edit.
+Edit index.py to change the dashboard layout.
+"""
+
 import dash
 
 
