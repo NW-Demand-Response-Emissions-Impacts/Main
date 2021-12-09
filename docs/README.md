@@ -4,6 +4,7 @@ This foler contains the documents that describe the design of this project. To s
 
 Included in this folder are:
 
+* <code>flow_charts/</code>: A folder containing pictures of the flow charts used in the component specification.
 * <code>pylint_scores/</code>: A folder containing the results of the pylint tests.
 * <code>test_results/</code>: A folder containing the results of the unit tests.
 * <code>component_specification.pdf</code>: A PDF describing the software component and subcomponent designs for the project. This document also describes the user interactions and outlines the plan of this project.
