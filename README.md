@@ -61,7 +61,7 @@ Documentation includes a Functional Specification, Component Specification, and 
 A user guide with examples for running the emissions calculator and interacting with the dashboard can be found in the examples/ directory.
 
 ## Installation
--Need to fill this out-
+-Need to fill this out- confused about how to combine environment.yml, requirements.txt which seems necessary for dashboard, and setup.py, or which of these to include.-
 
 ## Future steps
  * Incorporate additional policy scenarios for emissions rates. The emissions calculator will run for a list of policy scenarios, but we currently only use one policy scenario.
