@@ -12,11 +12,9 @@ from subcomp_d_output_data \
         import output_avg_emissions_rates, output_dr_hours, output_dr_potential, \
                 output_emissions_impacts
 
-# File information to be updated by data analyst users
-emissions_scenario_list = ['Baseline']
-#'EarlyCoalRetirement','LimitedMarkets','NoGasBuildLimits',\
-#'OrgMarkets','SCC']
-#exclude these other scenarios for now
+#### DATA ANALYST USERS: UPDATE THIS SECTION ####
+# Below, users can also specify multiple scenarios, e.g. ['Baseline','LimitedMarkets']
+emissions_scenario_list = ['Baseline']  include more than one
 emissions_rates_files = ['AvoidedEmissionsRate' + x + '.xlsx' for x in emissions_scenario_list]
 EMISSIONS_YEAR = 2022 #year to show emissions rates for gen pub
 dr_name = ['oldbins','newbins']
@@ -24,10 +22,11 @@ dr_hrs_files = ['DRHours_' + x + '.xlsx' for x in dr_name]
 
 # For each plan in dr_name, list the DR potential file,
 # seasons with DR hours, and the subset of products to include
-# ([0] for all products)
+# (or [0] to include all products).
 dr_potential_files = ['DR RPM Inputs_071420.xlsx','DR RPM Inputs_021621_newaMWbins.xlsx']
 dr_seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
-subset_products = [[0],['DVR','ResTOU']] #for newbins, only want to look at these two
+subset_products = [[0],['DVR','ResTOU']] 
+#################################################
 
 # Read files and create dataframes
 print('Running subcomponent a')
