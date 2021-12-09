@@ -17,7 +17,7 @@ We created this dashboard for both a general public audience ([home page](https:
 
 ## Project Design
 
-A high-level component specification is shown below. Please see the [doc/](/docs) folder to learn more!
+A high-level component specification is shown below. Please see the [docs](/docs) folder to learn more!
 
 ![comp spec](/docs/flow_charts/overall_flow.png)
 
