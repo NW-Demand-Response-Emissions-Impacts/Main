@@ -52,16 +52,16 @@ A high-level component specification is shown below. Please see the [docs](/docs
     ├── DRPotentialandHours/
 ```
 
-In the emissions_calculator/ directory, phase1_emissions_calculator/ calculates emissions impacts of demand response and outputs processed data for the dashboard. phase2_dashboard_generator/ generates the dashboard webpage that visualizes these emissions impacts.
+In the <code>emissions_calculator/</code> directory, <code>phase1_emissions_calculator/</code> calculates emissions impacts of demand response and outputs processed data for the dashboard. <code>phase2_dashboard_generator/<c/ode> generates the dashboard webpage that visualizes these emissions impacts.
 
-The directory input_data/ contains subdirectories with the DR potential and hours data and the avoided emissions rates that are processed by the emissions calculator to produce data files within processed_data/. test_data/ contains test input data to test the subcomponents within the emissions calculator.
+The directory <code>input_data/</code> contains subdirectories with the DR potential and hours data and the avoided emissions rates that are processed by the emissions calculator to produce data files within <code>processed_data/</code>. <code>test_data/</code> contains test input data to test the subcomponents within the emissions calculator.
 
-Documentation includes a Functional Specification, Component Specification, and presentations within the docs/ directory. 
+Documentation includes a Functional Specification, Component Specification, and presentations within the <code>docs/</code> directory. 
 
-A user guide with examples for running the emissions calculator and interacting with the dashboard can be found in the examples/ directory.
+A user guide with examples for running the emissions calculator and interacting with the dashboard can be found in the <code>examples/</code> directory.
 
 ## Installation
--Need to fill this out- confused about how to combine environment.yml, requirements.txt which seems necessary for dashboard, and setup.py, or which of these to include.-
+-- Need to fill this out -- We are confused about how to combine <code>environment.yml</code>, <code>requirements.txt</code> (which is necessary for the dashboard), and <code>setup.py</code>, or which of these to include.
 
 ## Future steps
  * Incorporate additional policy scenarios for emissions rates. The emissions calculator will run for a list of policy scenarios, but we currently only use one policy scenario.
