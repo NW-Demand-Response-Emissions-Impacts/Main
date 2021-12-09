@@ -8,13 +8,14 @@ import unittest
 
 from subcomp_b_process_emissions_factors import seasonal_ave, annual_ave, \
     get_hour_ave, alldays_oneyear_seasonal_ave, get_oneyear_hour_ave
+from emissions_parameters import DIR_TESTDATA_IN
 
-df_emissions_data = pd.read_excel('Test_data/emissions_data.xlsx')
-df_dr_hours_winter = pd.read_excel('Test_data/dr_hours_winter.xlsx')
-df_dr_hours_spring = pd.read_excel('Test_data/dr_hours_spring.xlsx')
-df_dr_hours_summer = pd.read_excel('Test_data/dr_hours_summer.xlsx')
-df_dr_hours_fall = pd.read_excel('Test_data/dr_hours_fall.xlsx')
-df_dr_hours_data = pd.read_excel('Test_data/dr_hours_data.xlsx')
+df_emissions_data = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/emissions_data.xlsx')
+df_dr_hours_winter = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_hours_winter.xlsx')
+df_dr_hours_spring = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_hours_spring.xlsx')
+df_dr_hours_summer = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_hours_summer.xlsx')
+df_dr_hours_fall = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_hours_fall.xlsx')
+df_dr_hours_data = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_hours_data.xlsx')
 
 # For smoke test, define null input values
 # Just to make sure the function could run
@@ -49,7 +50,7 @@ class TestSubCompB(unittest.TestCase):
         One-shot test for get_hour_ave
         Output is winter season average
         """
-        df_output_dr_days_ave_winter = pd.read_excel('dr_days_ave_winter.xlsx')
+        df_output_dr_days_ave_winter = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_days_ave_winter.xlsx')
         df_dr_days_ave_winter = get_hour_ave(df_emissions_data, df_dr_hours_winter, 'Test Emissions Rate Estimate')
         pdt.assert_frame_equal(df_output_dr_days_ave_winter, df_dr_days_ave_winter)
 
@@ -58,7 +59,7 @@ class TestSubCompB(unittest.TestCase):
         One-shot test for get_hour_ave
         Output is spring season average
         """
-        df_output_dr_days_ave_spring = pd.read_excel('dr_days_ave_spring.xlsx')
+        df_output_dr_days_ave_spring = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_days_ave_spring.xlsx')
         df_dr_days_ave_spring = get_hour_ave(df_emissions_data, df_dr_hours_spring, 'Test Emissions Rate Estimate')
         pdt.assert_frame_equal(df_output_dr_days_ave_spring, df_dr_days_ave_spring)
 
@@ -67,7 +68,7 @@ class TestSubCompB(unittest.TestCase):
         One-shot test for get_hour_ave
         Output is annual average
         """
-        df_output_dr_days_ave_annual = pd.read_excel('dr_days_ave_annual.xlsx')
+        df_output_dr_days_ave_annual = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_days_ave_annual.xlsx')
         df_dr_days_ave_annual = get_hour_ave(df_emissions_data, df_dr_hours_data, 'Test Emissions Rate Estimate')
         pdt.assert_frame_equal(df_output_dr_days_ave_annual, df_dr_days_ave_annual)
 
@@ -76,7 +77,7 @@ class TestSubCompB(unittest.TestCase):
         One-shot test for get_oneyear_hour_ave
         Output is winter season average
         """
-        df_output_all_days_ave_winter_2022 = pd.read_excel('all_days_ave_winter_2022.xlsx')
+        df_output_all_days_ave_winter_2022 = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/all_days_ave_winter_2022.xlsx')
         df_all_days_ave_winter_2022 = get_oneyear_hour_ave(df_emissions_data, 'Winter',
                                                            'Test Emissions Rate Estimate', 2022)
         pdt.assert_frame_equal(df_output_all_days_ave_winter_2022, df_all_days_ave_winter_2022)
