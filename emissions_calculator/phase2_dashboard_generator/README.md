@@ -2,7 +2,7 @@
 
 This package contains modules devoted to making the dashboard to be deployed on the web via Heroku. The component design for this package is shown below. See the <code>docs/</code> folder in the root directory of this repository for more details on the component specification.
 
-![DG_design](../../../docs/flow_charts/dashboard_flow.png)
+![DG_design](../../docs/flow_charts/dashboard_flow.png)
 
 The modules are:
 
