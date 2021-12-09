@@ -1,3 +1,10 @@
+"""
+more_info.py
+
+Dashboard layout for the more information page. Calls on read_files and make_plots.
+Requires app to be imported to make plotting callbacks for dropdown.
+"""
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
