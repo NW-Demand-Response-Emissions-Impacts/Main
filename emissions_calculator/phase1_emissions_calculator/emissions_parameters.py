@@ -8,9 +8,7 @@ for use in the emissions_calculator and subcomponents.
 # Import the os module
 import os
 
-# Get the top emissions_calculator folder directory, whether user is
-# in emissions_calculator/, emissions_calculator/emissions_calculator/, or
-# emissions_calculator/emissions_calculator/phase_1_emissions_calculator
+# Get the top emissions_calculator folder directory
 CWD = os.getcwd() 
 CALCULATOR_FOLDER = '/emissions_calculator/phase1_emissions_calculator'
 MAIN_FOLDER = CWD.split(CALCULATOR_FOLDER, 1)[0]
