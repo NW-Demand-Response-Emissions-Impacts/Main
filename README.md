@@ -52,7 +52,7 @@ A high-level component specification is shown below. Please see the [docs](/docs
     ├── DRPotentialandHours/
 ```
 
-In the <code>emissions_calculator/</code> directory, <code>phase1_emissions_calculator/</code> calculates emissions impacts of demand response and outputs processed data for the dashboard. <code>phase2_dashboard_generator/<c/ode> generates the dashboard webpage that visualizes these emissions impacts.
+In the <code>emissions_calculator/</code> directory, <code>phase1_emissions_calculator/</code> calculates emissions impacts of demand response and outputs processed data for the dashboard. <code>phase2_dashboard_generator/</code> generates the dashboard webpage that visualizes these emissions impacts.
 
 The directory <code>input_data/</code> contains subdirectories with the DR potential and hours data and the avoided emissions rates that are processed by the emissions calculator to produce data files within <code>processed_data/</code>. <code>test_data/</code> contains test input data to test the subcomponents within the emissions calculator.
 
