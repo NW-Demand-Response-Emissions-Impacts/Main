@@ -7,7 +7,7 @@ import pandas.testing as pdt
 import unittest
 
 from subcomp_b_process_emissions_factors import seasonal_ave, annual_ave, \
-    get_hour_ave, alldays_oneyear_seasonal_ave, get_oneyear_hour_ave
+    get_hour_ave, alldays_oneyear_seasonal_ave, get_oneyear_hour_ave, subcomp_b_runall
 from emissions_parameters import DIR_TESTDATA_IN
 
 df_emissions_data = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/emissions_data.xlsx')
@@ -44,6 +44,8 @@ class TestSubCompB(unittest.TestCase):
         alldays_oneyear_seasonal_ave(emissions_scenario_list,
                                      emissions_rates_df_out, year)
         get_oneyear_hour_ave(df_emissions_data, 'Winter', 'Test Emissions Rate Estimate', year)
+        subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
+                         emissions_rates_df_out, dr_hours_df_dict_out, year)
 
     def test_get_hour_ave_winter(self):
         """
@@ -88,3 +90,27 @@ class TestSubCompB(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             get_oneyear_hour_ave(df_emissions_data, 'Autumn', 'Test Emissions Rate Estimate', 2022)
+            
+    def test_year_available_alldays(self):
+        """
+        Edge test to make sure input year in alldays_oneyear_seasonal_ave is defined.
+        """
+        with self.assertRaises(ValueError):
+            alldays_oneyear_seasonal_ave(emissions_scenario_list, emissions_rates_df_out, 2020)
+
+    def test_year_available_get_oneyear(self):
+        """
+        Edge test to make sure input year in get_oneyear_hour_ave is defined.
+        """
+        with self.assertRaises(ValueError):
+            get_oneyear_hour_ave(df_emissions_data, 'Winter',
+                                 'Test Emissions Rate Estimate', 2020)
+
+    def test_year_available_runall(self):
+        """
+        Edge test to make sure input year in subcomp_b_runall is defined.
+        """
+        with self.assertRaises(ValueError):
+            subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
+                             emissions_rates_df_out, dr_hours_df_dict_out, 2020)
+    
