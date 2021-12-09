@@ -1,49 +1,81 @@
-# Northwest DR Impacts: Emissions Calculator
+# Northwest Emissions Impacts of Demand Response
 
 ![NW DR Logo](/assets/dr_logo.png "NW DR Logo")
 
-This tool and accompanying dashboard aids in visualization of the projected impacts on carbon emissions of implementation of Demand Response programs in the Pacific Nortwest.
-A "Demand Response" is a change in the power consumption by a utility, often in response to times of high power demand by customers, or diminished power supply from power suppliers. Moving forward, utilities in the Northwest are considering implementing demand response strategies to help lessen the load during times of peak demand, such as by giving customers to option to shift their power consumption from a period of high demand to a time of lower demand (e.g. nigh time). The reason we have put together this dashboard is to aid members of the general public, policymakers, journalists, and researchers with visualization and understanding the impacts of these demand response measures on CO2 emissions.
+## About the Project
 
+This tool and accompanying dashboard calculates and visualizes the projected impacts of demand response (DR) strategies on greenhouse gas emissions in the Northwest U.S. 
 
-#### Data and Demand Response Products
+Demand response strategies reduce or shift electricity consumption during periods of high demand by electricity consumers. Demand response products that reduce net consumption can reduce emissions, while products that shift the load to different times of day can either increase or decrease emissions depending on the emissions rates at each time of day.
 
-Modelled data for this project was provided by John Ollis and Tina Jayaweera of the Northwest Power and Conservation Council. CO2 impacts are calculated for 2022-2041 for 4 groupings of Demand Response products (groupings are referred to as "Bins"). For each demand response product, modeled data is provided for the potential of each product to reduce power consumption if applied. Combined with a baseline emissions profile for each day, these inputs are then be used to determine the emissions reduction that results from implementing each demand respone product.
+While demand response strategies are typically motivated by resource adequacy and cost concerns, understanding the emissions impacts of demand response can help inform Washington state targets for demand response and motivate broader participation in demand response programs. 
 
+## Visualization
+### Click [here](https://demand-response-impacts.herokuapp.com/home) to view the Dashboard!
+
+We created this dashboard for both a general public audience (main page) and for those who would like to learn more (more information page) about DR emissions impacts and the components that produce these impacts. This includes hourly emissions rates, demand response potential for each product, and hours of demand response implementation. 
+
+## Project Design
+
+A high-level component specification is shown below. Please see the "doc" folder to learn more!
+
+![comp spec](/docs/flow_charts/overall_flow.png)
 
 ## Directory Structure
 
-```bash
 ├── LICENSE
+├── Procfile
 ├── README.md
+├── app.py
+├── assets/
+├── docs/
+│   ├── component_specification.pdf
+│   ├── flow_charts/
+│   └── functional_specification.pdf
+├── emissions_calculator/
+│   ├── phase1_emissions_calculator/
+│   └── phase2_dashboard_generator/
+├── examples/
+├── index.py
 ├── input_data/
-│   ├── AvoidedEmissionsRates/
-│   ├── DrPotentialandHours/
+│   ├── AvoidedEmissionsRates/
+│   └── DRPotentialandHours/
 ├── processed_data/
-│   ├── dr_hours/
-│   ├── dr_potential/
-│   ├── emissions_rates/
-│   ├── emissions_impacts/
-├── doc/
-│   ├── Component_Specification.docx
-│   ├── diagramhs.pptx
-│   ├── dr_logo.png
-│   ├── functional_specification.docx
-├── emissions_calculator
-│   ├── README.md
-│   ├── emissions_calculator.py
-│   ├── emissions_parameters.py
-│   ├── component_a_organize_data.py
-│   ├── component_b_process_emissions_factors.py
-│   ├── component_c_calculate_emissions.py
-│   ├── component_d_output_data.py
-│   ├── test_emissions_calculator.py
-│   ├── test_subcomp_a.py
-│   ├── test_subcomp_b.py
-│   ├── test_subcomp_c.py
-│   ├── test_subcomp_d.py
-└── requirements.txt
-```
+│   ├── dr_hours/
+│   ├── dr_potential/
+│   ├── emissions_impacts/
+│   └── emissions_rates/
+├── requirements.txt
+├── runtime.txt
+├── test_data/
+│   ├── AvoidedEmissionsRates/
+│   ├── DRPotentialandHours/
 
+In the emissions_calculator/ directory, phase1_emissions_calculator/ calculates emissions impacts of demand response and outputs processed data for the dashboard. phase2_dashboard_generator/ generates the dashboard webpage that visualizes these emissions impacts.
+
+The directory input_data/ contains subdirectories with the DR potential and hours data and the avoided emissions rates that are processed by the emissions calculator to produce data files within processed_data/. test_data/ contains test input data to test the subcomponents within the emissions calculator.
+
+Documentation includes a Functional Specification, Component Specification, and presentations within the docs/ directory. 
+
+A user guide with examples for running the emissions calculator and interacting with the dashboard can be found in the examples/ directory.
+
+## Installation
+-Need to fill this out-
+
+## Future steps
+ * Incorporate additional policy scenarios for emissions rates. The emissions calculator will run for a list of policy scenarios, but we currently only use one policy scenario.
+ * Make dashboard more user-friendly, such as contextualizing the emissions impacts as a percentage of total Northwest emissions.
+ 
+## Contributors
+@lchahn
+@lloverasdan
+@EstherrrrLiu
+@jjstadler
+
+## Acknowledgments
+Marginal emissions rates and demand response product data were provided by John Ollis and Tina Jayaweera of the Northwest Power and Conservation Council. We are grateful for their help in navigating the data and developing methodology to calculate emissions impacts of demand response! 
+
+## Licensing 
+[MIT License](https://github.com/NW-Demand-Response-Emissions-Impacts/emissions_calculator/blob/main/LICENSE)
 
 
