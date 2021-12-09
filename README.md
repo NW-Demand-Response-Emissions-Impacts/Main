@@ -13,7 +13,7 @@ While demand response strategies are typically motivated by resource adequacy an
 ## Visualization
 ### Click [here](https://demand-response-impacts.herokuapp.com/home) to view the Dashboard!
 
-We created this dashboard for both a general public audience (main page) and for those who would like to learn more (more information page) about DR emissions impacts and the components that produce these impacts. This includes hourly emissions rates, demand response potential for each product, and hours of demand response implementation. 
+We created this dashboard for both a general public audience ([home page](https://demand-response-impacts.herokuapp.com/home)) and for those who would like to learn more ([more information page](https://demand-response-impacts.herokuapp.com/more_info)) about DR emissions impacts and the components that produce these impacts. This includes hourly emissions rates, demand response potential for each product, and hours of demand response implementation. 
 
 ## Project Design
 
