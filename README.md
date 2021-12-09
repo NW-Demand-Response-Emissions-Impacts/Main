@@ -17,39 +17,13 @@ We created this dashboard for both a general public audience (main page) and for
 
 ## Project Design
 
-A high-level component specification is shown below. Please see the "doc" folder to learn more!
+A high-level component specification is shown below. Please see the [doc/ folder](/docs) to learn more!
 
 ![comp spec](/docs/flow_charts/overall_flow.png)
 
 ## Directory Structure
 
-├── LICENSE
-├── Procfile
-├── README.md
-├── app.py
-├── assets/
-├── docs/
-│   ├── component_specification.pdf
-│   ├── flow_charts/
-│   └── functional_specification.pdf
-├── emissions_calculator/
-│   ├── phase1_emissions_calculator/
-│   └── phase2_dashboard_generator/
-├── examples/
-├── index.py
-├── input_data/
-│   ├── AvoidedEmissionsRates/
-│   └── DRPotentialandHours/
-├── processed_data/
-│   ├── dr_hours/
-│   ├── dr_potential/
-│   ├── emissions_impacts/
-│   └── emissions_rates/
-├── requirements.txt
-├── runtime.txt
-├── test_data/
-│   ├── AvoidedEmissionsRates/
-│   ├── DRPotentialandHours/
+![tree](/docs/flow_charts/directory_tree.png)
 
 In the emissions_calculator/ directory, phase1_emissions_calculator/ calculates emissions impacts of demand response and outputs processed data for the dashboard. phase2_dashboard_generator/ generates the dashboard webpage that visualizes these emissions impacts.
 
@@ -67,10 +41,10 @@ A user guide with examples for running the emissions calculator and interacting 
  * Make dashboard more user-friendly, such as contextualizing the emissions impacts as a percentage of total Northwest emissions.
  
 ## Contributors
-@lchahn
-@lloverasdan
-@EstherrrrLiu
-@jjstadler
+ * @lchahn
+ * @lloverasdan
+ * @EstherrrrLiu
+ * @jjstadler
 
 ## Acknowledgments
 Marginal emissions rates and demand response product data were provided by John Ollis and Tina Jayaweera of the Northwest Power and Conservation Council. We are grateful for their help in navigating the data and developing methodology to calculate emissions impacts of demand response! 
