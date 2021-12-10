@@ -101,7 +101,7 @@ Note that the emissions_calculator has been designed to run for excel files form
     python emissions_calculator.py
 
 ### Step 5: Update and interact with the dashboard
-The dashboard will automatically update after you run the emissions calculator. However, interpretive text is specific to the default input data. Please see the user guide for examples of how to change interpretive text and interact with the dashboard.     
+In order to update how the files are read into the dashboard, you must update the data parameters in <code>home.py</code> and <code>more_info.py</code>. These updates are analagous to the parameter updates in <code>emissions_calculator.py</code>. You can the edit the interpretive text and layout of the website by editing <code>home.py</code> and <code>more_info.py</code>. If you would like to edit the plots themselves, you must also edit <code>make_plots.py</code>. Please see the user guide for examples of how to edit the dashboard.   
 
 ## Future steps
  * Incorporate additional policy scenarios for emissions rates. The emissions calculator will run for a list of policy scenarios, but we currently only use one policy scenario.
