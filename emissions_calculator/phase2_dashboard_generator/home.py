@@ -14,7 +14,7 @@ from app import app
 
 
 # Define the parameters
-url = 'https://github.com/NW-Demand-Response-Emissions-Impacts/emissions_calculator/blob/main/processed_data'
+url = 'https://github.com/NW-Demand-Response-Emissions-Impacts/emissions_calculator/blob/main/data/processed_data'
 seasons_rates = ['Annual','Fall','Winter','Spring','Summer']
 seasons_impacts = ['Fall','Winter','Summer']
 scenarios = ['Baseline']
