@@ -10,9 +10,7 @@ Also returns a product lookup dataframe that gives the bin,
 seasonality, and shift/shed for each product.
 """
 # to do: add timing, exceptions, testing
-# less hard-coding in the potential function if possible,
-# make so that file names are specified as main function input
-# rather than hard-coded into emissions_parameters.py
+# less hard-coding in the potential function if possible
 
 import pandas as pd
 
@@ -66,6 +64,9 @@ def create_dr_hours_df_dict(dr_hrs_files, dr_name, dr_seasons):
     Creates a dictionary of dataframes with each dataframe
     corresponding to a given DR plan and season within that plan.
 
+    Note that subcomp_c will insert values of -1 for hours with shifted
+    load for shift products.
+
     Args:
         dr_hrs_files: list of DR hours files (str) for each DR plan
         dr_name: list of the names of each DR plan (str)
@@ -86,6 +87,15 @@ def create_dr_hours_df_dict(dr_hrs_files, dr_name, dr_seasons):
         for season in seasons:
             dict_key = drname + '_' + season
             dr_hours_df_dict[dict_key] = pd.read_excel(xlsx, season)
+
+            # for new bins resTOU, copy hours for resTOU_shift and resTOU_shed
+            if drname == 'newbins':
+                dr_hours_df_dict[dict_key]['ResTOU_shed'] = \
+                                    dr_hours_df_dict[dict_key]['ResTOU']
+                dr_hours_df_dict[dict_key] = \
+                                    dr_hours_df_dict[dict_key].rename(columns={'ResTOU': 'ResTOU_shift'})
+            else:
+                pass
 
     return dr_hours_df_dict
 
@@ -141,9 +151,21 @@ def create_dr_potential_df_dict(dr_potential_files,
         else:
             pass
 
+        # for new bins, apply winter to fall
         seasons = dr_seasons[idx]
-        if 'Fall' in seasons:  # for new bins, apply winter to fall
+        if 'Fall' in seasons:  
             dr_pot_df_dict[drname + '_Fall'] = dr_pot_df_dict[drname + '_Winter']
+        else:
+            pass
+
+        # for new bins resTOU, copy potential for resTOU_shift and resTOU_shed
+        if drname == 'newbins':
+            for season in dr_seasons[idx]:
+                dict_key = drname + '_' + season
+                dr_pot_df_dict[dict_key]['ResTOU_shed'] = \
+                                        dr_pot_df_dict[dict_key]['ResTOU']
+                dr_pot_df_dict[dict_key] = \
+                                        dr_pot_df_dict[dict_key].rename(columns={'ResTOU': 'ResTOU_shift'})
         else:
             pass
 
@@ -171,9 +193,20 @@ def create_product_info_df_dict(dr_potential_files, dr_name):
         column_names = ['Product', 'Bin', 'Seasonality', 'Shift or Shed?']
         dr_product_info_df_dict[drname] = pd.read_excel(xlsx, 'EnergyCalcs',
                                                         skiprows=2, nrows=23, usecols=column_names)
+        
+        # For 'newbins' plan, only consider bin 1, 
+        # and look at ResTOU as a shift and a shed product
         if drname == 'newbins':
             dr_product_info_df_dict[drname] = \
-                dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Bin'] == 'Bin 1']
+                dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Bin'] == 'Bin 1'].reset_index(drop=True)
+            newrow = dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Product'] == 'ResTOU'].copy()
+            newrow = newrow.replace('ResTOU','ResTOU_shed')
+            newrow = newrow.replace('Shift','Shed')
+            dr_product_info_df_dict[drname] = dr_product_info_df_dict[drname].replace('ResTOU','ResTOU_shift')
+            dr_product_info_df_dict[drname] = pd.concat([dr_product_info_df_dict[drname], newrow]).reset_index(drop=True)
+            dr_product_info_df_dict[drname]
+        else:
+            pass
 
     return dr_product_info_df_dict
 

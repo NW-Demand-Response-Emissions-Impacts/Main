@@ -165,7 +165,7 @@ def alldays_oneyear_seasonal_ave(emissions_scenario_list,
     Output example:
     df_oneyear_seasonal_ave['Winter']['Baseline']
     """
-    if year not in range(2022, 2042, 1):
+    if not year in emissions_rates_df_out['Report_Year'].tolist():
         raise ValueError('Year unavailable!')
     else:
         pass
@@ -214,7 +214,7 @@ def get_oneyear_hour_ave(emissions_data, season, column_name, year):
     else:
         raise ValueError('Time period unavailable!')
 
-    if year not in range(2022, 2042, 1):
+    if not year in emissions_rates_df_out['Report_Year'].tolist():
         raise ValueError('Year unavailable!')
     else:
         pass
@@ -247,7 +247,7 @@ def subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
         df_oneyear_seasonal_ave: dictionary of seasonally, annually averaged hourly
                         emissions rates for all days of a given year
     """
-    if year not in range(2022, 2042, 1):
+    if not year in emissions_rates_df_out['Report_Year'].tolist():
         raise ValueError('Year unavailable!')
     else:
         pass
