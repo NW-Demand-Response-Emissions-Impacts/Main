@@ -81,13 +81,13 @@ python setup.py install --user
 ```
 
 ### Step 3: Upload new data
-If you would like to use different data for the demand response potential and hours, add new excel files to the directory data/input_data/DRPotentialandHours/. To use different marginal emissions rates, add new excel files to the directory data/input_data/AvoidedEmissionsRates/. 
+If you would like to use different data for the demand response potential and hours, add new excel files to the directory <code>data/input_data/DRPotentialandHours/</code>. To use different marginal emissions rates, add new excel files to the directory <code>data/input_data/AvoidedEmissionsRates/</code>. 
 
-Note that the emissions_calculator has been designed to run for excel files formatted in a particular way, and will raise Value Errors if these formatting expectations are not met.  
+Note that the emissions_calculator has been designed to run for excel files formatted in a particular way, and will raise Value Errors if these formatting expectations are not met.
 
 ### Step 4: Update data parameters and run the emissions calculator
-1. Navigate to the phase1_emissions_calculator/ directory by running:
-    cd emissions_calculator/phase1_emissions_calculator/
+1. Navigate to the <code>phase1_emissions_calculator/</code> directory by running:
+    <code>cd emissions_calculator/phase1_emissions_calculator/</code>
 2. Update data parameters in emissions_calculator.py within the section:
     #### DATA ANALYST USERS: UPDATE THIS SECTION ####
     This includes:
@@ -98,7 +98,7 @@ Note that the emissions_calculator has been designed to run for excel files form
      * file names for the marginal emissions rates, DR potential, and DR hours
      * a year for which the dashboard will display average emissions rates on the main page
 3. Run the emissions calculator by running: 
-    python emissions_calculator.py
+    <code>python emissions_calculator.py</code>
 
 ### Step 5: Update and interact with the dashboard
 In order to update how the files are read into the dashboard, you must update the data parameters in <code>home.py</code> and <code>more_info.py</code>. These updates are analagous to the parameter updates in <code>emissions_calculator.py</code>. You can the edit the interpretive text and layout of the website by editing <code>home.py</code> and <code>more_info.py</code>. If you would like to edit the plots themselves, you must also edit <code>make_plots.py</code>. Please see the user guide for examples of how to edit the dashboard.   
