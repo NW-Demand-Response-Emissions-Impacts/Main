@@ -33,6 +33,11 @@ setup(
     impacts of demand response can help inform Washington state targets 
     for demand response and motivate broader participation in demand 
     response programs.
+    
+    Owner of tool: Lily Hahn
+    Owner email: lchahn@uw.edu
+    
+    Contributers: Daniel Lloveras, James Stadler, Chang Liu
     """,
 
     requirements=['certifi==2021.10.8',
