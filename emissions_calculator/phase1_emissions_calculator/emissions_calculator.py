@@ -14,7 +14,7 @@ from subcomp_d_output_data \
 
 #### DATA ANALYST USERS: UPDATE THIS SECTION ####
 # Below, users can also specify multiple scenarios, e.g. ['Baseline','LimitedMarkets']
-emissions_scenario_list = ['Baseline']  include more than one
+emissions_scenario_list = ['Baseline']  
 emissions_rates_files = ['AvoidedEmissionsRate' + x + '.xlsx' for x in emissions_scenario_list]
 EMISSIONS_YEAR = 2022 #year to show emissions rates for gen pub
 dr_name = ['oldbins','newbins']

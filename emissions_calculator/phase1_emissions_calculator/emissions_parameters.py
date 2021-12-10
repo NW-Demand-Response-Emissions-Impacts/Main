@@ -19,11 +19,11 @@ if '/emissions_calculator/emissions_calculator' in MAIN_FOLDER:
 
 # Folders within directory
 DIR_CALCULATOR = MAIN_FOLDER + CALCULATOR_FOLDER
-DIR_DATA_IN = MAIN_FOLDER + '/input_data/'
-DIR_TESTDATA_IN = MAIN_FOLDER + '/test_data/'
+DIR_DATA_IN = MAIN_FOLDER + '/data/input_data/'
+DIR_DATA_PROC = MAIN_FOLDER + '/data/processed_data/'
+DIR_TESTDATA_IN = DIR_CALCULATOR + '/tests/test_data/'
 DIR_EMISSIONS_RATES = DIR_DATA_IN + 'AvoidedEmissionsRates/'
 DIR_DR_POTENTIAL_HRS = DIR_DATA_IN + 'DRPotentialandHours/'
-DIR_DATA_PROC = MAIN_FOLDER + '/processed_data/'
 
 # Parameters and Constants
 SEASONS_ALLDAYS = ['Winter', 'Spring', 'Summer', 'Fall', 'Annual']

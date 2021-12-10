@@ -61,7 +61,47 @@ Documentation includes a Functional Specification, Component Specification, and 
 A user guide with examples for running the emissions calculator and interacting with the dashboard can be found in the <code>examples/</code> directory.
 
 ## Installation
--- Need to fill this out -- We are confused about how to combine <code>environment.yml</code>, <code>requirements.txt</code> (which is necessary for the dashboard), and <code>setup.py</code>, or which of these to include.
+Please follow the instructions below to install the emissions calculator, process data, and update the dashboard. For more information, see the user guide within the [examples](/examples) directory.
+
+### Step 1: Clone the Repository
+In your terminal, run the following commands to clone the repository and navigate to it:
+```bash
+git clone https://github.com/NW-Demand-Response-Emissions-Impacts/emissions_calculator.git
+cd emissions_calculator
+```
+
+### Step 2: Set up your environment
+Run the following commands:
+```bash
+conda create --name emissions_env
+conda activate emissions_env
+conda install pip
+pip install -r requirements.txt
+python setup.py install --user
+```
+
+### Step 3: Upload new data
+If you would like to use different data for the demand response potential and hours, add new excel files to the directory data/input_data/DRPotentialandHours/. To use different marginal emissions rates, add new excel files to the directory data/input_data/AvoidedEmissionsRates/. 
+
+Note that the emissions_calculator has been designed to run for excel files formatted in a particular way, and will raise Value Errors if these formatting expectations are not met.  
+
+### Step 4: Update data parameters and run the emissions calculator
+1. Navigate to the phase1_emissions_calculator/ directory by running:
+    cd emissions_calculator/phase1_emissions_calculator/
+2. Update data parameters in emissions_calculator.py within the section:
+    #### DATA ANALYST USERS: UPDATE THIS SECTION ####
+    This includes:
+     * a list of DR plan names
+     * the seasons in which DR is implemented for each DR plan
+     * the subset of DR products to consider for each DR plan
+     * a list of policy scenarios with emissions rates (the emissions calculator will determine impacts for each scenario)  
+     * file names for the marginal emissions rates, DR potential, and DR hours
+     * a year for which the dashboard will display average emissions rates on the main page
+3. Run the emissions calculator by running: 
+    python emissions_calculator.py
+
+### Step 5: Update and interact with the dashboard
+The dashboard will automatically update after you run the emissions calculator. However, interpretive text is specific to the default input data. Please see the user guide for examples of how to change interpretive text and interact with the dashboard.     
 
 ## Future steps
  * Incorporate additional policy scenarios for emissions rates. The emissions calculator will run for a list of policy scenarios, but we currently only use one policy scenario.
