@@ -8,57 +8,133 @@ import pandas as pd
 
 
 def get_impacts(url, bin_types, bin_numbers, seasons):
+    """
+    Reads processed csv files containing emissions impacts
 
+    The if/else statements in this function are specific to the default dashboard.
+    When uploading new files, check this function to make sure files are being
+    read in properly.
+
+    Args:
+        url: the GitHub url containing the processed data
+        bin_types: list of names of DR binning strategies
+        bin_numbers: list of bin numbers
+        seasons: list of seasons
+
+    Returns:
+        impacts: dictionary of impacts dataframes
+    """
     impacts = {}
-    for i in range(len(bin_types)):
-        for j in range(len(bin_numbers)):
-            for k in range(len(seasons)):
-                if (bin_types[i]=='newbins' and bin_numbers[j]!='Bin_1') or (bin_types[i]=='oldbins' and seasons[k]=='Fall'):
+    for name in bin_types:
+        for num in bin_numbers:
+            for season in seasons:
+                if (name == 'newbins' and num != 'Bin_1') \
+                    or (name == 'oldbins' and season == 'Fall'):
                     pass
                 else:
-                    impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]] = pd.read_csv(url+'/emissions_impacts/'+bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'.csv?raw=True')
+                    impacts[name + '_' + num + '_' + season] = \
+                        pd.read_csv(url + '/emissions_impacts/' + name +'_' + \
+                            num + '_' + season + '.csv?raw=True')
 
-                    impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'_cumulative'] = impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]].sum()
-                if (bin_types[i] == 'newbins' and bin_numbers[j] == 'Bin_1'):
-                    impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'_total'] = impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'_cumulative']['DVR'] + impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'_cumulative']['ResTOU_shed']
-                elif (bin_types[i] == 'oldbins' and seasons[k]!='Fall'):
-                    impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'_total'] = impacts[bin_types[i]+'_'+bin_numbers[j]+'_'+seasons[k]+'_cumulative'][2::].sum()
+                    impacts[name + '_'+ num +'_' + season + '_cumulative'] = \
+                        impacts[name + '_' + num +'_' + season].sum()
+
+                if (name == 'newbins' and num == 'Bin_1'):
+                    impacts[name + '_' + num +'_' + season +'_total'] = \
+                        impacts[name + '_' + num + '_' + season + \
+                        '_cumulative']['DVR'] + impacts[name + '_' + num + \
+                        '_' + season + '_cumulative']['ResTOU_shed']
+                elif (name == 'oldbins' and season != 'Fall'):
+                    impacts[name + '_' + num + '_' + season + '_total'] = \
+                        impacts[name + '_'+ num + '_'+ season + \
+                        '_cumulative'][2::].sum()
 
     return impacts
 
 def get_rates_drdays(url, bin_types, seasons, scenarios):
+    """
+    Reads processed csv files containing emissions rates
+    for DR days only.
 
+    The if/else statements in this function are specific to the default dashboard.
+    When uploading new files, check this function to make sure files are being
+    read in properly.
+
+    Args:
+        url: the GitHub url containing the processed data
+        bin_types: list of names of DR binning strategies
+        seasons: list of seasons
+        scenarios: list of emissions scenarios
+
+    Returns:
+        rates: dictionary of emissions rates dataframes
+    """
     rates = {}
-    for i in range(len(bin_types)):
-        for j in range(len(seasons)):
-            for k in range(len(scenarios)):
-                if (bin_types[i]=='oldbins' and seasons[j]=='Fall'):
+    for name in bin_types:
+        for season in seasons:
+            for scenario in scenarios:
+                if (name == 'oldbins' and season == 'Fall'):
                     pass
                 else:
-                    rates[bin_types[i]+'_'+seasons[j]+'_'+scenarios[k]] = pd.read_csv(url+'/emissions_rates/DRdays_allyears_'+bin_types[i]+'_'+seasons[j]+'_'+scenarios[k]+'.csv?raw=True')
+                    rates[name + '_' + season + '_' + scenario] = \
+                        pd.read_csv(url + '/emissions_rates/DRdays_allyears_' + \
+                        name + '_' + season + '_' + scenario + \
+                        '.csv?raw=True')
 
     return rates
 
 def get_rates_alldays(url, seasons, scenarios):
+    """
+    Reads processed csv files containing emissions rates
+    for all days
 
+    Args:
+        url: the GitHub url containing the processed data
+        seasons: list of seasons
+        scenarios: list of emissions scenarios
+
+    Returns:
+        impacts: dictionary of emissions rates dataframes
+    """
     rates = {}
-    for i in range(len(seasons)):
-        for j in range(len(scenarios)):
-            rates[seasons[i]+'_'+scenarios[j]] = pd.read_csv(url+'/emissions_rates/alldays_2022_'+seasons[i]+'_'+scenarios[j]+'.csv?raw=True')
+    for season in seasons:
+        for scenario in scenarios:
+            rates[season + '_' + scenario] = pd.read_csv(url + \
+                '/emissions_rates/alldays_2022_' + season + '_' + scenario + \
+                '.csv?raw=True')
 
     return rates
 
 def get_potential(url, bin_types, seasons, bin_numbers):
+    """
+    Reads processed csv files containing DR potential
 
+    The if/else statements in this function are specific to the default dashboard.
+    When uploading new files, check this function to make sure files are being
+    read in properly.
+
+    Args:
+        url: the GitHub url containing the processed data
+        bin_types: list of names of DR binning strategies
+        seasons: list of seasons
+        bin_numbers: list of bin numbers
+
+    Returns:
+        potential: dictionary of potential dataframes
+    """
     potential = {}
-    potential['comparison_barchart'] = pd.read_csv(url+'/dr_potential/comparison_barchart.csv?raw=True')
+    potential['comparison_barchart'] = pd.read_csv(url + \
+        '/dr_potential/comparison_barchart.csv?raw=True')
     potential['dr_hours'] = pd.read_csv(url+'/dr_hours/output_dr_hours.csv?raw=True')
-    for i in range(len(bin_types)):
-        for j in range(len(seasons)):
-            for k in range(len(bin_numbers)):
-                if (bin_types[i]=='newbins' and bin_numbers[k]!='bin1') or (bin_types[i]=='oldbins' and seasons[j]=='Fall'):
+    for name in bin_types:
+        for season in seasons:
+            for num in bin_numbers:
+                if (name == 'newbins' and num != 'bin1') \
+                    or (name == 'oldbins' and season == 'Fall'):
                     pass
                 else:
-                    potential[bin_types[i]+'_'+seasons[j]+'_'+bin_numbers[k]] = pd.read_csv(url+'/dr_potential/'+bin_types[i]+'_'+seasons[j]+'_'+bin_numbers[k]+'.csv?raw=True')
+                    potential[name + '_' + season + '_' + num] = \
+                        pd.read_csv(url + '/dr_potential/' + name + '_' + season + \
+                        '_' + num + '.csv?raw=True')
 
     return potential
