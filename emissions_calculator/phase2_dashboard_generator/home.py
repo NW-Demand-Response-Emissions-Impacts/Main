@@ -40,20 +40,23 @@ layout = html.Div(children=[
                  html.Div(className='four columns div-user-controls',
                           children=[html.H2('Home Page'),
                                 html.P("""This dashboard displays how demand
-                                    response (DR) programs impact on carbon dioxide
-                                    emissions in the northwestern United States."""
+                                    response (DR) programs impact carbon dioxide
+                                    emissions in the Northwest United States."""
                                 ),
+                                html.H3('What is Demand Response?'),
                                 html.P("""DR strategies reduce or shift electricity
                                     usage during periods of peak demand. There are
                                     many different ways to do this, including
                                     Demand Voltage Reduction (DVR) and Residential
                                     Time of Use (ResTOU)."""
                                 ),
+                                html.H3('What is Demand Voltage Reduction?'),
                                 html.P("""DVR allows utilities to reduce voltage
                                     during periods of peak demand, which can reduce
                                     resistive energy losses and lead to energy
                                     savings."""
                                 ),
+                                html.H3('What is Residential Time of Use?'),
                                 html.P("""ResTOU programs offer lower electricity
                                     prices during times of day when the demand for
                                     electricity is low, and higher prices when the
@@ -68,12 +71,15 @@ layout = html.Div(children=[
                                 )]),
                  html.Div(className='eight columns div-for-charts bg-grey-home',
                           children=[
-                                html.H3('Emissions reductions',style={"textAlign":
+                                html.H2('Emissions Reductions',style={"textAlign":
                                     "center"}
                                 ),
                                 html.P("""This bar chart shows the total estimated
                                     emissions reductions due to DR programs from
-                                    2022 to 2041."""
+                                    2022 to 2041 for a scenario in which two DR
+                                    products are implemented almost every evening
+                                    in winter, summer, and fall. See the left
+                                    panel for more information on these products!"""
                                 ),
                                 html.P("""Emissions reductions are shown for the
                                     fall, winter, and summer, seasons. Reductions
@@ -86,7 +92,7 @@ layout = html.Div(children=[
                                     during the summer."""
                                 ),
                                 dcc.Graph(id='impacts_bar', figure=impacts_bar),
-                                html.H3('Emissions rates',style={"textAlign":
+                                html.H2('Emissions Rates',style={"textAlign":
                                     "center"}
                                 ),
                                 html.P("""How much could you reduce carbon dioxide
@@ -99,10 +105,10 @@ layout = html.Div(children=[
                                     have the biggest impact on reducing
                                     emissions!"""
                                 ),
-                                html.P("""The plot below shows the avoided
+                                html.P("""The plot below shows the estimated avoided
                                     emissions factors during different hours of the
-                                    day. This indicates how much emissions would be
-                                    reduced by avoiding one kilowatt-hour of
+                                    day in 2022. This indicates how much emissions
+                                    would be reduced by avoiding one kilowatt-hour of
                                     electricity. Use the dropdown menu to compare
                                     seasons!"""
                                 ),
