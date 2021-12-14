@@ -43,7 +43,7 @@ df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave = \
 
 # Calculate emissions impacts
 print('Running subcomponent c')
-emissions_impacts_dict, emissions_annual_sum_dict = subcomp_c_runall(emissions_rates_df_out, dr_hours_df_dict_out, \
+emissions_impacts_dict, emissions_annual_df = subcomp_c_runall(emissions_rates_df_out, dr_hours_df_dict_out, \
     dr_potential_df_dict_out, dr_product_info_df_dict_out)
 
 
@@ -52,6 +52,6 @@ print('Running subcomponent d')
 output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, EMISSIONS_YEAR)
 output_dr_hours(dr_hours_df_dict_out)
 output_dr_potential(dr_potential_df_dict_out, dr_product_info_df_dict_out)
-output_emissions_impacts(emissions_impacts_dict, emissions_annual_sum_dict)
+output_emissions_impacts(emissions_impacts_dict, emissions_annual_df)
 
     

@@ -128,19 +128,19 @@ def make_barchart_dict(emissions_impacts_dict):
     old_dict = {}
     new_dict = {}
     for n_bin in range(1, bin_nums+1):
-        old_dict["Bin_"+str(n_bin)]=pd.DataFrame(data=[], index = ['Winter', 'Summer'])
-        new_dict['Bin_'+str(n_bin)]=pd.DataFrame(data=[], index = ['Winter', 'Summer', 'Fall'])
+        old_dict["bin"+str(n_bin)]=pd.DataFrame(data=[], index = ['Winter', 'Summer'])
+        new_dict['bin'+str(n_bin)]=pd.DataFrame(data=[], index = ['Winter', 'Summer', 'Fall'])
 
     ## Really want to do this in the subcompnent c file...this is getting too messy for here.
     #Sum all years for a barchart and save that separately
     start_condition = True
     for ind, key in enumerate(emissions_impacts_dict.keys()):
         old_bins = bool('oldbins' in key)
-        if "Bin_1" in key:
+        if "bin1" in key:
             bin_num = 1
-        elif "Bin_2" in key:
+        elif "bin2" in key:
             bin_num = 2
-        elif "Bin_3" in key:
+        elif "bin3" in key:
             bin_num = 3
         else:
             bin_num = 4 
@@ -154,9 +154,9 @@ def make_barchart_dict(emissions_impacts_dict):
 
         #Check whether the dataframe to put the sums is empty
         if old_bins:
-            start_condition = old_dict["Bin_"+str(bin_num)].empty
+            start_condition = old_dict["bin"+str(bin_num)].empty
         else:
-            start_condition = new_dict["Bin_"+str(bin_num)].empty
+            start_condition = new_dict["bin"+str(bin_num)].empty
 
         df_temp = emissions_impacts_dict[key]
         df_temp = df_temp.drop(['Year'], axis=1)
@@ -166,21 +166,33 @@ def make_barchart_dict(emissions_impacts_dict):
             cols = list(summed_series.index)
             for col in cols:
                 if old_bins:
-                    old_dict["Bin_"+str(bin_num)].loc[season, col] = summed_series.loc[col]
+                    old_dict["bin"+str(bin_num)].loc[season, col] = summed_series.loc[col]
                 else:
-                    new_dict["Bin_"+str(bin_num)].loc[season, col] = summed_series.loc[col]
+                    new_dict["bin"+str(bin_num)].loc[season, col] = summed_series.loc[col]
         else:
             cols = list(summed_series.index)
             if old_bins:
-                old_dict["Bin_"+str(bin_num)].loc[season, cols] = summed_series
+                old_dict["bin"+str(bin_num)].loc[season, cols] = summed_series
             else:
-                new_dict["Bin_"+str(bin_num)].loc[season, cols] = summed_series
+                new_dict["bin"+str(bin_num)].loc[season, cols] = summed_series
 
         #Need to know all the the DR names and get a big list:
-    sum_dict = {}
-    sum_dict["oldbins"] = old_dict
-    sum_dict["newbins"] = new_dict
-    return sum_dict
+    #sum_dict = {}
+    #sum_dict["oldbins"] = old_dict
+    #sum_dict["newbins"] = new_dict
+    out_df = pd.DataFrame(data=[], index = ['Winter', 'Summer', 'Fall'])
+    out_df['oldbins_bin1'] = old_dict['bin1'].sum(axis=1)
+    out_df['oldbins_bin2'] = old_dict['bin2'].sum(axis=1)
+    out_df['oldbins_bin3'] = old_dict['bin3'].sum(axis=1)
+    out_df['oldbins_bin4'] = old_dict['bin4'].sum(axis=1)
+    
+    out_df['newbins_bin1_shed'] = new_dict['bin1'].loc[:, ["DVR", "ResTOU_shed"]].sum(axis=1)
+    out_df['newbins_bin1_shift'] = new_dict['bin1'].loc[:, ["DVR", "ResTOU_shift"]].sum(axis=1)
+
+
+
+
+    return out_df
 
 def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info):
     """
@@ -273,29 +285,20 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                         dr_pot = pot[dr_name].loc[pot.Year==year]
                         short_df = em_rates.loc[em_rates.Report_Year==year]
                         if year%4==0:
-                            #There's no DR implemented on leap years, 
-                            #so we can ignore that extra time (last 24 entries)
-                            short_df = short_df.iloc[:-24]
-
-
-                        #Multiply baseline emissions by potential for all hours
-                        #This should atomatically work correctly if we have -1 values
-                        #due to shifting
-
-                        #if restou_newbins:
-                        #    out_arr_shift = short_df["Baseline Emissions Rate Estimate"].\
-                        #    values*dr_season_hours_shift*dr_pot.values * EMISSIONS_CHANGEUNITS
-                        #    out_arr_shed = short_df["Baseline Emissions Rate Estimate"].\
-                        #    values*dr_season_hours_shed*dr_pot.values * EMISSIONS_CHANGEUNITS
-                        #    yearly_avoided["ResTOU_shift"].iloc[year-year_start] = out_arr_shift.sum()
-                        #    yearly_avoided["ResTOU_shed"].iloc[year-year_start] = out_arr_shed.sum()
+                            
+                            #There's no DR implemented on leap days
+                            #On Leap years, need to delete february 29
+                            truth_array = short_df['Day'].loc[short_df['Month'].values==2]==29
+                            leap_inds = truth_array.loc[truth_array==True]
+                            delete_inds = short_df.loc[leap_inds.index].index
+                            short_df = short_df.drop(delete_inds, axis=0)                     
 
                         else:
                             out_arr = short_df["Baseline Emissions Rate Estimate"].values*dr_season_hours*dr_pot.values
                             out_arr = out_arr * EMISSIONS_CHANGEUNITS
                             yearly_avoided[dr_name].iloc[year-year_start] = out_arr.sum()
 
-                save_name = binning+"_"+bin_num.split()[0]+"_"+bin_num.split()[1]+"_"+season
+                save_name = binning+"_"+season+"_"+"bin"+bin_num.split()[1]
 
                 output_dictionary[save_name] = yearly_avoided
 
@@ -311,10 +314,10 @@ def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info):
         
     Returns:
         out_dict: the output of calc_yearly_avoided_emissions
-        barchart_dict: Annual sum of yearly avoided emissions
+        barchart_df: Annual sum of yearly avoided emissions
     
     """
     out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info)
-    barchart_dict = make_barchart_dict(out_dict)
+    barchart_df = make_barchart_dict(out_dict)
     
-    return out_dict, barchart_dict
+    return out_dict, barchart_df
