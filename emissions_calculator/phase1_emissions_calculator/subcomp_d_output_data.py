@@ -176,7 +176,7 @@ def output_emissions_impacts(emissions_impacts_dict, barchart_df):
 
     #Now do the same for annual sum - barchart data.
     
-    barchart_f.to_csv(DIR_OUT+"emissions_reductions_barchart.csv")
+    barchart_df.to_csv(DIR_OUT+"emissions_reductions_barchart.csv")
 
 ################# Main ####################
 def runall(dr_hours_dict, dr_pot_dict, product_info_dict, 
