@@ -46,11 +46,12 @@ def shift_hours(dr_hours):
                       (-1 value)
     """
 
-    # Get first index in set of 4
+    # Get first index in set of hours implemented
     indicies_imp = dr_hours.loc[dr_hours==1].index
     firsts = np.array([])
-    first = True
+    first = False
     ind_prev = 0
+    num_hours_implemented = 0
     for ind in indicies_imp:
         if first:
             num_hours_implemented = 1
@@ -62,11 +63,13 @@ def shift_hours(dr_hours):
             first = bool(ind-ind_prev > 1)
             ind_prev = ind
             num_hours_implemented += 1
-
+        
     firsts = firsts.astype(int)
     # Specify indices_shift to insert -1 values for load shift
 
     #TO DO: Currently only works for even number of implemented hours
+    if num_hours_implemented%2!=0:
+        raise ValueError("Number of hours implemented for shifting must be even.")
     hours_to_shift = num_hours_implemented//2
     indicies_shift_down = np.array([]);
     indicies_shift_up = np.array([]);
@@ -75,7 +78,6 @@ def shift_hours(dr_hours):
         shift_inds_up = firsts + (num_hours_implemented-1)+ hour
         indicies_shift_down = np.append(indicies_shift_down, shift_inds_down)
         indicies_shift_up = np.append(indicies_shift_up, shift_inds_up)
-
 
     indicies_shift = np.append(indicies_shift_down,indicies_shift_up)
 
@@ -109,7 +111,7 @@ def sort_bins(dr_info, dr_names):
     return out_dict
 
 
-def make_barchart_dict(emissions_impacts_dict):
+def make_barchart_df(emissions_impacts_dict):
     """
     Args:
         emissions_impacts_dict: The same dictionary that gets returned by 
@@ -321,6 +323,6 @@ def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info):
     
     """
     out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info)
-    barchart_df = make_barchart_dict(out_dict)
+    barchart_df = make_barchart_df(out_dict)
     
     return out_dict, barchart_df
