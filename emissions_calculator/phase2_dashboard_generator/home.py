@@ -20,11 +20,11 @@ seasons_rates = ['Annual','Fall','Winter','Spring','Summer']
 seasons_impacts = ['Fall','Winter','Summer']
 scenarios = ['Baseline']
 bin_types = ['newbins','oldbins']
-bin_numbers = ['Bin_1','Bin_2','Bin_3','Bin_4']
+bin_numbers = ['bin1','bin2','bin3','bin4']
 rates_dd_options = ['All Year','Fall','Winter','Spring','Summer','Comparison']
 
 # Read in the data
-impacts = get_impacts(URL, bin_types, bin_numbers, seasons_impacts)
+impacts = get_impacts(URL, bin_types, seasons_impacts, bin_numbers)
 rates = get_rates_alldays(URL, seasons_rates, scenarios)
 
 # Make the plots

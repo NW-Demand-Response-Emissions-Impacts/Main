@@ -23,8 +23,7 @@ seasons_impacts = ['Fall','Winter','Summer']
 seasons_potential = ['Fall','Winter','Summer']
 scenarios = ['Baseline']
 bin_types = ['newbins','oldbins']
-bin_numbers_impacts = ['Bin_1','Bin_2','Bin_3','Bin_4']
-bin_numbers_potential = ['bin1','bin2','bin3','bin4']
+bin_numbers = ['bin1','bin2','bin3','bin4']
 
 # Dropdown options
 rates_dd_options_moreinfo = ['New Bins, All Year','New Bins, Fall',
@@ -40,9 +39,9 @@ impacts_dd_options = ['New Bin 1, Summer', 'New Bin 1, Winter', 'New Bin 1, Fall
 potential_dd_options = impacts_dd_options
 
 # Read in the data
-impacts = get_impacts(URL, bin_types, bin_numbers_impacts, seasons_impacts)
+impacts = get_impacts(URL, bin_types, seasons_impacts, bin_numbers)
 rates_moreinfo = get_rates_drdays(URL, bin_types, seasons_rates, scenarios)
-potential = get_potential(URL, bin_types, seasons_potential, bin_numbers_potential)
+potential = get_potential(URL, bin_types, seasons_potential, bin_numbers)
 
 # Make the plots
 potential_dropdown, potential_plot = plot_potential_dropdown(potential_dd_options)

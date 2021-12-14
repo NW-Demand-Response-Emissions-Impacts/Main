@@ -35,18 +35,21 @@ def plot_hours_table(potential):
 def plot_impacts_bar(impacts):
     impacts_bar = go.Figure(data=[go.Bar(
         name = 'Winter',
-        x = ['Total','DVR','ResTOU Shed'],
-        y = [impacts['newbins_Bin_1_Winter_total'], impacts['newbins_Bin_1_Winter_cumulative']['DVR'], impacts['newbins_Bin_1_Winter_cumulative']['ResTOU_shed']]
+        x = ['ResTOU Shed','ResTOU Shift'],
+        y = [impacts['barchart'].at[0,'newbins_bin1_shift'],
+            impacts['barchart'].at[0,'newbins_bin1_shed']]
         ),
         go.Bar(
         name = 'Summer',
-        x = ['Total','DVR','ResTOU Shed'],
-        y = [impacts['newbins_Bin_1_Summer_total'], impacts['newbins_Bin_1_Summer_cumulative']['DVR'], impacts['newbins_Bin_1_Summer_cumulative']['ResTOU_shed']]
+        x = ['ResTOU Shed','ResTOU Shift'],
+        y = [impacts['barchart'].at[1,'newbins_bin1_shift'],
+            impacts['barchart'].at[1,'newbins_bin1_shed']]
         ),
         go.Bar(
         name = 'Fall',
-        x = ['Total','DVR','ResTOU Shed'],
-        y = [impacts['newbins_Bin_1_Fall_total'], impacts['newbins_Bin_1_Fall_cumulative']['DVR'], impacts['newbins_Bin_1_Fall_cumulative']['ResTOU_shed']]
+        x = ['ResTOU Shed','ResTOU Shift'],
+        y = [impacts['barchart'].at[2,'newbins_bin1_shift'],
+            impacts['barchart'].at[2,'newbins_bin1_shed']]
         )
     ])
     impacts_bar.update_layout(
@@ -58,13 +61,36 @@ def plot_impacts_bar(impacts):
 def plot_impacts_bar_moreinfo(impacts):
     impacts_bar_moreinfo = go.Figure(data=[go.Bar(
         name = 'Winter',
-        x = ['New Bin 1','Old Bin 1','Old Bin 2', 'Old Bin 3', 'Old Bin 4'],
-        y = [impacts['newbins_Bin_1_Winter_total'], impacts['oldbins_Bin_1_Winter_total'], impacts['oldbins_Bin_2_Winter_total'], impacts['oldbins_Bin_3_Winter_total'], impacts['oldbins_Bin_4_Winter_total']]
+        x = ['New Bin 1 Shed','New Bin 1 Shift','Old Bin 1','Old Bin 2', 'Old Bin 3', 'Old Bin 4'],
+        y = [impacts['barchart'].at[0, 'newbins_bin1_shed'],
+             impacts['barchart'].at[0, 'newbins_bin1_shift'],
+             impacts['barchart'].at[0, 'oldbins_bin1'],
+             impacts['barchart'].at[0, 'oldbins_bin2'],
+             impacts['barchart'].at[0, 'oldbins_bin3'],
+             impacts['barchart'].at[0, 'oldbins_bin4']
+             ]
         ),
         go.Bar(
         name = 'Summer',
-        x = ['New Bin 1','Old Bin 1','Old Bin 2', 'Old Bin 3', 'Old Bin 4'],
-        y = [impacts['newbins_Bin_1_Summer_total'], impacts['oldbins_Bin_1_Summer_total'], impacts['oldbins_Bin_2_Summer_total'], impacts['oldbins_Bin_3_Summer_total'], impacts['oldbins_Bin_4_Summer_total']]
+        x = ['New Bin 1 Shed','New Bin 1 Shift','Old Bin 1','Old Bin 2', 'Old Bin 3', 'Old Bin 4'],
+        y = [impacts['barchart'].at[1, 'newbins_bin1_shed'],
+             impacts['barchart'].at[1, 'newbins_bin1_shift'],
+             impacts['barchart'].at[1, 'oldbins_bin1'],
+             impacts['barchart'].at[1, 'oldbins_bin2'],
+             impacts['barchart'].at[1, 'oldbins_bin3'],
+             impacts['barchart'].at[1, 'oldbins_bin4']
+             ]
+        ),
+        go.Bar(
+        name = 'Fall',
+        x = ['New Bin 1 Shed','New Bin 1 Shift','Old Bin 1','Old Bin 2', 'Old Bin 3', 'Old Bin 4'],
+        y = [impacts['barchart'].at[2, 'newbins_bin1_shed'],
+             impacts['barchart'].at[2, 'newbins_bin1_shift'],
+             impacts['barchart'].at[2, 'oldbins_bin1'],
+             impacts['barchart'].at[2, 'oldbins_bin2'],
+             impacts['barchart'].at[2, 'oldbins_bin3'],
+             impacts['barchart'].at[2, 'oldbins_bin4']
+             ]
         )
     ])
 
@@ -251,59 +277,59 @@ def rates_callback_moreinfo(rates, rates_dd_choice_moreinfo):
 def impacts_callback(impacts, impacts_dd_choice):
     impacts_fig = go.Figure()
     if impacts_dd_choice == 'New Bin 1, Winter':
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Winter']['Year'], y=impacts['newbins_Bin_1_Winter']['DVR'], name='DVR',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Winter']['Year'], y=impacts['newbins_Bin_1_Winter']['ResTOU_shed'], name='ResTOU Shed',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Winter']['Year'], y=impacts['newbins_Bin_1_Winter']['ResTOU_shift'], name='ResTOU Shift',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Winter_bin1']['Year'], y=impacts['newbins_Winter_bin1']['DVR'], name='DVR',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Winter_bin1']['Year'], y=impacts['newbins_Winter_bin1']['ResTOU_shed'], name='ResTOU Shed',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Winter_bin1']['Year'], y=impacts['newbins_Winter_bin1']['ResTOU_shift'], name='ResTOU Shift',marker=dict(color='orange')))
     elif impacts_dd_choice == 'New Bin 1, Summer':
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Summer']['Year'], y=impacts['newbins_Bin_1_Summer']['DVR'], name='DVR',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Summer']['Year'], y=impacts['newbins_Bin_1_Summer']['ResTOU_shed'], name='ResTOU Shed',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Summer']['Year'], y=impacts['newbins_Bin_1_Summer']['ResTOU_shift'], name='ResTOU Shift',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Summer_bin1']['Year'], y=impacts['newbins_Summer_bin1']['DVR'], name='DVR',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Summer_bin1']['Year'], y=impacts['newbins_Summer_bin1']['ResTOU_shed'], name='ResTOU Shed',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Summer_bin1']['Year'], y=impacts['newbins_Summer_bin1']['ResTOU_shift'], name='ResTOU Shift',marker=dict(color='orange')))
     elif impacts_dd_choice == 'New Bin 1, Fall':
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Fall']['Year'], y=impacts['newbins_Bin_1_Fall']['DVR'], name='DVR',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Fall']['Year'], y=impacts['newbins_Bin_1_Fall']['ResTOU_shed'], name='ResTOU Shed',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Bin_1_Fall']['Year'], y=impacts['newbins_Bin_1_Fall']['ResTOU_shift'], name='ResTOU Shift',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Fall_bin1']['Year'], y=impacts['newbins_Fall_bin1']['DVR'], name='DVR',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Fall_bin1']['Year'], y=impacts['newbins_Fall_bin1']['ResTOU_shed'], name='ResTOU Shed',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['newbins_Fall_bin1']['Year'], y=impacts['newbins_Fall_bin1']['ResTOU_shift'], name='ResTOU Shift',marker=dict(color='orange')))
     elif impacts_dd_choice == 'Old Bin 1, Summer':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Summer']['Year'], y=impacts['oldbins_Bin_1_Summer']['DVR'], name='DVR',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Summer']['Year'], y=impacts['oldbins_Bin_1_Summer']['IndRTP'], name='InDRTP',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Summer']['Year'], y=impacts['oldbins_Bin_1_Summer']['ResCPP'], name='ResCPP',marker=dict(color='orange')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Summer']['Year'], y=impacts['oldbins_Bin_1_Summer']['ComCPP'], name='ComCPP',marker=dict(color='purple')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Summer']['Year'], y=impacts['oldbins_Bin_1_Summer']['IndCPP'], name='IndCPP',marker=dict(color='black')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin1']['Year'], y=impacts['oldbins_Summer_bin1']['DVR'], name='DVR',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin1']['Year'], y=impacts['oldbins_Summer_bin1']['IndRTP'], name='InDRTP',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin1']['Year'], y=impacts['oldbins_Summer_bin1']['ResCPP'], name='ResCPP',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin1']['Year'], y=impacts['oldbins_Summer_bin1']['ComCPP'], name='ComCPP',marker=dict(color='purple')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin1']['Year'], y=impacts['oldbins_Summer_bin1']['IndCPP'], name='IndCPP',marker=dict(color='black')))
     elif impacts_dd_choice == 'Old Bin 1, Winter':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Winter']['Year'], y=impacts['oldbins_Bin_1_Winter']['DVR'], name='DVR',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Winter']['Year'], y=impacts['oldbins_Bin_1_Winter']['IndRTP'], name='InDRTP',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Winter']['Year'], y=impacts['oldbins_Bin_1_Winter']['ResCPP'], name='ResCPP',marker=dict(color='orange')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Winter']['Year'], y=impacts['oldbins_Bin_1_Winter']['ComCPP'], name='ComCPP',marker=dict(color='purple')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_1_Winter']['Year'], y=impacts['oldbins_Bin_1_Winter']['IndCPP'], name='IndCPP',marker=dict(color='black')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin1']['Year'], y=impacts['oldbins_Winter_bin1']['DVR'], name='DVR',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin1']['Year'], y=impacts['oldbins_Winter_bin1']['IndRTP'], name='InDRTP',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin1']['Year'], y=impacts['oldbins_Winter_bin1']['ResCPP'], name='ResCPP',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin1']['Year'], y=impacts['oldbins_Winter_bin1']['ComCPP'], name='ComCPP',marker=dict(color='purple')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin1']['Year'], y=impacts['oldbins_Winter_bin1']['IndCPP'], name='IndCPP',marker=dict(color='black')))
     elif impacts_dd_choice == 'Old Bin 2, Summer':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Summer']['Year'], y=impacts['oldbins_Bin_2_Summer']['NRCurtailCom'], name='NRCurtailCom',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Summer']['Year'], y=impacts['oldbins_Bin_2_Summer']['NRCurtailInd'], name='NRCurtailInd',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Summer']['Year'], y=impacts['oldbins_Bin_2_Summer']['ResTOU'], name='ResTOU',marker=dict(color='orange')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Summer']['Year'], y=impacts['oldbins_Bin_2_Summer']['NRCoolSwchMed'], name='NRCoolSwchMed',marker=dict(color='purple')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Summer']['Year'], y=impacts['oldbins_Bin_2_Summer']['ResBYOT'], name='ResBYOT',marker=dict(color='black')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin2']['Year'], y=impacts['oldbins_Summer_bin2']['NRCurtailCom'], name='NRCurtailCom',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin2']['Year'], y=impacts['oldbins_Summer_bin2']['NRCurtailInd'], name='NRCurtailInd',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin2']['Year'], y=impacts['oldbins_Summer_bin2']['ResTOU'], name='ResTOU',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin2']['Year'], y=impacts['oldbins_Summer_bin2']['NRCoolSwchMed'], name='NRCoolSwchMed',marker=dict(color='purple')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin2']['Year'], y=impacts['oldbins_Summer_bin2']['ResBYOT'], name='ResBYOT',marker=dict(color='black')))
     elif impacts_dd_choice == 'Old Bin 2, Winter':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Winter']['Year'], y=impacts['oldbins_Bin_2_Winter']['NRCurtailCom'], name='NRCurtailCom',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Winter']['Year'], y=impacts['oldbins_Bin_2_Winter']['NRCurtailInd'], name='NRCurtailInd',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Winter']['Year'], y=impacts['oldbins_Bin_2_Winter']['ResTOU'], name='ResTOU',marker=dict(color='orange')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Winter']['Year'], y=impacts['oldbins_Bin_2_Winter']['NRHeatSwchMed'], name='NRHeatSwchMed',marker=dict(color='purple')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_2_Winter']['Year'], y=impacts['oldbins_Bin_2_Winter']['ResBYOT'], name='ResBYOT',marker=dict(color='black')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin2']['Year'], y=impacts['oldbins_Winter_bin2']['NRCurtailCom'], name='NRCurtailCom',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin2']['Year'], y=impacts['oldbins_Winter_bin2']['NRCurtailInd'], name='NRCurtailInd',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin2']['Year'], y=impacts['oldbins_Winter_bin2']['ResTOU'], name='ResTOU',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin2']['Year'], y=impacts['oldbins_Winter_bin2']['NRHeatSwchMed'], name='NRHeatSwchMed',marker=dict(color='purple')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin2']['Year'], y=impacts['oldbins_Winter_bin2']['ResBYOT'], name='ResBYOT',marker=dict(color='black')))
     elif impacts_dd_choice == 'Old Bin 3, Summer':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_3_Summer']['Year'], y=impacts['oldbins_Bin_3_Summer']['NRTstatSm'], name='NRTstatSm',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_3_Summer']['Year'], y=impacts['oldbins_Bin_3_Summer']['ResERWHDLCSwch'], name='ResERWHDLCSwch',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_3_Summer']['Year'], y=impacts['oldbins_Bin_3_Summer']['ResERWHDLCGrd'], name='ResERWHDLCGrd',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin3']['Year'], y=impacts['oldbins_Summer_bin3']['NRTstatSm'], name='NRTstatSm',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin3']['Year'], y=impacts['oldbins_Summer_bin3']['ResERWHDLCSwch'], name='ResERWHDLCSwch',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin3']['Year'], y=impacts['oldbins_Summer_bin3']['ResERWHDLCGrd'], name='ResERWHDLCGrd',marker=dict(color='orange')))
     elif impacts_dd_choice == 'Old Bin 3, Winter':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_3_Winter']['Year'], y=impacts['oldbins_Bin_3_Winter']['NRTstatSm'], name='NRTstatSm',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_3_Winter']['Year'], y=impacts['oldbins_Bin_3_Winter']['ResERWHDLCSwch'], name='ResERWHDLCSwch',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_3_Winter']['Year'], y=impacts['oldbins_Bin_3_Winter']['ResERWHDLCGrd'], name='ResERWHDLCGrd',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin3']['Year'], y=impacts['oldbins_Winter_bin3']['NRTstatSm'], name='NRTstatSm',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin3']['Year'], y=impacts['oldbins_Winter_bin3']['ResERWHDLCSwch'], name='ResERWHDLCSwch',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin3']['Year'], y=impacts['oldbins_Winter_bin3']['ResERWHDLCGrd'], name='ResERWHDLCGrd',marker=dict(color='orange')))
     elif impacts_dd_choice == 'Old Bin 4, Summer':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Summer']['Year'], y=impacts['oldbins_Bin_4_Summer']['NRCoolSwchSm'], name='NRCoolSwchSm',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Summer']['Year'], y=impacts['oldbins_Bin_4_Summer']['ResACSwch'], name='ResACSwch',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Summer']['Year'], y=impacts['oldbins_Bin_4_Summer']['ResEVSEDLCSwch'], name='ResEVSEDLCSwch',marker=dict(color='orange')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Summer']['Year'], y=impacts['oldbins_Bin_4_Summer']['ResHPWHDLCSwch'], name='ResHPWHDLCSwch',marker=dict(color='purple')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Summer']['Year'], y=impacts['oldbins_Bin_4_Summer']['ResHPWHDLCGrd'], name='ResHPWHDLCGrd',marker=dict(color='black')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin4']['Year'], y=impacts['oldbins_Summer_bin4']['NRCoolSwchSm'], name='NRCoolSwchSm',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin4']['Year'], y=impacts['oldbins_Summer_bin4']['ResACSwch'], name='ResACSwch',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin4']['Year'], y=impacts['oldbins_Summer_bin4']['ResEVSEDLCSwch'], name='ResEVSEDLCSwch',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin4']['Year'], y=impacts['oldbins_Summer_bin4']['ResHPWHDLCSwch'], name='ResHPWHDLCSwch',marker=dict(color='purple')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Summer_bin4']['Year'], y=impacts['oldbins_Summer_bin4']['ResHPWHDLCGrd'], name='ResHPWHDLCGrd',marker=dict(color='black')))
     elif impacts_dd_choice == 'Old Bin 4, Winter':
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Winter']['Year'], y=impacts['oldbins_Bin_4_Winter']['ResEVSEDLCSwch'], name='ResEVSEDLCSwch',marker=dict(color='blue')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Winter']['Year'], y=impacts['oldbins_Bin_4_Winter']['ResHPWHDLCSwch'], name='ResHPWHDLCSwch',marker=dict(color='red')))
-        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Bin_4_Winter']['Year'], y=impacts['oldbins_Bin_4_Winter']['ResHPWHDLCGrd'], name='ResHPWHDLCGrd',marker=dict(color='orange')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin4']['Year'], y=impacts['oldbins_Winter_bin4']['ResEVSEDLCSwch'], name='ResEVSEDLCSwch',marker=dict(color='blue')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin4']['Year'], y=impacts['oldbins_Winter_bin4']['ResHPWHDLCSwch'], name='ResHPWHDLCSwch',marker=dict(color='red')))
+        impacts_fig.add_trace(go.Scatter(x=impacts['oldbins_Winter_bin4']['Year'], y=impacts['oldbins_Winter_bin4']['ResHPWHDLCGrd'], name='ResHPWHDLCGrd',marker=dict(color='orange')))
  
     impacts_fig.update_layout(xaxis_title='Year', yaxis_title='Metric Tons of CO2 Reduced')
     
