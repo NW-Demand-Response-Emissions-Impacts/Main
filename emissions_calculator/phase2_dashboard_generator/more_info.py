@@ -11,9 +11,9 @@ import dash_html_components as html
 from app import app
 from .read_files import get_impacts, get_rates_drdays, get_potential
 from .make_plots import plot_potential_bar, plot_potential_dropdown, \
-    plot_hours_table, plot_rates_dropdown_moreinfo, plot_impacts_bar_moreinfo, \
+    plot_hours_table, plot_rates_dropdown_moreinfo, \
     plot_impacts_dropdown, potential_callback, rates_callback_moreinfo, \
-    impacts_callback
+    impacts_callback, plot_total_impacts_dropdown, total_impacts_callback
 
 # Define the parameters
 URL = 'https://github.com/NW-Demand-Response-Emissions-Impacts/'+ \
@@ -37,6 +37,7 @@ impacts_dd_options = ['New Bin 1, Summer', 'New Bin 1, Winter', 'New Bin 1, Fall
                       'Old Bin 3, Summer', 'Old Bin 3, Winter',
                       'Old Bin 4, Summer', 'Old Bin 4, Winter']
 potential_dd_options = impacts_dd_options
+total_impacts_dd_options = ['Old Bins Only', 'New and Old Bins']
 
 # Read in the data
 impacts = get_impacts(URL, bin_types, seasons_impacts, bin_numbers)
@@ -49,16 +50,15 @@ potential_bar = plot_potential_bar(potential)
 hours_table = plot_hours_table(potential)
 rates_dropdown_moreinfo, rates_plot_moreinfo = \
     plot_rates_dropdown_moreinfo(rates_dd_options_moreinfo)
-impacts_bar_moreinfo = plot_impacts_bar_moreinfo(impacts)
+total_impacts_dropdown, total_impacts_plot = \
+    plot_total_impacts_dropdown(total_impacts_dd_options)
 impacts_dropdown, impacts_plot = plot_impacts_dropdown(impacts_dd_options)
 
 # Set up the HTML layout
 layout = html.Div(children=[
-    html.H1('Emissions Impacts of Demand Response Programs',
-        style={"textAlign": "center"}),
     html.Div(className='row',
              children=[
-                 html.Div(className='four columns div-user-controls',
+                 html.Div(className='four columns div-for-charts',
                           children=[html.H2('More Information'),
                                 html.P("""The figures on this page offer more
                                     detail into how DR programs impact emissions in
@@ -77,14 +77,14 @@ layout = html.Div(children=[
                                 ),
                                 html.H3('Links to Learn More'),
                                 html.Div([
-                                dcc.Link('Project GitHub Page', 
+                                dcc.Link('Project GitHub Page',
                                     href='https://github.com/'+
-                                    'NW-Demand-Response-Emissions-Impacts', 
+                                    'NW-Demand-Response-Emissions-Impacts',
                                     style={'font-size':'18px', 'textAlign':
                                     'right', 'text-decoration':'underline'}
                                 )],className='row'),
                                 html.Div([
-                                dcc.Link('Details on Avoided Emissions Factors', 
+                                dcc.Link('Details on Avoided Emissions Factors',
                                     href='https://www.nwcouncil.org/reports/'+
                                     'avoided-carbon-dioxide-production-rates'+
                                     '-northwest-power-system',
@@ -107,9 +107,7 @@ layout = html.Div(children=[
                                 html.P("""Which bin leads to the most significant
                                     emissions reduction?"""
                                 ),
-                                dcc.Graph(id='impacts_bar_moreinfo',
-                                    figure=impacts_bar_moreinfo
-                                ),
+                                total_impacts_dropdown, total_impacts_plot,
                                 html.H3('Emissions Rates',style={"textAlign":
                                     "center"}
                                 ),
@@ -129,7 +127,7 @@ layout = html.Div(children=[
                                 html.H3("""DR Hours of Implementation""",
                                     style={"textAlign":"center"}
                                 ),
-                                html.P("""For the DR plan “oldbins,” DR products 
+                                html.P("""For the DR plan “oldbins,” DR products
                                 were implemented for 18-20 hours total each season, 
                                 with individual DR events during periods of peak 
                                 electricity demand. The periods of implementation 
@@ -138,7 +136,7 @@ layout = html.Div(children=[
                                 “newbins,” the DR products were implemented for 288 
                                 hours each season except for spring, always during 
                                 the same evening hours."""),
-                                html.P("""Comparing these hours with the hourly 
+                                html.P("""Comparing these hours with the hourly
                                 emissions rates above illustrates that demand 
                                 response is not necessarily implemented during 
                                 periods with peak emissions. As a result, the 
@@ -153,7 +151,7 @@ layout = html.Div(children=[
                                 dcc.Graph(id='hours_table', figure=hours_table),
                                 html.H3('DR Potential From 2022 to 2041',
                                     style={"textAlign": "center"}),
-                                html.P("""DR potential generally ramps up from 2022 
+                                html.P("""DR potential generally ramps up from 2022
                                     to 2041. Use the dropdown to explore different 
                                     DR plans, bins of products, and seasons."""),
                                 potential_dropdown, potential_plot,
@@ -213,3 +211,18 @@ def update_impacts(impacts_dd_choice):
         dash graph of emissions impacts
     """
     return impacts_callback(impacts, impacts_dd_choice)
+
+@app.callback(
+dash.dependencies.Output('total_impacts_plot', 'children'),
+[dash.dependencies.Input('total_impacts_dropdown', 'value')])
+def update_total_impacts(total_impacts_dd_choice):
+    """
+    Updates the emissions impacts plot using dropdown menu
+
+    Args:
+        impacts: dictionary of pandas dataframes of emissions impacts
+        impacts_dd_choice: user's dropdown selection
+    Returns:
+        dash graph of emissions impacts
+    """
+    return total_impacts_callback(impacts, total_impacts_dd_choice)

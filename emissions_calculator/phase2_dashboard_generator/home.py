@@ -33,11 +33,9 @@ rates_dropdown, rates_plot = plot_rates_dropdown(rates_dd_options)
 
 # Set up the HTML layout
 layout = html.Div(children=[
-    html.H1('Emissions Impacts of Demand Response Programs',style={"textAlign":
-        "center"}),
     html.Div(className='row',
              children=[
-                 html.Div(className='four columns div-user-controls',
+                 html.Div(className='four columns div-for-charts',
                           children=[html.H2('Home Page'),
                                 html.P("""This dashboard displays how demand
                                     response (DR) programs impact carbon dioxide
