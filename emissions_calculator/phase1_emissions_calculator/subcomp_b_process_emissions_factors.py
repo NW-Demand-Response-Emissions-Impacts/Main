@@ -214,7 +214,7 @@ def get_oneyear_hour_ave(emissions_data, season, column_name, year):
     else:
         raise ValueError('Time period unavailable!')
 
-    if not year in emissions_rates_df_out['Report_Year'].tolist():
+    if not year in df_cp['Report_Year'].tolist():
         raise ValueError('Year unavailable!')
     else:
         pass
