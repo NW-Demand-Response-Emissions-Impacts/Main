@@ -1,6 +1,6 @@
 # Emissions Impacts of Demand Response in the Northwest U.S.
 
-![NW DR Logo](/assets/dr_logo.png "NW DR Logo")
+![NW DR Logo](/assets/dr_logo.png=50x50 "NW DR Logo")
 
 ## About the Project
 
