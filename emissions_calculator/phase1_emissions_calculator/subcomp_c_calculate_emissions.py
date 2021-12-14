@@ -292,6 +292,9 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                             leap_inds = truth_array.loc[truth_array==True]
                             delete_inds = short_df.loc[leap_inds.index].index
                             short_df = short_df.drop(delete_inds, axis=0)                     
+                            out_arr = short_df["Baseline Emissions Rate Estimate"].values*dr_season_hours*dr_pot.values
+                            out_arr = out_arr * EMISSIONS_CHANGEUNITS
+                            yearly_avoided[dr_name].iloc[year-year_start] = out_arr.sum()
 
                         else:
                             out_arr = short_df["Baseline Emissions Rate Estimate"].values*dr_season_hours*dr_pot.values
