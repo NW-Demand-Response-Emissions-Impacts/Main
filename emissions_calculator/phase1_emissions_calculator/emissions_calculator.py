@@ -4,7 +4,7 @@ emissions_calculator.py
 Runs all subcomponents to output processed emissions impacts data
 for the dashboard.
 """
-
+from emissions_parameters import DIR_EMISSIONS_RATES, DIR_DR_POTENTIAL_HRS
 from subcomp_a_organize_data import subcomp_a_runall
 from subcomp_b_process_emissions_factors import subcomp_b_runall
 from subcomp_c_calculate_emissions import calc_yearly_avoided_emissions
@@ -15,15 +15,17 @@ from subcomp_d_output_data \
 #### DATA ANALYST USERS: UPDATE THIS SECTION ####
 # Below, users can also specify multiple scenarios, e.g. ['Baseline','LimitedMarkets']
 emissions_scenario_list = ['Baseline']  
-emissions_rates_files = ['AvoidedEmissionsRate' + x + '.xlsx' for x in emissions_scenario_list]
+emissions_rates_files = [DIR_EMISSIONS_RATES + 'AvoidedEmissionsRate' + x \
+                         + '.xlsx' for x in emissions_scenario_list]
 EMISSIONS_YEAR = 2022 #year to show emissions rates for gen pub
 dr_name = ['oldbins','newbins']
-dr_hrs_files = ['DRHours_' + x + '.xlsx' for x in dr_name]
+dr_hrs_files = [DIR_DR_POTENTIAL_HRS+'DRHours_' + x + '.xlsx' for x in dr_name]
 
 # For each plan in dr_name, list the DR potential file,
 # seasons with DR hours, and the subset of products to include
 # (or [0] to include all products).
 dr_potential_files = ['DR RPM Inputs_071420.xlsx','DR RPM Inputs_021621_newaMWbins.xlsx']
+dr_potential_files = [DIR_DR_POTENTIAL_HRS+ x for x in dr_potential_files]
 dr_seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
 subset_products = [[0],['DVR','ResTOU']] 
 #################################################
