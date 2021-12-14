@@ -7,7 +7,7 @@ Reads in csv files output by the Emissions Calculator.
 import pandas as pd
 
 
-def get_impacts(url, bin_types, bin_numbers, seasons):
+def get_impacts(url, bin_types, seasons, bin_numbers):
     """
     Reads processed csv files containing emissions impacts
 
@@ -25,29 +25,18 @@ def get_impacts(url, bin_types, bin_numbers, seasons):
         impacts: dictionary of impacts dataframes
     """
     impacts = {}
+    impacts['barchart'] = pd.read_csv(url + \
+        '/emissions_impacts/emissions_reductions_barchart.csv?raw=True')
     for name in bin_types:
-        for num in bin_numbers:
-            for season in seasons:
-                if (name == 'newbins' and num != 'Bin_1') \
+        for season in seasons:
+            for num in bin_numbers:
+                if (name == 'newbins' and num != 'bin1') \
                     or (name == 'oldbins' and season == 'Fall'):
                     pass
                 else:
-                    impacts[name + '_' + num + '_' + season] = \
-                        pd.read_csv(url + '/emissions_impacts/' + name +'_' + \
-                            num + '_' + season + '.csv?raw=True')
-
-                    impacts[name + '_'+ num +'_' + season + '_cumulative'] = \
-                        impacts[name + '_' + num +'_' + season].sum()
-
-                if (name == 'newbins' and num == 'Bin_1'):
-                    impacts[name + '_' + num +'_' + season +'_total'] = \
-                        impacts[name + '_' + num + '_' + season + \
-                        '_cumulative']['DVR'] + impacts[name + '_' + num + \
-                        '_' + season + '_cumulative']['ResTOU_shed']
-                elif (name == 'oldbins' and season != 'Fall'):
-                    impacts[name + '_' + num + '_' + season + '_total'] = \
-                        impacts[name + '_'+ num + '_'+ season + \
-                        '_cumulative'][2::].sum()
+                    impacts[name + '_' + season + '_' + num] = \
+                        pd.read_csv(url + '/emissions_impacts/' + name + '_' + \
+                            season + '_' + num + '.csv?raw=True')
 
     return impacts
 

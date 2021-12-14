@@ -159,7 +159,7 @@ def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_season
             df_oneyear_seasonal_ave[season_key][scenario_key].to_csv(fname, index=False)
 
 
-def output_emissions_impacts(emissions_impacts_dict):
+def output_emissions_impacts(emissions_impacts_dict, barchart_df):
     """
     Given subcomp_c output with DR emissions impacts,
     outputs this data into csv files for each DR plan, bin, and season.
@@ -173,7 +173,10 @@ def output_emissions_impacts(emissions_impacts_dict):
 
     for ind, key in enumerate(emissions_impacts_dict.keys()):
         emissions_impacts_dict[key].to_csv(DIR_OUT+key+".csv")
+
+    #Now do the same for annual sum - barchart data.
     
+    barchart_df.to_csv(DIR_OUT+"emissions_reductions_barchart.csv")
 
 ################# Main ####################
 def runall(dr_hours_dict, dr_pot_dict, product_info_dict, 

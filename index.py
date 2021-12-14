@@ -17,9 +17,11 @@ from dash.dependencies import Input, Output
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div([
-        dcc.Link('Home Page', href='/home')],className='row'),
+        dcc.Link('Home Page', href='/home', style={'font-size':'18px', 
+            'text-decoration':'underline'})],className='row'),
     html.Div([
-        dcc.Link('More Information', href='/more_info')],className='row'),
+        dcc.Link('More Information', href='/more_info', style={'font-size':'18px', 
+            'text-decoration':'underline'})],className='row'),
     html.Div(id='page-content', children=[])
 ])
 

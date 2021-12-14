@@ -23,24 +23,34 @@ seasons_impacts = ['Fall','Winter','Summer']
 seasons_potential = ['Fall','Winter','Summer']
 scenarios = ['Baseline']
 bin_types = ['newbins','oldbins']
-bin_numbers_impacts = ['Bin_1','Bin_2','Bin_3','Bin_4']
-bin_numbers_potential = ['bin1','bin2','bin3','bin4']
-rates_dd_options_moreinfo = ['All Year','Fall','Winter','Summer','Comparison']
-impacts_dd_options = ['Summer', 'Winter', 'Fall']
+bin_numbers = ['bin1','bin2','bin3','bin4']
+
+# Dropdown options
+rates_dd_options_moreinfo = ['New Bins, All Year','New Bins, Fall',
+                            'New Bins, Winter','New Bins, Summer',
+                            'New Bins, Comparison', 'Old Bins, All Year',
+                            'Old Bins, Winter','Old Bins, Summer',
+                            'Old Bins, Comparison']
+impacts_dd_options = ['New Bin 1, Summer', 'New Bin 1, Winter', 'New Bin 1, Fall',
+                      'Old Bin 1, Summer', 'Old Bin 1, Winter',
+                      'Old Bin 2, Summer', 'Old Bin 2, Winter',
+                      'Old Bin 3, Summer', 'Old Bin 3, Winter',
+                      'Old Bin 4, Summer', 'Old Bin 4, Winter']
+potential_dd_options = impacts_dd_options
 
 # Read in the data
-impacts = get_impacts(URL, bin_types, bin_numbers_impacts, seasons_impacts)
+impacts = get_impacts(URL, bin_types, seasons_impacts, bin_numbers)
 rates_moreinfo = get_rates_drdays(URL, bin_types, seasons_rates, scenarios)
-potential = get_potential(URL, bin_types, seasons_potential, bin_numbers_potential)
+potential = get_potential(URL, bin_types, seasons_potential, bin_numbers)
 
 # Make the plots
-potential_dropdown, potential_plot = plot_potential_dropdown(seasons_potential)
+potential_dropdown, potential_plot = plot_potential_dropdown(potential_dd_options)
 potential_bar = plot_potential_bar(potential)
 hours_table = plot_hours_table(potential)
 rates_dropdown_moreinfo, rates_plot_moreinfo = \
     plot_rates_dropdown_moreinfo(rates_dd_options_moreinfo)
 impacts_bar_moreinfo = plot_impacts_bar_moreinfo(impacts)
-impacts_dropdown, impacts_plot = plot_impacts_dropdown(seasons_potential)
+impacts_dropdown, impacts_plot = plot_impacts_dropdown(impacts_dd_options)
 
 # Set up the HTML layout
 layout = html.Div(children=[
@@ -52,30 +62,46 @@ layout = html.Div(children=[
                           children=[html.H2('More Information'),
                                 html.P("""The figures on this page offer more
                                     detail into how DR programs impact emissions in
-                                    the northwestern US."""
+                                    the Northwest U.S."""
                                 ),
-                                html.P("""Want to learn more about the data?
-                                    All figures in this dashboard are based on
-                                    projections of marginal emissions factors for
-                                    2022 by the Northwest Power and Conservation
-                                    Council. They indicate the emissions benefit of
+                                html.H3('Learn More About the Data'),
+                                html.P("""All figures in this dashboard are based on
+                                    projections of DR potential, hours of
+                                    implementation, and marginal emissions factors
+                                    for 2022-2041 by the Northwest Power and
+                                    Conservation Council. Marginal emissions factors
+                                    include the emissions benefit of
                                     avoiding one kilowatt-hour of electricity
                                     within the WECC region (Western Electricity
-                                    Coordinating Council). Visit our GitHub page to
-                                    learn more about how the data is analyzed.
-                                    Learn more about avoided emissions factors here.
-                                    """
-                                )]),
+                                    Coordinating Council)."""
+                                ),
+                                html.H3('Links to Learn More'),
+                                html.Div([
+                                dcc.Link('Project GitHub Page', 
+                                    href='https://github.com/'+
+                                    'NW-Demand-Response-Emissions-Impacts', 
+                                    style={'font-size':'18px', 'textAlign':
+                                    'right', 'text-decoration':'underline'}
+                                )],className='row'),
+                                html.Div([
+                                dcc.Link('Details on Avoided Emissions Factors', 
+                                    href='https://www.nwcouncil.org/reports/'+
+                                    'avoided-carbon-dioxide-production-rates'+
+                                    '-northwest-power-system',
+                                    style={'font-size':'18px', 'textAlign':
+                                    'right', 'text-decoration':'underline'}
+                                )], className='row')
+                                ]),
                  html.Div(className='eight columns div-for-charts bg-grey-more',
                           children=[
-                                html.H3('Emissions reductions from 2022 to 2041',
+                                html.H3('Emissions Reductions From 2022 to 2041',
                                     style={"textAlign": "center"}
                                 ),
                                 html.P("""Use the dropdown menu to compare
-                                    different seasons!"""
+                                    different seasons and DR plans!"""
                                 ),
                                 impacts_dropdown, impacts_plot,
-                                html.H3('Emissions impacts bar chart',style=
+                                html.H3('Cumulative Emissions Reductions',style=
                                     {"textAlign": "center"}
                                 ),
                                 html.P("""Which bin leads to the most significant
@@ -84,30 +110,58 @@ layout = html.Div(children=[
                                 dcc.Graph(id='impacts_bar_moreinfo',
                                     figure=impacts_bar_moreinfo
                                 ),
-                                html.H3('Emissions rates',style={"textAlign":
+                                html.H3('Emissions Rates',style={"textAlign":
                                     "center"}
                                 ),
                                 html.P("""The plot on the home page shows the
-                                    emissions rates for all days of the year. What
-                                    about only on days in which DR programs are
-                                    implemented? Use the dropdown menu below to
-                                    compare these plots for different seasons."""
+                                    emissions rates for all days of the year in
+                                    2022. What about only on days in which DR
+                                    programs are implemented? The figure below shows 
+                                    the hourly emissions rates for days with DR 
+                                    implemented, averaged over the full period from
+                                    2022-2041. Note that the emissions rates 
+                                    generally decline over time from 2022-2041 (not 
+                                    shown). Use the dropdown menu below to compare 
+                                    these plots for different DR plans and seasons.
+                                    """
                                 ),
                                 rates_dropdown_moreinfo, rates_plot_moreinfo,
-                                html.H3("""Table of hours in which DR programs
-                                    where implemented""",style={"textAlign":
-                                    "center"}
+                                html.H3("""DR Hours of Implementation""",
+                                    style={"textAlign":"center"}
                                 ),
-                                html.P('Use this table for reference!'),
+                                html.P("""For the DR plan “oldbins,” DR products 
+                                were implemented for 18-20 hours total each season, 
+                                with individual DR events during periods of peak 
+                                electricity demand. The periods of implementation 
+                                differed for Direct Load Control (DLC) products and 
+                                non-DLC products as shown below. For the DR plan 
+                                “newbins,” the DR products were implemented for 288 
+                                hours each season except for spring, always during 
+                                the same evening hours."""),
+                                html.P("""Comparing these hours with the hourly 
+                                emissions rates above illustrates that demand 
+                                response is not necessarily implemented during 
+                                periods with peak emissions. As a result, the 
+                                emissions reductions from DR products that shed load 
+                                is only a fraction of the maximum possible emissions 
+                                reductions for demand response in the northwestern 
+                                US. When demand response is implemented during times 
+                                with low emissions rates, products that shift the 
+                                load to adjacent hours with higher emissions rates 
+                                can actually increase emissions."""
+                                ),
                                 dcc.Graph(id='hours_table', figure=hours_table),
-                                html.H3('DR potential',style={"textAlign": "center"}),
-                                html.P('DR potential from 2022 to 2041'),
+                                html.H3('DR Potential From 2022 to 2041',
+                                    style={"textAlign": "center"}),
+                                html.P("""DR potential generally ramps up from 2022 
+                                    to 2041. Use the dropdown to explore different 
+                                    DR plans, bins of products, and seasons."""),
                                 potential_dropdown, potential_plot,
-                                html.H3('DR potential in 2041',style={"textAlign":
+                                html.H3('DR Potential in 2041',style={"textAlign":
                                     "center"}
                                 ),
-                                html.P("""Compare different seasons and binning
-                                    strategies!"""
+                                html.P("""Compare different DR plans, seasons, and
+                                    bins of products!"""
                                 ),
                                 dcc.Graph(id='potential_bar', figure=potential_bar)
                             ])

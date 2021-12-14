@@ -1,6 +1,6 @@
 # Emissions Impacts of Demand Response in the Northwest U.S.
 
-![NW DR Logo](/assets/dr_logo.png "NW DR Logo")
+<img src="https://github.com/NW-Demand-Response-Emissions-Impacts/emissions_calculator/blob/main/assets/dr_logo.png" width="300">
 
 ## About the Project
 
@@ -101,7 +101,7 @@ Note that the emissions_calculator has been designed to run for excel files form
     <code>python emissions_calculator.py</code>
 
 ### Step 5: Update and interact with the dashboard
-In order to update how the files are read into the dashboard, you must update the data parameters in the modules <code>home.py</code> and <code>more_info.py</code> in <code>emissions_calculator/phase2_dashboard_generator/</code>. These updates are analagous to the parameter updates in <code>emissions_calculator.py</code>. You can the edit the interpretive text and layout of the website by editing <code>home.py</code> and <code>more_info.py</code>. If you would like to edit the plots themselves, you must also edit <code>make_plots.py</code>. Please see the user guide for examples of how to edit the dashboard.   
+In order to update how the files are read into the dashboard, you must update the data parameters in the modules <code>home.py</code> and <code>more_info.py</code> in <code>emissions_calculator/phase2_dashboard_generator/</code>. These updates are analagous, but not identical, to the parameter updates in <code>emissions_calculator.py</code>. You can the edit the interpretive text and layout of the website by editing <code>home.py</code> and <code>more_info.py</code>. If you would like to edit the plots themselves, you must also edit <code>make_plots.py</code>. Please see the user guide for examples of how to edit the dashboard.   
 
 ## Future steps
  * Incorporate additional policy scenarios for emissions rates. The emissions calculator will run for a list of policy scenarios, but we currently only use one policy scenario.
