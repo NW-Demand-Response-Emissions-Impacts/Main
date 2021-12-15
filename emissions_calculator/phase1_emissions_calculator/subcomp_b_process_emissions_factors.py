@@ -53,8 +53,10 @@ def seasonal_ave(dr_name, dr_seasons, emissions_scenario_list,
             for scenario_name in emissions_scenario_list:
 
                 column_name = scenario_name + ' Emissions Rate Estimate'
-                df_seasonal_ave[dict_key][scenario_name] = get_hour_ave(emissions_rates_df_out,
-                                                                        dr_hours_df_dict_out[dict_key], column_name)
+                df_seasonal_ave[dict_key][scenario_name] = \
+                    get_hour_ave(emissions_rates_df_out,
+                                 dr_hours_df_dict_out[dict_key],
+                                 column_name)
 
     return df_seasonal_ave
 
@@ -169,7 +171,6 @@ def alldays_oneyear_seasonal_ave(emissions_scenario_list,
         raise ValueError('Year unavailable!')
     else:
         pass
-    
     df_oneyear_seasonal_ave = {}
 
     for season in SEASONS_ALLDAYS:
@@ -251,7 +252,6 @@ def subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
         raise ValueError('Year unavailable!')
     else:
         pass
-    
     df_seasonal_ave = seasonal_ave(dr_name, dr_seasons, emissions_scenario_list,
                                    emissions_rates_df_out, dr_hours_df_dict_out)
     df_annual_ave = annual_ave(dr_name, dr_seasons, emissions_scenario_list,

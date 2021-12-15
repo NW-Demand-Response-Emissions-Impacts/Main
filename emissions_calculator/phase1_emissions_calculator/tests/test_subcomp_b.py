@@ -25,7 +25,8 @@ df_dr_hours_data = pd.read_excel(DIR_TESTDATA_IN+'subcomp_b_test_data/dr_hours_d
 dr_name = {}
 dr_seasons = {}
 emissions_scenario_list = {}
-emissions_rates_df_out = {}
+emissions_rates_df_out = pd.DataFrame({'Report_Year': [2022, 2023, 2024]},
+                                      index=[1, 2, 3])
 dr_hours_df_dict_out = {}
 year = 2022
 
@@ -99,7 +100,7 @@ class TestSubCompB(unittest.TestCase):
         Edge test to make sure input year in alldays_oneyear_seasonal_ave is defined.
         """
         with self.assertRaises(ValueError):
-            alldays_oneyear_seasonal_ave(emissions_scenario_list, emissions_rates_df_out, 2020)
+            alldays_oneyear_seasonal_ave(emissions_scenario_list, emissions_rates_df_out, 2000)
 
     def test_year_available_get_oneyear(self):
         """
@@ -107,7 +108,7 @@ class TestSubCompB(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             get_oneyear_hour_ave(df_emissions_data, 'Winter',
-                                 'Test Emissions Rate Estimate', 2020)
+                                 'Test Emissions Rate Estimate', 2000)
 
     def test_year_available_runall(self):
         """
@@ -115,5 +116,5 @@ class TestSubCompB(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             subcomp_b_runall(dr_name, dr_seasons, emissions_scenario_list,
-                             emissions_rates_df_out, dr_hours_df_dict_out, 2020)
+                             emissions_rates_df_out, dr_hours_df_dict_out, 2000)
     
