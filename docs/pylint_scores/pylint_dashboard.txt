@@ -1,0 +1,48 @@
+Pylint scores for dashboard scripts.
+
+app.py:
+(base) MacBook-Air-3:emissions_calculator lloverasdan$ pylint app.py
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+index.py:
+(base) MacBook-Air-3:emissions_calculator lloverasdan$ pylint index.py
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+home.py (Note that these import errors identified by pylint do not inhibit the generation of the dashboard via app.py and index.py. Therefore, these messages from pylint are ignored.):
+(base) MacBook-Air-3:phase2_dashboard_generator lloverasdan$ pylint home.py
+************* Module home
+home.py:11:0: E0401: Unable to import 'app' (import-error)
+home.py:12:0: E0402: Attempted relative import beyond top-level package (relative-beyond-top-level)
+home.py:13:0: E0402: Attempted relative import beyond top-level package (relative-beyond-top-level)
+
+------------------------------------------------------------------
+Your code has been rated at 2.50/10 (previous run: 2.50/10, +0.00)
+
+make_plots.py:
+(base) MacBook-Air-3:phase2_dashboard_generator lloverasdan$ pylint make_plots.py
+************* Module make_plots
+make_plots.py:321:0: R0915: Too many statements (54/50) (too-many-statements)
+make_plots.py:553:0: R0915: Too many statements (57/50) (too-many-statements)
+
+------------------------------------------------------------------
+Your code has been rated at 9.90/10 (previous run: 9.90/10, +0.00)
+
+more_info.py (As with home.py, the import messages are ignored):
+(base) MacBook-Air-3:phase2_dashboard_generator lloverasdan$ pylint more_info.py
+************* Module more_info
+more_info.py:11:0: E0401: Unable to import 'app' (import-error)
+more_info.py:12:0: E0402: Attempted relative import beyond top-level package (relative-beyond-top-level)
+more_info.py:13:0: E0402: Attempted relative import beyond top-level package (relative-beyond-top-level)
+
+------------------------------------------------------------------
+Your code has been rated at 5.71/10 (previous run: 5.71/10, +0.00)
+
+read_files.py
+(base) MacBook-Air-3:phase2_dashboard_generator lloverasdan$ pylint read_files.py
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)

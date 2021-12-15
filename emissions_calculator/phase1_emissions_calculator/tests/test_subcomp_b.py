@@ -1,5 +1,8 @@
 """
-Tests for the sub component b
+test_subcomp_b.py
+
+Contains tests for subcomp_b_process_emissions_factors,
+which averages emissions factors for DR days and all days.
 """
 
 import pandas as pd
@@ -29,7 +32,7 @@ year = 2022
 
 class TestSubCompB(unittest.TestCase):
     """
-    Tests for the sub component b
+    Class of unit tests for the subcomponent B
     """
 
     def test_smoke(self):

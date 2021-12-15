@@ -1,6 +1,6 @@
 # Emissions Impacts of Demand Response in the Northwest U.S.
 
-![NW DR Logo](/assets/dr_logo.png "NW DR Logo")
+<img src="https://github.com/NW-Demand-Response-Emissions-Impacts/emissions_calculator/blob/main/assets/dr_logo.png" width="300">
 
 ## About the Project
 
