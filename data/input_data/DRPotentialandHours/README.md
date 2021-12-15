@@ -1,6 +1,5 @@
 # Demand Response Potential and Hours
 ## Data Provided by Tina Jayaweera, Northwest Power and Conservation Council
-## Documentation by Lily Hahn
 
 The original DR product bins ('oldbins') include 4 bins, with bin 1 being the most economically likely bin for implementation. Subsequent modeling discovered that these products were never being acquired by the Regional Portfolio Model, leading to the new binned data ('newbins'). 
 
