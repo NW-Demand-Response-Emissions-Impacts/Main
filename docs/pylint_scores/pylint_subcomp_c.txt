@@ -1,0 +1,12 @@
+************* Module phase1_emissions_calculator.subcomp_c_calculate_emissions
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:28:0: E0401: Unable to import 'emissions_parameters' (import-error)
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:31:0: R0914: Too many local variables (16/15) (too-many-locals)
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:116:0: R0914: Too many local variables (17/15) (too-many-locals)
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:156:8: W0612: Unused variable 'ind' (unused-variable)
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:116:0: R0912: Too many branches (16/12) (too-many-branches)
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:212:0: R0914: Too many local variables (35/15) (too-many-locals)
+/Users/jamesstadler/Documents/UW/Courses/CSE583/DR-Emissions-Project/Main/emissions_calculator/phase1_emissions_calculator/subcomp_c_calculate_emissions.py:250:4: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+
+------------------------------------------------------------------
+Your code has been rated at 9.22/10 (previous run: 9.22/10, +0.00)
+
