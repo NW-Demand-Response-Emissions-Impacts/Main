@@ -344,22 +344,31 @@ def potential_callback(potential, potential_dd_choice):
             y=potential['newbins_Winter_bin1']['DVR'], name='DVR',
             marker=dict(color='blue')))
         potential_fig.add_trace(go.Scatter(x=potential['newbins_Winter_bin1']['Year'],
-            y=potential['newbins_Winter_bin1']['ResTOU'], name='ResTOU',
+            y=potential['newbins_Winter_bin1']['ResTOU-shed'], name='ResTOU Shed',
             marker=dict(color='red')))
+        potential_fig.add_trace(go.Scatter(x=potential['newbins_Winter_bin1']['Year'],
+            y=potential['newbins_Winter_bin1']['ResTOU-shift'], name='ResTOU Shift',
+            marker=dict(color='orange')))    
     elif potential_dd_choice == 'New Bin 1, Summer':
         potential_fig.add_trace(go.Scatter(x=potential['newbins_Summer_bin1']['Year'],
             y=potential['newbins_Summer_bin1']['DVR'], name='DVR',
             marker=dict(color='blue')))
         potential_fig.add_trace(go.Scatter(x=potential['newbins_Summer_bin1']['Year'],
-            y=potential['newbins_Summer_bin1']['ResTOU'], name='ResTOU',
+            y=potential['newbins_Summer_bin1']['ResTOU-shed'], name='ResTOU Shed',
             marker=dict(color='red')))
+        potential_fig.add_trace(go.Scatter(x=potential['newbins_Summer_bin1']['Year'],
+            y=potential['newbins_Summer_bin1']['ResTOU-shift'], name='ResTOU Shift',
+            marker=dict(color='orange')))
     elif potential_dd_choice == 'New Bin 1, Fall':
         potential_fig.add_trace(go.Scatter(x=potential['newbins_Fall_bin1']['Year'],
             y=potential['newbins_Fall_bin1']['DVR'], name='DVR',
             marker=dict(color='blue')))
         potential_fig.add_trace(go.Scatter(x=potential['newbins_Fall_bin1']['Year'],
-            y=potential['newbins_Fall_bin1']['ResTOU'], name='ResTOU',
+            y=potential['newbins_Fall_bin1']['ResTOU-shed'], name='ResTOU Shed',
             marker=dict(color='red')))
+        potential_fig.add_trace(go.Scatter(x=potential['newbins_Fall_bin1']['Year'],
+            y=potential['newbins_Fall_bin1']['ResTOU-shift'], name='ResTOU Shift',
+            marker=dict(color='orange')))
     elif potential_dd_choice == 'Old Bin 1, Summer':
         potential_fig.add_trace(go.Scatter(x=potential['oldbins_Summer_bin1']['Year'],
             y=potential['oldbins_Summer_bin1']['DVR'], name='DVR',
