@@ -1,0 +1,64 @@
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator$ python -m unittest tests/test_subcomp_a.py
+....Emissions edge test succeeded, caught the error:
+Emissions file does not contain the column: Emissions Rate Estimate
+.Emissions edge test succeeded, caught the error:
+Emissions rates file does not exist
+.Emissions edge test succeeded, caught the error:
+Emissions rates are not type float
+.Emissions edge test succeeded, caught the error:
+Emissions file contains wrong number of hours in year 2024
+.Emissions edge test succeeded, caught the error:
+Emissions times are not type int
+.Emissions edge test succeeded, caught the error:
+Emissions rates or times contain null values
+..Emissions edge test succeeded, caught the error:
+Emissions file does not contain sheet: HourlyAvoidedEmissionsRate
+.Hours edge test succeeded, caught the error:
+DR hours are missing column Day for newbins_Fall
+.Hours edge test succeeded, caught the error:
+DR hours file does not exist
+.Hours edge test succeeded, caught the error:
+DR hours are not type int for newbins_Fall
+.Hours edge test succeeded, caught the error:
+DR hours contain null values for newbins_Fall
+.Hours edge test succeeded, caught the error:
+DR hours are missing DR product column for newbins_Fall
+.Hours edge test succeeded, caught the error:
+DR hours contains wrong number of hours = 8736
+.Hours edge test succeeded, caught the error:
+DR hours file does not contain sheet: Fall
+.Edge test succeeded, caught the error:
+The lists for the arguments emissions_rates_files and emissions_scenario_list are not the same length.
+.Edge test succeeded, caught the error:
+Please input a list for the argument: emissions_rates_files
+.Edge test succeeded, caught the error:
+Argument lists must contain strings
+.Potential edge test succeeded, caught the error:
+DR potential is missing column Year for oldbins_Winter
+.Potential edge test succeeded, caught the error:
+DR potential file does not exist
+.Potential edge test succeeded, caught the error:
+DR potential contains null values for oldbins_Winter
+.Potential edge test succeeded, caught the error:
+DR potential file does not contain sheet: Reporter Outputs
+.Potential edge test succeeded, caught the error:
+Subset of DR products not found in potential file
+.Potential edge test succeeded, caught the error:
+DR potential is not type float for oldbins_Winter
+.Product edge test succeeded, caught the error:
+DR potential file does not contain the column: Product
+.Product edge test succeeded, caught the error:
+DR potential file does not exist
+.Product edge test succeeded, caught the error:
+DR product info contains null values for oldbins
+.Product edge test succeeded, caught the error:
+DR potential file does not contain sheet: EnergyCalcs
+.Product edge test succeeded, caught the error:
+DR product info is not type object for oldbins
+.Emissions edge test succeeded, caught the error:
+Times in emissions files do not match.
+.
+----------------------------------------------------------------------
+Ran 34 tests in 72.398s
+
+OK

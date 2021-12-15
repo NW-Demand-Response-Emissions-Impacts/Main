@@ -1,0 +1,11 @@
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator$ pylint subcomp_a_organize_data.py
+************* Module subcomp_a_organize_data
+subcomp_a_organize_data.py:50:0: R0914: Too many local variables (16/15) (too-many-locals)
+subcomp_a_organize_data.py:50:0: R0912: Too many branches (16/12) (too-many-branches)
+subcomp_a_organize_data.py:127:0: R0912: Too many branches (13/12) (too-many-branches)
+subcomp_a_organize_data.py:206:0: R0914: Too many local variables (16/15) (too-many-locals)
+subcomp_a_organize_data.py:206:0: R0912: Too many branches (18/12) (too-many-branches)
+subcomp_a_organize_data.py:366:0: R0913: Too many arguments (7/5) (too-many-arguments)
+
+------------------------------------------------------------------
+Your code has been rated at 9.66/10 (previous run: 9.60/10, +0.06)

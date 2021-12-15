@@ -1,0 +1,13 @@
+Please note that the imports work fine when we run the emissions_calculator, but pylint has a problem with them.
+
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/
+phase1_emissions_calculator$ pylint emissions_calculator.py
+************* Module emissions_calculator
+emissions_calculator.py:7:0: E0401: Unable to import 'emissions_parameters' (import-error)
+emissions_calculator.py:9:0: E0401: Unable to import 'subcomp_a_organize_data' (import-error)
+emissions_calculator.py:10:0: E0401: Unable to import 'subcomp_b_process_emissions_factors' (import-error)
+emissions_calculator.py:11:0: E0401: Unable to import 'subcomp_c_calculate_emissions' (import-error)
+emissions_calculator.py:12:0: E0401: Unable to import 'subcomp_d_output_data' (import-error)
+
+-------------------------------------------------------------------
+Your code has been rated at 0.00/10 (previous run: -2.40/10, +2.40)

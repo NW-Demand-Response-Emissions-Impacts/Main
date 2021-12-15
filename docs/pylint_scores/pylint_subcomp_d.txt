@@ -1,0 +1,7 @@
+Pylint scores for subcomponent D.
+pylint subcomp_d_output_data.py
+************* Module subcomp_d_output_data
+subcomp_d_output_data.py:227:0: R0913: Too many arguments (11/5) (too-many-arguments)
+
+------------------------------------------------------------------
+Your code has been rated at 9.90/10 (previous run: 9.69/10, +0.20)

@@ -1,0 +1,10 @@
+Please note that we run tests from the phase1 directory, and do not have import issues.We couldn't figure out how to get rid of the import error when pylinting from the tests folder.
+
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator$ pylint tests/test_emissions_calculator.py
+************* Module tests.test_emissions_calculator
+tests/test_emissions_calculator.py:19:0: E0401: Unable to import 'emissions_parameters' (import-error)
+tests/test_emissions_calculator.py:20:0: E0401: Unable to import 'emissions_calculator' (import-error)
+tests/test_emissions_calculator.py:27:4: R0201: Method could be a function (no-self-use)
+
+------------------------------------
+Your code has been rated at -8.33/10

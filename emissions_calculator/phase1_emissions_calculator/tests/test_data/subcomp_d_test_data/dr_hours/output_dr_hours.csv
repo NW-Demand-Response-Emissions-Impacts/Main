@@ -1,0 +1,6 @@
+DR Plan,Season,DR Hours: Non-DLC Products,DR Hours: DLC Products
+oldbins,Winter,"['18 - 21', '8 - 11']","['17 - 22', '7 - 12']"
+oldbins,Summer,['15 - 18'],"['14 - 19', '13 - 18']"
+newbins,Winter,['18 - 21'],[]
+newbins,Summer,['18 - 21'],[]
+newbins,Fall,['18 - 21'],[]

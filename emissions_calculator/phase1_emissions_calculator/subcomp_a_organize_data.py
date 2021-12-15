@@ -338,9 +338,10 @@ def create_product_info_df_dict(dr_potential_files, dr_name):
         # For 'newbins' plan, only consider bin 1,
         # and look at ResTOU as a shift and a shed product
         if drname == 'newbins':
-            dr_product_info_df_dict[drname] = \
-                dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Bin'] == 'Bin 1'].reset_index(drop=True)
-            newrow = dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Product'] == 'ResTOU'].copy()
+            dr_product_info_df_dict[drname] = dr_product_info_df_dict[drname]\
+                        [dr_product_info_df_dict[drname]['Bin'] == 'Bin 1'].reset_index(drop=True)
+            newrow = dr_product_info_df_dict[drname]\
+                    [dr_product_info_df_dict[drname]['Product'] == 'ResTOU'].copy()
             newrow = newrow.replace('ResTOU','ResTOU_shed')
             newrow = newrow.replace('Shift','Shed')
             dr_product_info_df_dict[drname] = \
@@ -349,7 +350,7 @@ def create_product_info_df_dict(dr_potential_files, dr_name):
                 pd.concat([dr_product_info_df_dict[drname], newrow]).reset_index(drop=True)
         else:
             pass
-        
+
         # check dr_product_info_df_dict[drname] data makes sense
         if dr_product_info_df_dict[drname].isnull().values.any():
             raise ValueError('DR product info contains null values for '+ drname)
