@@ -27,6 +27,8 @@ def get_impacts(url, bin_types, seasons, bin_numbers):
     impacts = {}
     impacts['barchart'] = pd.read_csv(url + \
         '/emissions_impacts/emissions_reductions_barchart.csv?raw=True')
+    impacts['newbins_barchart'] = pd.read_csv(url + \
+        '/emissions_impacts/newbins_barchart.csv?raw=True')
     for name in bin_types:
         for season in seasons:
             for num in bin_numbers:

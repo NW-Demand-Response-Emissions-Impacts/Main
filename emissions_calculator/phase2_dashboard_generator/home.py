@@ -82,12 +82,21 @@ layout = html.Div(children=[
                                 html.P("""Emissions reductions are shown for the
                                     fall, winter, and summer, seasons. Reductions
                                     are also separated into contributions from DVR
-                                    and ResTOU programs."""
+                                    and ResTOU - shed and ResTOU - shift programs.
+                                    "Total Shed" denotes the combination of the DVR
+                                    and ResTOU - shed programs, while "Total Shift"
+                                    denotes the combination of the DVR and ResTOU - 
+                                    shift prorgrams."""
                                 ),
                                 html.P("""DVR programs are projected to have the
                                     most significant impact on emissions. ResTOU
                                     programs are projected to be most impactful
-                                    during the summer."""
+                                    during the summer, but their impact depends
+                                    on whether shedding or shifting is implemented.
+                                    Note that the ResTOU - shift program has a
+                                    relatively small impact on emissions reductions,
+                                    and actually increases emissions during the
+                                    winter and summer seasons."""
                                 ),
                                 dcc.Graph(id='impacts_bar', figure=impacts_bar),
                                 html.H2('Emissions Rates',style={"textAlign":

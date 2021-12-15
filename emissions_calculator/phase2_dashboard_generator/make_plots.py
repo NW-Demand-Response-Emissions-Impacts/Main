@@ -53,21 +53,30 @@ def plot_impacts_bar(impacts):
     """
     impacts_bar = go.Figure(data=[go.Bar(
         name = 'Winter',
-        x = ['ResTOU Shed','ResTOU Shift'],
+        x = ['Total Shed','Total Shift','DVR','ResTOU Shed','ResTOU Shift'],
         y = [impacts['barchart'].at[0,'newbins_bin1_shed'],
-            impacts['barchart'].at[0,'newbins_bin1_shift']]
+            impacts['barchart'].at[0,'newbins_bin1_shift'],
+            impacts['newbins_barchart'].at[0,'DVR'],
+            impacts['newbins_barchart'].at[0,'ResTOU_shed'],
+            impacts['newbins_barchart'].at[0,'ResTOU_shift']]
         ),
         go.Bar(
         name = 'Summer',
-        x = ['ResTOU Shed','ResTOU Shift'],
+        x = ['Total Shed','Total Shift','DVR','ResTOU Shed','ResTOU Shift'],
         y = [impacts['barchart'].at[1,'newbins_bin1_shed'],
-            impacts['barchart'].at[1,'newbins_bin1_shift']]
+            impacts['barchart'].at[1,'newbins_bin1_shift'],
+            impacts['newbins_barchart'].at[1,'DVR'],
+            impacts['newbins_barchart'].at[1,'ResTOU_shed'],
+            impacts['newbins_barchart'].at[1,'ResTOU_shift']]
         ),
         go.Bar(
         name = 'Fall',
-        x = ['ResTOU Shed','ResTOU Shift'],
+        x = ['Total Shed','Total Shift','DVR','ResTOU Shed','ResTOU Shift'],
         y = [impacts['barchart'].at[2,'newbins_bin1_shed'],
-            impacts['barchart'].at[2,'newbins_bin1_shift']]
+            impacts['barchart'].at[2,'newbins_bin1_shift'],
+            impacts['newbins_barchart'].at[2,'DVR'],
+            impacts['newbins_barchart'].at[2,'ResTOU_shed'],
+            impacts['newbins_barchart'].at[2,'ResTOU_shift']]
         )
     ])
     impacts_bar.update_layout(
