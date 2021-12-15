@@ -36,7 +36,8 @@ def shift_hours(dr_hours):
     to the adjacent hours.)
 
     Args:
-        dr_hours: Dataframe of the hours for a DR plan, season, product
+        dr_hours: A single column (i.e. single DR product) of one of the dataframes
+            of hours implemented for a bin + season combination.
 
 
     Returns:
@@ -92,7 +93,10 @@ def shift_hours(dr_hours):
 
 def sort_bins(dr_info, dr_names):
     """
-    This function
+    This function sorts/reformats the input dr_info dataframe (a single entry of the
+    dr_product_info dictionary that is input into calc_yearly_emissions) into a dictionary
+    with keys for each bin number (e.g. "Bin 1") and entries of the list of DR products
+    that correspond to that bin number.
 
     Args:
         dr_info: DR product information dataframe for a given DR plan
@@ -139,8 +143,7 @@ def make_barchart_df(emissions_impacts_dict):
     """
 
 
-    #Let's structure dataframes such that rows are season, columns are dr_procuct
-
+    #Only run this for the first scenario in
     #TO DO: need to specify somewhere earlier as an input that the number of bins is 4
     bin_nums = 4
     #Create 2 dicts, one for oldbins, one for new.
@@ -150,7 +153,6 @@ def make_barchart_df(emissions_impacts_dict):
         old_dict["bin"+str(n_bin)]=pd.DataFrame(data=[], index = ['Winter', 'Summer'])
         new_dict['bin'+str(n_bin)]=pd.DataFrame(data=[], index = ['Winter', 'Summer', 'Fall'])
 
-    ## Really want to do this in the subcompnent c file...this is getting too messy for here.
     #Sum all years for a barchart and save that separately
     start_condition = True
     for ind, key in enumerate(emissions_impacts_dict.keys()):
@@ -167,6 +169,8 @@ def make_barchart_df(emissions_impacts_dict):
             season = "Summer"
         elif "Fall" in key:
             season = "Fall"
+        elif "Sprint" in key:
+            season = "Spring"
 
         #Check whether the dataframe to put the sums in is empty
         if old_bins:
@@ -193,9 +197,6 @@ def make_barchart_df(emissions_impacts_dict):
                 new_dict["bin"+str(bin_num)].loc[season, cols] = summed_series
 
     #Need to know all the the DR names and get a big list:
-    #sum_dict = {}
-    #sum_dict["oldbins"] = old_dict
-    #sum_dict["newbins"] = new_dict
     out_df = pd.DataFrame(data=[], index = ['Winter', 'Summer', 'Fall'])
     out_df.index.name = 'Season'
     out_df['oldbins_bin1'] = old_dict['bin1'].sum(axis=1)
@@ -220,12 +221,27 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
         impacts for each DR plan, bin, and season.
 
     Args:
-        em_rates: baseline emissions rates dataframe. Formatted with rows "Report_Year
-        dr_hours:
-        dr_potential:
-        dr_product_info:
-        bins:
-        seasons:
+        em_rates: emissions rates dataframe. Formatted with columns "Report_Year", "Report Month",
+            "Report Day", "Report Hour", and then column of emissions rates for emissions rate
+            scenario being considered.
+
+        dr_hours: dictionary with keys such as ["newbins_Fall"]. Each entry contains a dataframe
+            with columns ["hourID", "Month", "Day"] and then columns for each DR product in that
+            binning + season combination. Entries for the DR products are 0 in hours when not
+            implemented, and 1 for hours implemented.
+
+        dr_potential: dictionary with same keys as dr_hours (e.g. ["newbins_Fall"). Each entry
+            is a dataframe with a column of years implemented, and then columns containing avoided
+            emissions potential for each DR product implemented in that bin+season combination.
+
+        dr_product_info: dictionary with two entries, with keys "oldbins" and "newbins". Each entry
+            contains a dataframe with a row for each DR product, containing what Bin it belongs to,
+            Seasons implemented, and whether it is a shift or shed product.
+
+        bins: List of binnings that we're using (e.g. ['oldbins', 'newbins'])
+
+        seasons: List of seasons we use for each binning format
+            (e.g. [['Winter, 'Fall'], ['Winter', 'Summer', 'Fall']])
 
     Returns:
         output_dictionary: Dictionary containing keys such as ['oldbins_Winter_bin2'],
@@ -235,12 +251,6 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
     """
 
     #Define the output_dictionary
-    output_dictionary = {}
-
-    #get the bin names and seasons.
-    #TO DO: Load these in.
-    #bins = ['oldbins','newbins']
-    #seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
 
     em_rates = em_rates.rename({'Report_Month': 'Month', \
                                 'Report_Day': 'Day', "Report_Hour": "hourID"}, axis='columns')
@@ -251,93 +261,154 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
     year_end = max(em_rates.Report_Year)
     years = np.arange(year_start, year_end+1)
 
-    # Loop through DR plan, season, bin, products
-    for ind, binning in enumerate(bins):
-        dr_info = dr_product_info[binning]
+    output_dictionary = {}
+    #Loop through all the different emissions scenarios provided
+    #in em_rates dataframe.
+    for s_ind, scenario in enumerate(em_rates.columns[4:]):
+        # Loop through DR plan, season, bin, products
+        for ind, binning in enumerate(bins):
+            dr_info = dr_product_info[binning]
 
-        for season in seasons[ind]:
-            # Get a "oldbins_summer" type name
-            combo_name = binning + "_" + season
-            hrs = dr_hours[combo_name]
-            pot = dr_potential[combo_name]
-            # Grab the names of the DR products that
-            # are actually implemented for this season.
-            # This assumes we have the same formatted DF everytime
-            dr_list = list(hrs.columns.values[3:])
-            bin_dict = sort_bins(dr_info, dr_list)
+            for season in seasons[ind]:
+                # Get a "oldbins_summer" type name
+                combo_name = binning + "_" + season
+                hrs = dr_hours[combo_name]
+                pot = dr_potential[combo_name]
+                # Grab the names of the DR products that
+                # are actually implemented for this season.
+                # This assumes we have the same formatted DF everytime
+                dr_list = list(hrs.columns.values[3:])
+                bin_dict = sort_bins(dr_info, dr_list)
 
-            for bin_num in list(bin_dict.keys()):
-                bin_drs = bin_dict[bin_num]
+                for bin_num in list(bin_dict.keys()):
+                    bin_drs = bin_dict[bin_num]
 
-                # Initialize dataframe
-                if binning=='newbins':
-                    #modify_resTOU_names
-                    new_names = ['DVR', 'ResTOU_shift', 'ResTOU_shed']
-                    start_matrix = np.zeros((len(years), len(new_names)+1))
-                    start_matrix[:, 0] = years.astype(int)
-                    yearly_avoided = pd.DataFrame(data = start_matrix, columns=['Year']+new_names)
-                else:
-                    start_matrix = np.zeros((len(years), len(bin_drs)+1))
-                    start_matrix[:, 0] = years.astype(int)
-                    yearly_avoided = pd.DataFrame(data = start_matrix, columns=['Year']+bin_drs)
-
-                for dr_name in bin_drs:
-
-                    # Do Shifting if it's a shift product.
-                    shift = dr_product_info[binning]['Shift or Shed?'].\
-                    loc[dr_product_info[binning].Product==dr_name]
-                    shift = shift.iloc[0]
-
-                    if shift == 'Shift':
-                        dr_season_hours = shift_hours(hrs[dr_name])
+                    # Initialize dataframe
+                    if binning=='newbins':
+                        #modify_resTOU_names
+                        new_names = ['DVR', 'ResTOU_shift', 'ResTOU_shed']
+                        start_matrix = np.zeros((len(years), len(new_names)+1))
+                        start_matrix[:, 0] = years.astype(int)
+                        yearly_avoided = pd.DataFrame(data = start_matrix,\
+                              columns=['Year']+new_names)
                     else:
-                        dr_season_hours = hrs[dr_name]
+                        start_matrix = np.zeros((len(years), len(bin_drs)+1))
+                        start_matrix[:, 0] = years.astype(int)
+                        yearly_avoided = pd.DataFrame(data = start_matrix, columns=['Year']+bin_drs)
 
-                    for year in range(year_start, year_end+1):
-                        dr_pot = pot[dr_name].loc[pot.Year==year]
-                        short_df = em_rates.loc[em_rates.Report_Year==year]
-                        if year%4==0:
+                    for dr_name in bin_drs:
 
-                            #There's no DR implemented on leap days
-                            #On Leap years, need to delete february 29
-                            truth_array = short_df['Day'].loc[short_df['Month'].values==2]==29
-                            leap_inds = truth_array.loc[truth_array]
-                            delete_inds = short_df.loc[leap_inds.index].index
-                            short_df = short_df.drop(delete_inds, axis=0)
-                            out_arr = short_df["Baseline Emissions Rate Estimate"].values\
-                                *dr_season_hours*dr_pot.values
-                            out_arr = out_arr * EMISSIONS_CHANGEUNITS
-                            yearly_avoided[dr_name].iloc[year-year_start] = out_arr.sum()
+                        # Do Shifting if it's a shift product.
+                        shift = dr_product_info[binning]['Shift or Shed?'].\
+                        loc[dr_product_info[binning].Product==dr_name]
+                        shift = shift.iloc[0]
 
+                        if shift == 'Shift':
+                            dr_season_hours = shift_hours(hrs[dr_name])
                         else:
-                            out_arr = short_df["Baseline Emissions Rate Estimate"].values*\
-                                dr_season_hours*dr_pot.values
-                            out_arr = out_arr * EMISSIONS_CHANGEUNITS
-                            yearly_avoided[dr_name].iloc[year-year_start] = out_arr.sum()
+                            dr_season_hours = hrs[dr_name]
 
-                save_name = binning+"_"+season+"_"+"bin"+bin_num.split()[1]
+                        for year in range(year_start, year_end+1):
+                            dr_pot = pot[dr_name].loc[pot.Year==year]
+                            short_df = em_rates.loc[em_rates.Report_Year==year]
+                            if year%4==0:
 
-                output_dictionary[save_name] = yearly_avoided
+                                #There's no DR implemented on leap days
+                                #On Leap years, need to delete february 29
+                                truth_array = short_df['Day'].loc[short_df['Month'].values==2]==29
+                                leap_inds = truth_array.loc[truth_array]
+                                delete_inds = short_df.loc[leap_inds.index].index
+                                short_df = short_df.drop(delete_inds, axis=0)
+                                out_arr = short_df[scenario].values\
+                                    *dr_season_hours*dr_pot.values
+                                out_arr = out_arr * EMISSIONS_CHANGEUNITS
+                                yearly_avoided[dr_name].iloc[year-year_start] = out_arr.sum()
+
+                            else:
+                                out_arr = short_df[scenario].values*\
+                                    dr_season_hours*dr_pot.values
+                                out_arr = out_arr * EMISSIONS_CHANGEUNITS
+                                yearly_avoided[dr_name].iloc[year-year_start] = out_arr.sum()
+
+                    #Naming convention such that if it's baseline, there is no "Baseline"
+                    #in output file name. For backwards compatibility with dashboard formatting
+                    if scenario == "Baseline Emissions Rate Estimate":
+                        save_name = binning+"_"+season+"_"+"bin"+bin_num.split()[1]
+                    else:
+                        emissions_name = scenario.split()[0]
+                        save_name = emissions_name+"_"+binning+"_"+season+"_"\
+                            +"bin"+bin_num.split()[1]
+
+
+                    output_dictionary[save_name] = yearly_avoided
 
     return output_dictionary
 
 def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info, bins, seasons):
     """
      Args:
-        em_rates: baseline emissions rates
-        dr_hours: dictionary
-        dr_potential:
-        dr_product_info:
-        bins:
-        seasons:
+        em_rates: emissions rates dataframe. Formatted with columns "Report_Year", "Report Month",
+            "Report Day", "Report Hour", and then column of emissions rates for emissions rate
+            scenario being considered.
+
+        dr_hours: dictionary with keys such as ["newbins_Fall"]. Each entry contains a dataframe
+            with columns ["hourID", "Month", "Day"] and then columns for each DR product in that
+            binning + season combination. Entries for the DR products are 0 in hours when not
+            implemented, and 1 for hours implemented.
+
+        dr_potential: dictionary with same keys as dr_hours (e.g. ["newbins_Fall"). Each entry
+            is a dataframe with a column of years implemented, and then columns containing avoided
+            emissions potential for each DR product implemented in that bin+season combination.
+
+        dr_product_info: dictionary with two entries, with keys "oldbins" and "newbins". Each entry
+            contains a dataframe with a row for each DR product, containing what Bin it belongs to,
+            Seasons implemented, and whether it is a shift or shed product.
+
+        bins: List of binnings that we're using (e.g. ['oldbins', 'newbins'])
+
+        seasons: List of seasons we use for each binning format
+            (e.g. [['Winter, 'Fall'], ['Winter', 'Summer', 'Fall']])
 
     Returns:
         out_dict: the output of calc_yearly_avoided_emissions
+
         barchart_df: Annual sum of yearly avoided emissions
 
     """
+    if not isinstance(em_rates,pd.DataFrame):
+        raise ValueError('Please input a dataframe for the em_rates argument')
+    if not isinstance(dr_hours,dict):
+        raise ValueError('Please input a dictionary for the em_rates argument')
+    if not isinstance(dr_potential,dict):
+        raise ValueError('Please input a dictionary for the em_rates argument')
+    if not isinstance(dr_product_info,dict):
+        raise ValueError('Please input a dictionary for the em_rates argument')
+    if not isinstance(bins,list):
+        raise ValueError('Please input a dataframe for the em_rates argument')
+    if not isinstance(seasons,list):
+        raise ValueError('Please input a dataframe for the em_rates argument')
+
     out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, \
                      dr_product_info, bins, seasons)
-    barchart_df, newbins_barchart = make_barchart_df(out_dict)
+
+    #Only want to output barchart for first scenario input
+    #This gets only the parts of the dictionary we want to 
+    #use to make a barchart.
+    scenario_name = em_rates.columns[4]
+    keys = []
+    emissions_name = scenario_name.split()[0]
+    for i, key in enumerate(out_dict.keys()):
+        if emissions_name in key:
+            keys = keys+[key]
+        elif emissions_name=="Baseline":
+            #Check, if it's baseline, only 3 words in key
+            if len(key.split("_"))==3:
+                keys = keys+[key]
+        else:
+            continue
+            #Do Nothing
+
+    dict_to_pass = {key: out_dict[key] for key in keys}
+    barchart_df, newbins_barchart = make_barchart_df(dict_to_pass)
 
     return out_dict, barchart_df, newbins_barchart
