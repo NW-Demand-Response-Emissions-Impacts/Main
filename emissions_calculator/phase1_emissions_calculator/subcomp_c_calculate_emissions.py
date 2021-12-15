@@ -197,6 +197,7 @@ def make_barchart_df(emissions_impacts_dict):
     #sum_dict["oldbins"] = old_dict
     #sum_dict["newbins"] = new_dict
     out_df = pd.DataFrame(data=[], index = ['Winter', 'Summer', 'Fall'])
+    out_df.index.name = 'Season'
     out_df['oldbins_bin1'] = old_dict['bin1'].sum(axis=1)
     out_df['oldbins_bin2'] = old_dict['bin2'].sum(axis=1)
     out_df['oldbins_bin3'] = old_dict['bin3'].sum(axis=1)
@@ -206,8 +207,10 @@ def make_barchart_df(emissions_impacts_dict):
     out_df['newbins_bin1_shift'] = new_dict['bin1'].loc[:, ["DVR", "ResTOU_shift"]].sum(axis=1)
 
     newbins_df = new_dict['bin1']
+    newbins_df.index.name = 'Season'
 
     return out_df, newbins_df
+
 
 def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info):
     """

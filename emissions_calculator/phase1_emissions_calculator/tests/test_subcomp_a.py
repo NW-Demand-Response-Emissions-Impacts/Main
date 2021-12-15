@@ -26,14 +26,13 @@ dr_potential_files = [DIR_DR_POTENTIAL_HRS + x for x in dr_potential_files]
 dr_seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
 subset_products = [[0],['DVR','ResTOU']]
 
-# test data
 
 class TestSubCompA(unittest.TestCase):
     """
     Class of unit tests for the subcomponent A
     """
 
-    def test_smoke(self):
+    def test_asmoke(self):
         """
         Smoke test to make sure all functions run.
         """
@@ -399,7 +398,6 @@ class TestSubCompA(unittest.TestCase):
             print('Potential edge test succeeded, caught the error: ')
             print(err)
 
-###check below
     # Below are edge tests for create_product_info_df_dict
     def test_prodfile(self):
         """

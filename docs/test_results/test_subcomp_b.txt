@@ -1,0 +1,6 @@
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator$ python -m unittest tests/test_subcomp_b.py
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.156s
+
+OK

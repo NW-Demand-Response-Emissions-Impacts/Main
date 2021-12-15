@@ -1,7 +1,5 @@
 Pylint scores for sub component B.
-
-subcomp_b_process_emissions_factors.py:
-(base) LoonyClowndeMacBook-Pro:phase1_emissions_calculator lc$ pylint subcomp_b_process_emissions_factors
+pylint subcomp_b_process_emissions_factors
 ************* Module subcomp_b_process_emissions_factors
 subcomp_b_process_emissions_factors.py:64:0: R0914: Too many local variables (16/15) (too-many-locals)
 subcomp_b_process_emissions_factors.py:170:4: R1720: Unnecessary "else" after "raise" (no-else-raise)

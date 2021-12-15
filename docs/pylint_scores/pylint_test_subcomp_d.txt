@@ -1,0 +1,16 @@
+Please note that we run tests from the phase1 directory, and do not have import issues.We couldn't figure out how to get rid of the import error when pylinting from the tests folder.  
+
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator/tests$ pylint test_subcomp_d.py
+************* Module test_subcomp_d
+test_subcomp_d.py:13:0: E0401: Unable to import 'emissions_parameters' (import-error)
+test_subcomp_d.py:14:0: E0401: Unable to import 'subcomp_d_output_data' (import-error)
+test_subcomp_d.py:16:0: E0401: Unable to import 'emissions_calculator' (import-error)
+test_subcomp_d.py:70:4: R0201: Method could be a function (no-self-use)
+test_subcomp_d.py:81:4: R0201: Method could be a function (no-self-use)
+test_subcomp_d.py:92:4: R0201: Method could be a function (no-self-use)
+test_subcomp_d.py:103:4: R0201: Method could be a function (no-self-use)
+test_subcomp_d.py:114:4: R0201: Method could be a function (no-self-use)
+test_subcomp_d.py:126:4: R0201: Method could be a function (no-self-use)
+
+------------------------------------------------------------------
+Your code has been rated at 6.82/10 (previous run: 6.82/10, +0.00)

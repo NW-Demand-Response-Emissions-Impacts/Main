@@ -7,10 +7,33 @@ including emissions factors, DR hours, and DR potential.
 
 import pandas as pd
 
-from emissions_parameters import DIR_DATA_PROC
+def checkdict(dictofdict,**kwargs):
+    """
+    Checks if arguments are dictionaries of dataframes
+    for dictofdict = False, or dicts of dicts of dataframes
+    for dictofdict = True.
 
+    Args:
+        **kwarg: variable number of keywords and dictionary arguments to check
+    """
+    for (name,arg) in kwargs.items():
+        if not isinstance(arg,dict):
+            raise ValueError('Please input a dict for the argument: '+ name)
+        if not len(arg.keys()) > 0:
+            raise ValueError(name + ' has no keys')
+        if not dictofdict:
+            if not isinstance(arg[list(arg.keys())[0]], pd.DataFrame):
+                raise ValueError(name + ' should contain dataframes')
+        else:
+            dicti = arg[list(arg.keys())[0]]
+            if not isinstance(dicti,dict):
+                raise ValueError(name + ' should be a dict of dicts')
+            if not len(dicti.keys()) > 0:
+                raise ValueError(name + ' inner dictionary has no keys')
+            if not isinstance(dicti[list(dicti.keys())[0]], pd.DataFrame):
+                raise ValueError(name + ' inner dictionary should contain dataframes')
 
-def output_dr_hours(dr_hours_dict):
+def output_dr_hours(dr_hours_dict,dir_out):
     """
     Given subcomp_a output with hours of DR implementation,
     outputs lists of DR hours for each DR plan and season into one csv.
@@ -20,8 +43,10 @@ def output_dr_hours(dr_hours_dict):
         dr_hours_dict: dictionary of 1-or-0 DR hours dataframes
                        for each DR plan and season
                        from subcomponent a
+        dir_out: the directory to output files to
     """
-    dir_out = DIR_DATA_PROC+'dr_hours/'
+    checkdict(False,dr_hours_dict=dr_hours_dict)
+    dir_out = dir_out+'dr_hours/'
 
     def list_periods(time_df):
         """
@@ -80,7 +105,7 @@ def output_dr_hours(dr_hours_dict):
     output_hours_df.to_csv(dir_out+'output_dr_hours.csv', index=False)
 
 
-def output_dr_potential(dr_pot_dict, product_info_dict):
+def output_dr_potential(dr_pot_dict, product_info_dict,dir_out):
     """
     Given subcomponent a output with DR potential and product info,
     outputs csv files contain DR potential for each product,
@@ -94,8 +119,11 @@ def output_dr_potential(dr_pot_dict, product_info_dict):
         product_info_dict: dictionary of product info including bins
                            with each dataframe corresponding to a DR plan
                            from subcomponent a
+        dir_out: the directory to output files to
     """
-    dir_out = DIR_DATA_PROC + 'dr_potential/'
+    checkdict(False, dr_pot_dict = dr_pot_dict,
+                product_info_dict = product_info_dict)
+    dir_out = dir_out + 'dr_potential/'
 
     productsum_out = []
     for key in dr_pot_dict.keys():
@@ -111,7 +139,6 @@ def output_dr_potential(dr_pot_dict, product_info_dict):
             pdlist = df_product_info[df_product_info['Bin'] == 'Bin '+str(idx)]['Product'].tolist()
             if pdlist:  # only if not empty, excludes empty bins
                 pdlist.insert(0, 'Year')
-                print(pdlist)
                 # get potential for these products and output to csv
                 df_potential_out = \
                     df_potential[df_potential.columns[df_potential.columns.isin(pdlist)]]
@@ -124,7 +151,8 @@ def output_dr_potential(dr_pot_dict, product_info_dict):
     product_sum_out_df.to_csv(dir_out+'comparison_barchart.csv', index=False)
 
 
-def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year):
+def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave,
+                                df_oneyear_seasonal_ave, year, dir_out):
     """
     Given subcomp_b output with average hourly emissions rates,
     outputs these into csv files for each DR plan and season.
@@ -142,8 +170,14 @@ def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_season
                         from subcomponent b
         year: the year chosen for the main page avg emissions factors (int),
               also specified for subcomponent b
+        dir_out: the directory to output files to
     """
-    dir_out = DIR_DATA_PROC+'emissions_rates/'
+    checkdict(True, df_seasonal_ave = df_seasonal_ave,
+                df_annual_ave = df_annual_ave,
+                df_oneyear_seasonal_ave = df_oneyear_seasonal_ave)
+    if not isinstance(year,int):
+        raise ValueError('Please input an int for the year argument')
+    dir_out = dir_out + 'emissions_rates/'
 
     for plan_season_key in df_seasonal_ave.keys():
         for scenario_key in df_seasonal_ave[plan_season_key].keys():
@@ -159,31 +193,41 @@ def output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_season
             df_oneyear_seasonal_ave[season_key][scenario_key].to_csv(fname, index=False)
 
 
-def output_emissions_impacts(emissions_impacts_dict, barchart_df, newbins_barchart):
+def output_emissions_impacts(emissions_impacts_dict, emissions_annual_df,
+                            newbins_barchart_df, dir_out):
     """
     Given subcomp_c output with DR emissions impacts,
     outputs this data into csv files for each DR plan, bin, and season.
     These will be plotted in the default and more info pages.
-    
-    Args: 
+
+    Args:
         emissions_impacts_dict: dictionary containing emissions impacts
-                                from subcomponent c 
+                                from subcomponent c
+        emissions_annual_df: Dataframe with annual sum of yearly
+                            avoided emissions summed by bin of products, plan, season
+        newbins_barchart_df: Dataframe with yearly avoided emissions for each product
+                            in 'newbins' in addition to their sum
+        dir_out: the directory to output files to
     """
-    DIR_OUT = DIR_DATA_PROC + 'emissions_impacts/'
+    checkdict(False, emissions_impacts_dict = emissions_impacts_dict)
+    if not isinstance(emissions_annual_df,pd.DataFrame):
+        raise ValueError('Please input a dataframe for the emissions_annual_df argument')
+    if not isinstance(newbins_barchart_df,pd.DataFrame):
+        raise ValueError('Please input a dataframe for the newbins_barchart_df argument')
+    dir_out = dir_out + 'emissions_impacts/'
 
-    for ind, key in enumerate(emissions_impacts_dict.keys()):
-        emissions_impacts_dict[key].to_csv(DIR_OUT+key+".csv")
+    for key in emissions_impacts_dict.keys():
+        emissions_impacts_dict[key].to_csv(dir_out+key+'.csv', index=False)
 
-    #Now do the same for annual sum - barchart data.
-    
-    barchart_df.to_csv(DIR_OUT+"emissions_reductions_barchart.csv")
-    
-    newbins_barchart.to_csv(DIR_OUT+"newbins_barchart.csv")
+    # Also output annual sum - barchart data.
+    emissions_annual_df.to_csv(dir_out+'emissions_reductions_barchart.csv')
+    newbins_barchart_df.to_csv(dir_out+'newbins_barchart.csv')
 
 ################# Main ####################
-def runall(dr_hours_dict, dr_pot_dict, product_info_dict, 
+def subcomp_d_runall(dr_hours_dict, dr_pot_dict, product_info_dict,
            df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year,
-           emissions_impacts_dict, emissions_annual_df, newbins_barchart):
+           emissions_impacts_dict, emissions_annual_df, newbins_barchart_df,
+           dir_out):
     """
     Runs through all of the above functions to output all csv files.
 
@@ -210,12 +254,15 @@ def runall(dr_hours_dict, dr_pot_dict, product_info_dict,
               also specified for subcomponent b
         emissions_impacts_dict: dictionary containing emissions impacts
                                 from subcomponent c
-        emissions_annual_df: Dataframe with annual sum of yearly 
+        emissions_annual_df: Dataframe with annual sum of yearly
                             avoided emissions summed by bin of products, plan, season
         newbins_barchart_df: Dataframe with yearly avoided emissions for each product
-                            in 'newbins' in addition to their sum 
+                            in 'newbins' in addition to their sum
+        dir_out: the directory to output files to; helps to keep testing output separate
     """
-    output_dr_hours(dr_hours_dict)
-    output_dr_potential(dr_pot_dict, product_info_dict)
-    output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year)
-    output_emissions_impacts(emissions_impacts_dict, barchart_df, newbins_barchart)
+    output_dr_hours(dr_hours_dict, dir_out)
+    output_dr_potential(dr_pot_dict, product_info_dict, dir_out)
+    output_avg_emissions_rates(df_seasonal_ave, df_annual_ave,
+                                df_oneyear_seasonal_ave, year, dir_out)
+    output_emissions_impacts(emissions_impacts_dict,
+                                emissions_annual_df, newbins_barchart_df, dir_out)

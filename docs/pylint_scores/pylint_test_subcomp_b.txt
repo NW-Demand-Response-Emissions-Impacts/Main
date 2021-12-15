@@ -1,0 +1,14 @@
+Please note that we run tests from the phase1 directory, and do not have import issues.We couldn't figure out how to get rid of the import error when pylinting from the tests folder.
+
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator/tests$ pylint test_subcomp_b.py
+************* Module test_subcomp_b
+test_subcomp_b.py:12:0: E0401: Unable to import 'subcomp_b_process_emissions_factors' (import-error)
+test_subcomp_b.py:14:0: E0401: Unable to import 'emissions_parameters' (import-error)
+test_subcomp_b.py:39:4: R0201: Method could be a function (no-self-use)
+test_subcomp_b.py:54:4: R0201: Method could be a function (no-self-use)
+test_subcomp_b.py:65:4: R0201: Method could be a function (no-self-use)
+test_subcomp_b.py:76:4: R0201: Method could be a function (no-self-use)
+test_subcomp_b.py:87:4: R0201: Method could be a function (no-self-use)
+
+------------------------------------------------------------------
+Your code has been rated at 7.17/10 (previous run: 6.04/10, +1.13)
