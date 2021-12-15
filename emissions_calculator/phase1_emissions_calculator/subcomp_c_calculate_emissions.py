@@ -277,7 +277,6 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                     for year in range(year_start, year_end+1):
                         dr_pot = pot[dr_name].loc[pot.Year==year]
                         short_df = em_rates.loc[em_rates.Report_Year==year]
-                        print(short_df)
                         if year%4==0:
                             
                             #There's no DR implemented on leap days
