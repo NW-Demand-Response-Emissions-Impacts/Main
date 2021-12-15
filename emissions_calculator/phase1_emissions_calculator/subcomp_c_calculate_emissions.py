@@ -192,9 +192,10 @@ def make_barchart_df(emissions_impacts_dict):
     out_df['newbins_bin1_shift'] = new_dict['bin1'].loc[:, ["DVR", "ResTOU_shift"]].sum(axis=1)
 
 
+    pure_newbins_df = new_dict['bin1']
 
 
-    return out_df
+    return out_df, pure_newbins_df
 
 def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info):
     """
@@ -262,12 +263,6 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                     yearly_avoided = pd.DataFrame(data = start_matrix, columns=['Year']+bin_drs)
 
                 for dr_name in bin_drs:
-                    #rename things so dataframes more easily compared
-                    restou_newbins = False
-                    #Ok if its new
-                    if binning=='newbins':
-                        if dr_name == 'ResTOU':
-                            restou_newbins = True
 
                     # Do Shifting if it's a shift product.
                     shift = dr_product_info[binning]['Shift or Shed?'].\
@@ -275,10 +270,6 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                     shift = shift.iloc[0]
 
                     if shift == 'Shift':
-                        #if restou_newbins:
-                        #    dr_season_hours_shed = hrs[dr_name]
-                        #    dr_season_hours_shift = shift_hours(hrs[dr_name])
-                        #else:
                         dr_season_hours = shift_hours(hrs[dr_name])
                     else:
                         dr_season_hours = hrs[dr_name]
@@ -286,6 +277,7 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
                     for year in range(year_start, year_end+1):
                         dr_pot = pot[dr_name].loc[pot.Year==year]
                         short_df = em_rates.loc[em_rates.Report_Year==year]
+                        print(short_df)
                         if year%4==0:
                             
                             #There's no DR implemented on leap days
@@ -323,6 +315,6 @@ def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info):
     
     """
     out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info)
-    barchart_df = make_barchart_df(out_dict)
+    barchart_df, newbins_barchart = make_barchart_df(out_dict)
     
-    return out_dict, barchart_df
+    return out_dict, barchart_df, newbins_barchart
