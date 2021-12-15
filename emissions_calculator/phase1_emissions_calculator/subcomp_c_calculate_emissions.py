@@ -212,7 +212,7 @@ def make_barchart_df(emissions_impacts_dict):
     return out_df, newbins_df
 
 
-def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info):
+def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info, bins, seasons):
     """
     This function uses emissions rates, DR hours, DR potential,
         and DR product information data to calculate avoided emissions
@@ -223,7 +223,9 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
         em_rates: baseline emissions rates dataframe. Formatted with rows "Report_Year
         dr_hours:
         dr_potential:
-        dr_product_info
+        dr_product_info:
+        bins:
+        seasons:
 
     Returns:
         output_dictionary: Dictionary containing keys such as ['oldbins_Winter_bin2'],
@@ -237,8 +239,8 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
 
     #get the bin names and seasons.
     #TO DO: Load these in.
-    bins = ['oldbins','newbins']
-    seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
+    #bins = ['oldbins','newbins']
+    #seasons = [['Winter','Summer'],['Winter','Summer','Fall']]
 
     em_rates = em_rates.rename({'Report_Month': 'Month', \
                                 'Report_Day': 'Day', "Report_Hour": "hourID"}, axis='columns')
@@ -319,20 +321,23 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
 
     return output_dictionary
 
-def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info):
+def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info, bins, seasons):
     """
      Args:
         em_rates: baseline emissions rates
-        dr_hours:
+        dr_hours: dictionary
         dr_potential:
-        dr_product_info
+        dr_product_info:
+        bins:
+        seasons:
 
     Returns:
         out_dict: the output of calc_yearly_avoided_emissions
         barchart_df: Annual sum of yearly avoided emissions
 
     """
-    out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_info)
+    out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, \
+                     dr_product_info, bins, seasons)
     barchart_df, newbins_barchart = make_barchart_df(out_dict)
 
     return out_dict, barchart_df, newbins_barchart

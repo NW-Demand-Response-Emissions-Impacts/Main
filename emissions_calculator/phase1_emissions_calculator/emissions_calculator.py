@@ -50,7 +50,8 @@ def main(dir_out):
     print('Running subcomponent c')
     emissions_impacts_dict, emissions_annual_df, newbins_barchart_df = \
         subcomp_c_runall(emissions_rates_df_out, dr_hours_df_dict_out, \
-                dr_potential_df_dict_out, dr_product_info_df_dict_out)
+                dr_potential_df_dict_out, dr_product_info_df_dict_out, \
+                        dr_name, dr_seasons)
 
     # Output csv files for dashboard
     print('Running subcomponent d')
