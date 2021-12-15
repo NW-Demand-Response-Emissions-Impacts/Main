@@ -41,6 +41,8 @@ def main():
         subcomp_a_runall(emissions_rates_files, emissions_scenario_list, \
                         dr_hrs_files, dr_name, dr_seasons, dr_potential_files, subset_products)
 
+    print(dr_product_info_df_dict_out)
+
     # Calculate average hourly emissions rates for dashboard
     print('Running subcomponent b')
     df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave = \

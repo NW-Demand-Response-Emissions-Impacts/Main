@@ -338,11 +338,9 @@ def create_product_info_df_dict(dr_potential_files, dr_name):
         # For 'newbins' plan, only consider bin 1,
         # and look at ResTOU as a shift and a shed product
         if drname == 'newbins':
-            choosebin = dr_product_info_df_dict[drname]['Bin'] == 'Bin 1'
-            chooseproduct = dr_product_info_df_dict[drname]['Product'] == 'ResTOU'
             dr_product_info_df_dict[drname] = \
-                dr_product_info_df_dict[drname][choosebin].reset_index(drop=True)
-            newrow = dr_product_info_df_dict[drname][chooseproduct].copy()
+                dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Bin'] == 'Bin 1'].reset_index(drop=True)
+            newrow = dr_product_info_df_dict[drname][dr_product_info_df_dict[drname]['Product'] == 'ResTOU'].copy()
             newrow = newrow.replace('ResTOU','ResTOU_shed')
             newrow = newrow.replace('Shift','Shed')
             dr_product_info_df_dict[drname] = \

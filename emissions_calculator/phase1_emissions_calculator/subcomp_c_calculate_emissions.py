@@ -102,6 +102,8 @@ def sort_bins(dr_info, dr_names):
     out_dict = {}
 
     for dr_name in dr_names:
+        print(dr_name)
+        print(dr_info.Product)
         bin_name = dr_info.Bin.loc[dr_info.Product == dr_name].values[0]
         if bin_name in list(out_dict.keys()):
             out_dict[bin_name] = out_dict[bin_name]+[dr_name]
