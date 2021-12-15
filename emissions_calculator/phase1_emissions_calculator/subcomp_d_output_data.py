@@ -183,7 +183,7 @@ def output_emissions_impacts(emissions_impacts_dict, barchart_df, newbins_barcha
 ################# Main ####################
 def runall(dr_hours_dict, dr_pot_dict, product_info_dict, 
            df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year,
-           emissions_impacts_dict):
+           emissions_impacts_dict, emissions_annual_df, newbins_barchart):
     """
     Runs through all of the above functions to output all csv files.
 
@@ -210,8 +210,12 @@ def runall(dr_hours_dict, dr_pot_dict, product_info_dict,
               also specified for subcomponent b
         emissions_impacts_dict: dictionary containing emissions impacts
                                 from subcomponent c
+        emissions_annual_df: Dataframe with annual sum of yearly 
+                            avoided emissions summed by bin of products, plan, season
+        newbins_barchart_df: Dataframe with yearly avoided emissions for each product
+                            in 'newbins' in addition to their sum 
     """
     output_dr_hours(dr_hours_dict)
     output_dr_potential(dr_pot_dict, product_info_dict)
     output_avg_emissions_rates(df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave, year)
-    output_emissions_impacts(emissions_impacts_dict)            
+    output_emissions_impacts(emissions_impacts_dict, barchart_df, newbins_barchart)
