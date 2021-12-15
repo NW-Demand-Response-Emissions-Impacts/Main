@@ -7,7 +7,7 @@ for the dashboard.
 from emissions_parameters import DIR_EMISSIONS_RATES, DIR_DR_POTENTIAL_HRS
 from subcomp_a_organize_data import subcomp_a_runall
 from subcomp_b_process_emissions_factors import subcomp_b_runall
-from subcomp_c_calculate_emissions import calc_yearly_avoided_emissions
+from subcomp_c_calculate_emissions import subcomp_c_runall
 from subcomp_d_output_data \
         import output_avg_emissions_rates, output_dr_hours, output_dr_potential, \
                 output_emissions_impacts
@@ -45,9 +45,9 @@ df_seasonal_ave, df_annual_ave, df_oneyear_seasonal_ave = \
 
 # Calculate emissions impacts
 print('Running subcomponent c')
-emissions_impacts_dict, emissions_annual_df, newbins_barchart_df = subcomp_c_runall\
-        (emissions_rates_df_out, dr_hours_df_dict_out, \
-         dr_potential_df_dict_out, dr_product_info_df_dict_out)
+emissions_impacts_dict, emissions_annual_df, newbins_barchart_df = \
+        subcomp_c_runall(emissions_rates_df_out, dr_hours_df_dict_out, \
+                dr_potential_df_dict_out, dr_product_info_df_dict_out)
 
 
 # Output csv files for dashboard
