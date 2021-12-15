@@ -69,6 +69,7 @@ setup(
                   'plotly==4.1.0',
                   'traitlets==4.3.2',
                   'Werkzeug==0.15.4',
-                  'xlrd==1.0.0']
+                  'xlrd==1.0.0',
+                  'openpyxl==3.0.9']
 
 )
