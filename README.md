@@ -27,7 +27,6 @@ A high-level component specification is shown below. Please see the [docs](/docs
 ├── Procfile
 ├── README.md
 ├── app.py
-├── index.py
 ├── assets/
 ├── docs/
 │   ├── component_specification.pdf
