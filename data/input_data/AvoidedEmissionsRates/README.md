@@ -1,6 +1,5 @@
 # Avoided Emissions Rates
-## Compiled and documented by Lily Hahn
-## Data Source: John Ollis, Northwest Power and Conservation Council
+## Data Provided by John Ollis, Northwest Power and Conservation Council
 
 This directory contains hourly avoided emissions rates for 2021-2041 under baseline conditions and 5 additional policy scenarios. Currently the emissions rates for the 5 additional policy scenarios do not contain data for every day, so we are only running for the baseline scenario. 
 
