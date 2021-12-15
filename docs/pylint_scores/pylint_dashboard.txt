@@ -12,7 +12,8 @@ index.py:
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
-home.py (Note that these import errors identified by pylint do not inhibit the generation of the dashboard via app.py and index.py. Therefore, these messages from pylint are ignored.):
+home.py (Note that these import problems identified by pylint do not inhibit the generation of the dashboard.
+         Therefore, these messages from pylint are ignored.):
 (base) MacBook-Air-3:phase2_dashboard_generator lloverasdan$ pylint home.py
 ************* Module home
 home.py:11:0: E0401: Unable to import 'app' (import-error)
