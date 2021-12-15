@@ -31,25 +31,29 @@ A high-level component specification is shown below. Please see the [docs](/docs
 ├── docs/
 │   ├── component_specification.pdf
 │   ├── flow_charts/
-│   └── functional_specification.pdf
+│   ├── functional_specification.pdf
+│   ├── pylint_scores/
+│   ├── technology_review.pdf
+│   └── test_results/
+├── data/
+│   ├── input_data/
+│   │   ├── AvoidedEmissionsRates/
+│   │   └── DRPotentialandHours/
+│   └── processed_data/
+│       ├── dr_hours/
+│       ├── dr_potential/
+│       ├── emissions_impacts/
+│       └── emissions_rates/
 ├── emissions_calculator/
 │   ├── phase1_emissions_calculator/
+│   │   └── tests/
+│   │       └── test_data/
 │   └── phase2_dashboard_generator/
 ├── examples/
 ├── index.py
-├── input_data/
-│   ├── AvoidedEmissionsRates/
-│   └── DRPotentialandHours/
-├── processed_data/
-│   ├── dr_hours/
-│   ├── dr_potential/
-│   ├── emissions_impacts/
-│   └── emissions_rates/
 ├── requirements.txt
 ├── runtime.txt
-└── test_data/
-    ├── AvoidedEmissionsRates/
-    ├── DRPotentialandHours/
+└── setup.py
 ```
 
 In the <code>emissions_calculator/</code> directory, <code>phase1_emissions_calculator/</code> calculates emissions impacts of demand response and outputs processed data for the dashboard. <code>phase2_dashboard_generator/</code> generates the dashboard webpage that visualizes these emissions impacts.
