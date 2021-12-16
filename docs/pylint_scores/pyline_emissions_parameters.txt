@@ -1,0 +1,5 @@
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissionss_s_calculs_calculatos_calss
+s_calculator/emissions_calculator/phase1_emissions_calculator$ pylint emissions_parameters.py
+
+-------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 8.12/10, +1.88)

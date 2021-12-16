@@ -1,11 +1,13 @@
-Pylint scores for sub component B.
-pylint subcomp_b_process_emissions_factors
+Please note that the imports work fine when we run the emissions_calculator, but pylint has a problem with them.
+
+(base) lchahn@DESKTOP-DOA6OF2:/mnt/c/Users/lilyh/Documents/2019 all/sedsproject/emissions_calculator/emissions_calculator/phase1_emissions_calculator$ pylint subcomp_b_process_emissions_factors.py
 ************* Module subcomp_b_process_emissions_factors
+subcomp_b_process_emissions_factors.py:17:0: E0401: Unable to import 'emissions_parameters' (import-error)
 subcomp_b_process_emissions_factors.py:64:0: R0914: Too many local variables (16/15) (too-many-locals)
 subcomp_b_process_emissions_factors.py:170:4: R1720: Unnecessary "else" after "raise" (no-else-raise)
 subcomp_b_process_emissions_factors.py:218:4: R1720: Unnecessary "else" after "raise" (no-else-raise)
 subcomp_b_process_emissions_factors.py:229:0: R0913: Too many arguments (6/5) (too-many-arguments)
 subcomp_b_process_emissions_factors.py:251:4: R1720: Unnecessary "else" after "raise" (no-else-raise)
 
-------------------------------------------------------------------
-Your code has been rated at 9.34/10 (previous run: 9.34/10, +0.00)
+-----------------------------------
+Your code has been rated at 8.68/10

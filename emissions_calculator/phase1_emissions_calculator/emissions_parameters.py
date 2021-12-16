@@ -9,13 +9,13 @@ for use in the emissions_calculator and subcomponents.
 import os
 
 # Get the top emissions_calculator folder directory
-CWD = os.getcwd() 
+CWD = os.getcwd()
 CALCULATOR_FOLDER = '/emissions_calculator/phase1_emissions_calculator'
 MAIN_FOLDER = CWD.split(CALCULATOR_FOLDER, 1)[0]
 
 if '/emissions_calculator/emissions_calculator' in MAIN_FOLDER:
-	CALCULATOR_FOLDER_ALT = '/emissions_calculator'
-	MAIN_FOLDER = CWD.split(CALCULATOR_FOLDER_ALT,1)[0] + CALCULATOR_FOLDER_ALT
+    CALCULATOR_FOLDER_ALT = '/emissions_calculator'
+    MAIN_FOLDER = CWD.split(CALCULATOR_FOLDER_ALT,1)[0] + CALCULATOR_FOLDER_ALT
 
 # Folders within directory
 DIR_CALCULATOR = MAIN_FOLDER + CALCULATOR_FOLDER
