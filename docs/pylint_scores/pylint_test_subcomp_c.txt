@@ -1,0 +1,13 @@
+Please note that we run tests from the phase1 directory, and do not have import issues.We couldn't figure out how to get rid of the import error when pylinting from the tests folder.  
+
+(base) jamesstadler@Jamess-MBP-2 phase1_emissions_calculator % pylint tests/test_subcomp_c.py
+************* Module tests.test_subcomp_c
+tests/test_subcomp_c.py:10:0: E0401: Unable to import 'subcomp_c_calculate_emissions' (import-error)
+tests/test_subcomp_c.py:13:0: E0401: Unable to import 'emissions_parameters' (import-error)
+tests/test_subcomp_c.py:15:0: E0401: Unable to import 'subcomp_a_organize_data' (import-error)
+tests/test_subcomp_c.py:53:4: R0201: Method could be a function (no-self-use)
+tests/test_subcomp_c.py:99:4: R0201: Method could be a function (no-self-use)
+tests/test_subcomp_c.py:144:4: R0201: Method could be a function (no-self-use)
+
+------------------------------------------------------------------
+Your code has been rated at 7.14/10 (previous run: 6.98/10, +0.16)

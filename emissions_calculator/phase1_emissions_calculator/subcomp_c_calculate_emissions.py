@@ -68,8 +68,6 @@ def shift_hours(dr_hours):
 
     firsts = firsts.astype(int)
     # Specify indices_shift to insert -1 values for load shift
-
-    #TO DO: Currently only works for even number of implemented hours
     if num_hours_implemented%2!=0:
         raise ValueError("Number of hours implemented for shifting must be even.")
 
@@ -118,14 +116,14 @@ def sort_bins(dr_info, dr_names):
 
     return out_dict
 
+
 def make_barchart_df(emissions_impacts_dict):
     """
-    This function creates to dataframes for plotting barcharts on the webpage
-        it takes in a dictionary of emissions impacts (with keys such as
+    This function takes in a dictionary of emissions impacts (with keys such as
         ['oldbins_Winter_bin2']). It then creates a dataframe with columns
-        for each grouping of DR products, named like "oldbins_bin1" or
-        "newbins_bin1", with rows for Fall, Winter, Summer seasons.
-        the entries are the total emissions reductions for that grouping
+        for each grouping of DR products (e.g. "oldbins_bin1" or
+        "newbins_bin1") with rows for Fall, Winter, Summer seasons.
+        The entries are the total emissions reductions for that grouping
         during that season summed over all the years the model is implemented.
 
     Args:
@@ -136,16 +134,13 @@ def make_barchart_df(emissions_impacts_dict):
             the entries.
 
     Returns:
-        barchart_df: dataframe of total emissions savings for each bin, broken
+        out_df: dataframe of total emissions savings for each bin, broken
             up into oldbins, newbins_shed (ResTOU is treated as shed product),
             and newbins_shift (ResTOU is treated as shift product).
         newbins_df: dataframe of bin 1 products from new binning with total
             emissions savings for each product. For plot on homepage.
     """
 
-
-    #Only run this for the first scenario in
-    #TO DO: need to specify somewhere earlier as an input that the number of bins is 4
     bin_nums = 4
     #Create 2 dicts, one for oldbins, one for new.
     old_dict = {}
@@ -170,7 +165,7 @@ def make_barchart_df(emissions_impacts_dict):
             season = "Summer"
         elif "Fall" in key:
             season = "Fall"
-        elif "Sprint" in key:
+        elif "Spring" in key:
             season = "Spring"
 
         #Check whether the dataframe to put the sums in is empty
@@ -345,6 +340,7 @@ def calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, dr_product_i
 
     return output_dictionary
 
+
 def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info, bins, seasons):
     """
      Args:
@@ -375,25 +371,28 @@ def subcomp_c_runall(em_rates, dr_hours, dr_potential, dr_product_info, bins, se
 
         barchart_df: Annual sum of yearly avoided emissions
 
+        newbins_barchart: dataframe of bin 1 products from new binning with total
+            emissions savings for each product. For plot on homepage.
+
     """
     if not isinstance(em_rates,pd.DataFrame):
         raise ValueError('Please input a dataframe for the em_rates argument')
     if not isinstance(dr_hours,dict):
-        raise ValueError('Please input a dictionary for the em_rates argument')
+        raise ValueError('Please input a dictionary for the dr_hours argument')
     if not isinstance(dr_potential,dict):
-        raise ValueError('Please input a dictionary for the em_rates argument')
+        raise ValueError('Please input a dictionary for the dr_potential argument')
     if not isinstance(dr_product_info,dict):
-        raise ValueError('Please input a dictionary for the em_rates argument')
+        raise ValueError('Please input a dictionary for the dr_product_info argument')
     if not isinstance(bins,list):
-        raise ValueError('Please input a dataframe for the em_rates argument')
+        raise ValueError('Please input a dataframe for the bins argument')
     if not isinstance(seasons,list):
-        raise ValueError('Please input a dataframe for the em_rates argument')
+        raise ValueError('Please input a dataframe for the seasons argument')
 
     out_dict = calc_yearly_avoided_emissions(em_rates, dr_hours, dr_potential, \
                      dr_product_info, bins, seasons)
 
     #Only want to output barchart for first scenario input
-    #This gets only the parts of the dictionary we want to 
+    #This gets only the parts of the dictionary we want to
     #use to make a barchart.
     scenario_name = em_rates.columns[4]
     keys = []

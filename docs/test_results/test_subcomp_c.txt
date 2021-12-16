@@ -1,0 +1,6 @@
+(base) jamesstadler@Jamess-MBP-2 phase1_emissions_calculator % python -m tests.test_subcomp_c
+.Edge test succeeded, caught the error: 
+..Edge test succeeded, caught the error: 
+...
+----------------------------------------------------------------------
+Ran 6 tests in 1.511s
